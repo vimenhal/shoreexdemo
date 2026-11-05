@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#003a59">
+<title>Shore Excursions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ds-blue:#003a59; --ds-gold:#ab8d45; --ds-dark-beige:#f4f0e6; --ds-blue-30:#b2c3cd;
+  --ds-black:#231f20; --ds-dark-gray:#666666; --ds-focus-blue:#1979ff;
+  --serif:"GT Super Display", "Gilda Display", Georgia, "Times New Roman", serif;
+  --sans:"Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --radius:4px;
+  --pad:20px;
+}
+@media (min-width:768px){ :root{ --pad:40px } }
+*{ box-sizing:border-box }
+html{ -webkit-text-size-adjust:100% }
+body{ margin:0; background:#fff; color:var(--ds-black); font-family:var(--sans); font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased }
+.wrap{ max-width:1200px; margin:0 auto; padding:0 var(--pad) }
+main.wrap{ padding-top:calc((var(--pad) + 24px) * .85); padding-bottom:var(--pad) }
+.grid{ list-style:none; margin:0; padding:0; display:grid; gap:24px; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)) }
+@media (max-width:400px){ .grid{ grid-template-columns:1fr } }
+
+/* Card: hero photo with the title on a bottom ramp, echoing the detail-page hero (SBN: near-square corners) */
+.card{
+  position:relative; display:block; height:100%; aspect-ratio:4/5; overflow:hidden;
+  border-radius:var(--radius); color:#fff; text-decoration:none; background:var(--ds-blue);
+  box-shadow:0 2px 4px rgba(35,31,32,.10), 0 0 1px rgba(35,31,32,.10);
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.card > img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease) }
+.card::after{ content:""; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(35,31,32,.35) 0%, rgba(35,31,32,0) 22%) }
+.card:hover{ transform:translateY(-4px); box-shadow:0 18px 40px rgba(0,58,89,.22) }
+.card:hover > img{ transform:scale(1.04) }
+.card:focus-visible{ outline:3px solid var(--ds-focus-blue); outline-offset:3px }
+.day{
+  position:absolute; z-index:1; top:16px; left:16px; padding:4px 12px; border-radius:2px;
+  font-size:13px; font-weight:600; background:rgba(0,58,89,.55); border:1px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+}
+.body{
+  position:absolute; z-index:1; left:0; right:0; bottom:0; padding:96px 20px 20px;
+  background:linear-gradient(to top, rgba(0,46,71,.97) 0%, rgba(0,58,89,.9) 55%, rgba(0,58,89,.6) 78%, rgba(0,58,89,0) 100%);
+  text-shadow:0 1px 2px rgba(35,31,32,.4);
+}
+/* Collection tag, as on the detail pages: gold diamond (Reserve), Blue 30 (Curated), outline (Classic) */
+.badge{
+  display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:4px 10px; border-radius:2px;
+  font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; line-height:1.4;
+  color:var(--ds-dark-beige); background:rgba(0,46,71,.55); border:1px solid rgba(171,141,69,.85); text-shadow:none;
+}
+.badge .diamond{ width:9px; height:9px; transform:rotate(45deg); background:var(--ds-gold); flex:none }
+.badge.curated{ border-color:rgba(178,195,205,.85) }
+.badge.curated .diamond{ background:var(--ds-blue-30) }
+.badge.classic{ border-color:rgba(255,255,255,.6) }
+.badge.classic .diamond{ background:transparent; border:1.5px solid #fff }
+.title{ margin:0; font-family:var(--serif); font-weight:400; font-size:26px; line-height:1.2;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden }
+.port{ margin:6px 0 0; font-size:14px; color:rgba(255,255,255,.85); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.meta{ display:flex; justify-content:space-between; align-items:flex-end; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,.16) }
+.meta .lbl{ display:block; font-size:12px; color:rgba(255,255,255,.75) }
+.meta b{ font-size:17px; font-weight:600 }
+.meta .price{ text-align:right }
+@media (prefers-reduced-motion:reduce){
+  .card, .card > img{ transition:none }
+  .card:hover, .card:hover > img{ transform:none }
+}
+</style>
+</head>
+<body>
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Shore Excursions</h1>
+<main class="wrap">
+  <ul class="grid">
+    <li><a class="card" href="angkor-wat-mid-cruise-journey.html">
+      <img src="assets/angkor-wat-monks.webp" alt="" loading="lazy">
+      <span class="day">Day 6 · Sat, Feb 6, 2027</span>
+      <div class="body">
+        <p class="badge reserve"><span class="diamond" aria-hidden="true"></span>The Reserve Collection</p>
+        <h2 class="title">Angkor Wat Mid-Cruise Journey</h2>
+        <p class="port">Sihanoukville, Cambodia</p>
+        <div class="meta"><span><span class="lbl">Duration</span><b>53 hours</b></span><span class="price"><span class="lbl">Per adult</span><b>$3,010.00</b></span></div>
+      </div>
+    </a></li>
+
+    <li><a class="card" href="junk-boat-kayak-adventure-halong-bay.html">
+      <img src="assets/halong-bay-junk.jpg" alt="" loading="lazy">
+      <span class="day">Day 13 · Sat, Feb 13, 2027</span>
+      <div class="body">
+        <p class="badge classic"><span class="diamond" aria-hidden="true"></span>The Classic Collection</p>
+        <h2 class="title">Junk Boat &amp; Kayak Adventure in Halong Bay</h2>
+        <p class="port">Halong Bay, Vietnam</p>
+        <div class="meta"><span><span class="lbl">Duration</span><b>8 hours</b></span><span class="price"><span class="lbl">Per adult</span><b>$180.00</b></span></div>
+      </div>
+    </a></li>
+
+    <li><a class="card" href="exploring-historic-temples-forest-gijang.html">
+      <img src="assets/gijang-haedong-yonggungsa.webp" alt="" loading="lazy">
+      <span class="day">Day 5 · Wed, Mar 3, 2027</span>
+      <div class="body">
+        <p class="badge curated"><span class="diamond" aria-hidden="true"></span>The Curated Collection</p>
+        <h2 class="title">Exploring the Historic Temples &amp; Forest of Gijang</h2>
+        <p class="port">Busan (Pusan), South Korea</p>
+        <div class="meta"><span><span class="lbl">Duration</span><b>4.5 hours</b></span><span class="price"><span class="lbl">Per adult</span><b>$185.00</b></span></div>
+      </div>
+    </a></li>
+  </ul>
+</main>
+</body>
+</html>

@@ -1,0 +1,1430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#003a59">
+<title>Exploring the Historic Temples &amp; Forest of Gijang · Shore Excursion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* ── App / SBN DS · Color (Figma: LQXnmTIay042v8zERWbSUk, page "~ Color") ── */
+  --ds-blue:#003a59;          /* Primary/Blue */
+  --ds-blue-hover:#194e6a;    /* Hover/Blue Hover */
+  --ds-blue-pressed:#194e6a;  /* SBN DS has no separate pressed blue */
+  --ds-gold:#ab8d45;          /* Primary/Gold */
+  --ds-dark-gold:#a06c00;     /* Primary/Dark Gold = Gold Hover */
+  --ds-blue-67:#547b90;
+  --ds-blue-53:#7897a7;
+  --ds-blue-30:#b2c3cd;
+  --ds-blue-20:#ccd8de;
+  --ds-blue-10:#e6ecef;       /* also White Hover */
+  --ds-blue-5:#f2f5f7;
+  --ds-dark-beige:#f4f0e6;
+  --ds-light-beige:#fbf9f5;
+  --ds-orange:#ed6b21;
+  --ds-dark-orange:#c84800;
+  --ds-aqua:#cbe7e9;
+  --ds-black:#231f20;         /* Neutrals/Black: main body copy on light */
+  --ds-dark-gray:#666666;
+  --ds-gray:#7a7c81;
+  --ds-light-gray:#a8aaad;
+  --ds-white:#ffffff;
+  --ds-red:#bb0000;
+  --ds-focus-blue:#1979ff;
+  --ds-blue-rgb:0,58,89;
+  --ds-black-rgb:35,31,32;
+  --ds-gold-rgb:171,141,69;
+
+  /* Template neutrals (HAL names) → nearest SBN DS neutral */
+  --ds-n100-rgb:var(--ds-black-rgb);
+  --ds-n40:var(--ds-light-gray);
+  --ds-n30:var(--ds-light-gray);
+  --ds-n20:var(--ds-blue-20);
+  --ds-n15:var(--ds-blue-20);
+  --ds-n10:var(--ds-blue-10);
+  --ds-white-hover:var(--ds-blue-10);
+  --ds-white-pressed:var(--ds-blue-20);
+  --ds-dutch-orange:var(--ds-orange);
+  --ds-shadow-small:0 2px 4px rgba(var(--ds-black-rgb),.10), 0 0 1px rgba(var(--ds-black-rgb),.10);
+
+  /* Page roles → SBN DS */
+  --navy:var(--ds-blue);
+  --blue:var(--ds-blue);
+  --accent-dot:var(--ds-gold);
+  --beige:var(--ds-dark-beige);
+  --banner:var(--ds-dark-beige);
+  --n70:var(--ds-dark-gray);
+  --n90:var(--ds-black);
+  --border:var(--ds-blue-10);
+  --blue-02:var(--ds-blue-5);
+  --blue-05:var(--ds-blue-10);
+  --white:var(--ds-white);
+  /* Eyebrows: Dark Gold measures 4.53:1 on white (gold #AB8D45 is only 3.2:1) */
+  --accent-text:var(--ds-dark-gold);
+  --on-glass:rgba(255,255,255,.9);
+  --glass-divider:rgba(255,255,255,.16);
+  --row-h:64px;
+  --credit-fill:var(--ds-blue-5);
+
+  /* ── App / SBN DS · Type: headings GT Super Display, body + labels Open Sans.
+     GT Super isn't on Google Fonts; Gilda Display stands in where it isn't installed ── */
+  --serif:"GT Super Display", "Gilda Display", Georgia, "Times New Roman", serif;
+  --sans:"Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --lh-body:1.5;
+  --lh-head:1.2;
+  --ls-body:0;
+  --ls-head:0;
+
+  /* Spacing: multiples of 4, side padding 20 mobile / 40 tablet + desktop (same rule as the template) */
+  --pad:20px;
+  --col:784px;
+  --card-pad-y:20px;
+  --card-pad-x:20px;
+  --card-title:28px;  /* H2 mobile · GT Super Display Regular 28 */
+  --radius-g:4px;     /* SBN cards are near-square */
+  --fact-value:16px;  /* Body/B2 bold */
+  --photo-h:100vw;
+  --photo-top:0px;
+  --stack-top:62vw;
+  --header-h:60px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (max-width:389px){ :root{ --fact-value:14px } }
+@media (min-width:768px){
+  :root{
+    --pad:40px;
+    --card-title:28px;  /* H3 tablet/desktop · 28 — keeps the long journey title compact */
+    --card-pad-y:24px;
+    --card-pad-x:28px;
+    --photo-h:clamp(480px, 50vw, 700px);
+    --stack-top:clamp(264px, calc(36.5vw + 44px), 344px);
+  }
+}
+*,*::before,*::after{ box-sizing:border-box }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth }
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto } }
+body{
+  margin:0; background:var(--white); color:var(--n90);
+  font-family:var(--sans); font-size:16px; line-height:var(--lh-body); letter-spacing:var(--ls-body);
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+body.locked{ overflow:hidden }
+img{ display:block; max-width:100% }
+button{ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; -webkit-tap-highlight-color:transparent }
+a{ color:inherit }
+:focus-visible{ outline:2px solid var(--ds-focus-blue); outline-offset:3px; border-radius:6px }
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap }
+.wrap{ width:100%; max-width:calc(var(--col) + var(--pad) * 2); margin-inline:auto; padding-inline:var(--pad) }
+svg.i{ width:20px; height:20px; flex:none; fill:none; stroke:currentColor; stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round }
+
+/* ───────────── Hero ───────────── */
+.hero{
+  position:relative; overflow:hidden; background:var(--navy);
+  padding-bottom:32px; isolation:isolate;
+}
+.hero-bg{ position:absolute; inset:0; z-index:-1; pointer-events:none }
+.wash{
+  position:absolute; left:50%; top:-60%; width:260%; height:220%;
+  transform:translate3d(-50%, var(--wash-y,0px), 0);
+  filter:blur(36px) saturate(1.1); opacity:.9; will-change:transform;
+}
+.wash img{ width:100%; height:100%; object-fit:cover }
+.photo{
+  position:absolute; left:0; right:0; top:var(--photo-top); height:var(--photo-h);
+  transform:translate3d(0, var(--photo-y,0px), 0) scale(var(--photo-s,1));
+  transform-origin:50% 30%; will-change:transform;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 73.7%,rgba(0,0,0,.6) 86.8%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 0%,#000 73.7%,rgba(0,0,0,.6) 86.8%,transparent 100%);
+}
+/* Focal point defaults to centre; each page's photo sets its own at the end of this stylesheet */
+.photo img{ width:100%; height:100%; object-fit:cover; object-position:50% 50% }
+.photo-dim{ position:absolute; inset:0; background:var(--navy); opacity:var(--dim,0) }
+.top-shade{ position:absolute; inset:0 0 auto; height:110px; background:linear-gradient(180deg,rgba(var(--ds-n100-rgb),.35),rgba(var(--ds-n100-rgb),0)) }
+.ramp{
+  position:absolute; left:0; right:0; top:calc(var(--photo-top) + var(--photo-h) * .55); height:calc(var(--photo-h) * .45);
+  background:linear-gradient(180deg,rgba(var(--ds-blue-rgb),0) 0%,rgba(var(--ds-blue-rgb),.2) 25%,rgba(var(--ds-blue-rgb),.5) 50%,rgba(var(--ds-blue-rgb),.82) 75%,var(--navy) 100%);
+  /* Travels with the photo so the navy fade doesn't swallow it on scroll */
+  transform:translate3d(0, var(--photo-y,0px), 0); will-change:transform;
+}
+.ramp::after{ content:""; position:absolute; left:0; right:0; top:100%; height:200vh; background:var(--navy) }
+
+.topbar{ position:absolute; top:0; left:0; right:0; z-index:3; padding-top:max(12px, env(safe-area-inset-top)) }
+.topbar .wrap{ padding-inline:calc(var(--pad) - 4px) }
+@media (min-width:768px){ .topbar .wrap{ padding-inline:var(--pad) } }
+.round-btn{
+  width:44px; height:44px; border-radius:22px; display:grid; place-items:center; color:#fff;
+  background:rgba(var(--ds-blue-rgb),.32); border:1px solid rgba(255,255,255,.35);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  transition:background .2s;
+}
+.round-btn:hover{ background:rgba(var(--ds-blue-rgb),.45) }
+.round-btn svg{ width:22px; height:22px; stroke-width:1.8 }
+
+.hero-stack{ position:relative; padding-top:calc(56px + var(--stack-top)); display:flex; flex-direction:column; gap:12px }
+
+/* Glass hero card */
+/* Card and fact tiles move together; only the photo layers parallax behind them */
+.card-wrap{ position:relative }
+.status-pill{
+  position:absolute; left:0; bottom:calc(100% + 12px);
+  display:none; align-items:center; gap:8px; padding:4px 16px 4px 12px; border-radius:999px;
+  font-size:14px; line-height:var(--lh-body); color:#fff; font-weight:600;   /* Body/B3-semibold */
+  /* .72 keeps white 14px text at 4.5:1+ even over a pure-white photo (.55 measured 3.6:1) */
+  background:rgba(var(--ds-blue-rgb),.72); border:.75px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(14px) saturate(140%); backdrop-filter:blur(14px) saturate(140%);
+}
+.status-pill.show{ display:inline-flex }
+.status-pill b{ font-weight:700 }
+.status-pill .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent-dot) }
+.status-pill.muted .dot{ background:rgba(255,255,255,.6) }
+
+.glass{
+  position:relative; border-radius:var(--radius-g); overflow:hidden;
+  border:.75px solid rgba(255,255,255,.3);
+  /* SBN Blue is lighter than the old navy, so every stop is +.04: lightest stop .70 keeps
+     90% white text at 4.5:1 over pure white, sheen included */
+  background:linear-gradient(143.6deg,rgba(var(--ds-blue-rgb),.74) 0%,rgba(var(--ds-blue-rgb),.70) 50%,rgba(var(--ds-blue-rgb),.72) 100%);
+  -webkit-backdrop-filter:blur(var(--glass-blur,14px)) saturate(140%);
+          backdrop-filter:blur(var(--glass-blur,14px)) saturate(140%);
+  box-shadow:0 8px 24px rgba(var(--ds-n100-rgb),.2), inset 0 1px 0 rgba(255,255,255,.12);
+}
+/* moving specular sheen — follows scroll so the glass reads as a physical pane */
+.glass::before{
+  content:""; position:absolute; inset:-40%; pointer-events:none;
+  background:radial-gradient(60% 40% at var(--sheen-x,30%) var(--sheen-y,0%), rgba(255,255,255,.05), transparent 70%);
+  mix-blend-mode:screen; transition:opacity .3s;
+}
+.glass::after{
+  content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  /* Top highlight stays behind the title (large text) and clears the small meta line */
+  background:linear-gradient(180deg,rgba(255,255,255,.07),transparent 18%);
+}
+.hero-card{ padding:var(--card-pad-y) var(--card-pad-x); display:flex; flex-direction:column; gap:16px; color:#fff }
+.hero-card > *{ position:relative; z-index:1 }
+.on-photo{ text-shadow:0 1px 12px rgba(var(--ds-blue-rgb),.6) }
+/* Heading/H1-regular-M (28) → Heading/H1-regular (40) from 768 */
+.hero-title{ margin:0; font:400 var(--card-title)/var(--lh-head) var(--serif); letter-spacing:var(--ls-head) }
+.hero-meta{ margin:8px 0 0; font-size:14px; color:var(--on-glass) }   /* Body/B3-regular */
+
+/* Location on one line, day and date on the next */
+.hero-meta span{ display:block }
+.hero-meta .meta-port{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+
+/* Key row: start time and price share one band at one size, a step below the title
+   (phone: title 28 / values 24 · from 768: title 32 / values 28) */
+.key-row{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); row-gap:12px; border-top:1px solid var(--glass-divider); padding-top:16px }
+.key{ min-width:0; padding-right:16px }
+.key + .key{ padding:0 0 0 20px; border-left:1px solid var(--glass-divider) }
+.key-label{ display:flex; align-items:center; gap:6px; margin:0 0 4px; font-size:12px; line-height:var(--lh-body); color:var(--on-glass) }   /* Body/B4-regular */
+.key-label svg{ width:14px; height:14px; color:var(--beige) }
+.key-value{ display:flex; align-items:center; gap:4px; font:400 24px/var(--lh-head) var(--serif); letter-spacing:var(--ls-head); white-space:nowrap; color:#fff }   /* Heading/H2-regular-M */
+button.key-value{ text-decoration:underline; text-underline-offset:5px; text-decoration-thickness:1px }
+button.key-value svg{ width:18px; height:18px; color:var(--on-glass); stroke-width:1.65 }
+/* Price cell: "View all pricing" sits to the right of the price and wraps under it when the cell is narrow */
+.key-price{ display:flex; flex-wrap:wrap; align-items:baseline; column-gap:12px; row-gap:2px }
+/* Local/Link/B3-bold · Underline */
+.card-link{ font-weight:700; font-size:14px; line-height:var(--lh-body); text-decoration:underline; text-underline-offset:3px; color:#fff; white-space:nowrap }
+@media (max-width:359px){ .key-value{ font-size:20px } .key + .key{ padding-left:16px } }   /* Heading/H3-regular-M */
+@media (min-width:768px){
+  .fact{ padding:12px 16px; gap:8px }
+  /* Title block left, start time and price stacked on the right: one band instead of two,
+     so the card is shorter and more of the photo shows */
+  .hero-card{ display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:0 }
+  .hero-card > .on-photo:first-child{ padding-right:28px }
+  .key-row{ display:flex; flex-direction:column; justify-content:center; gap:12px; align-self:stretch;
+            border-top:0; padding:0 0 0 28px; border-left:1px solid var(--glass-divider); min-width:200px }
+  .key{ padding:0 }
+  .key + .key{ padding:12px 0 0; border-left:0; border-top:1px solid var(--glass-divider) }
+  .key-value{ font-size:28px }   /* Heading/H1-regular-M */
+}
+
+/* Key facts */
+.facts{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+/* Works for any tile count: on phones a lone last tile spans the row; from 768 every tile shares one row equally */
+.facts > .fact:last-child:nth-child(odd){ grid-column:1 / -1 }
+@media (min-width:768px){
+  .facts{ grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr) }
+  .facts > .fact:last-child:nth-child(odd){ grid-column:auto }
+}
+@media (min-width:1024px){
+  /* Less photo above the card so the key facts sit above the fold */
+  :root{ --photo-h:max(440px, 40vw); --stack-top:clamp(204px, calc(14vw + 44px), 344px) }
+}
+@media (min-width:768px) and (max-width:1023px){
+  :root{ --fact-value:16px }   /* Body/B2-bold */
+  .fact{ padding:12px }
+  .fact-value{ gap:4px }
+}
+/* Fact tiles use the same glass as the hero card */
+.fact{
+  position:relative; text-align:left; color:#fff; padding:16px;
+  display:flex; flex-direction:column; gap:12px; min-width:0;
+  transition:border-color .2s, transform .2s var(--ease), box-shadow .2s;
+}
+.fact.glass{
+  border-radius:18px;
+  /* A touch denser than the hero card; SBN Blue stops +.04 so the lightest (.71) still passes 4.5:1 over pure white */
+  background:linear-gradient(143.6deg,rgba(var(--ds-blue-rgb),.73) 0%,rgba(var(--ds-blue-rgb),.71) 50%,rgba(var(--ds-blue-rgb),.72) 100%);
+  border-color:rgba(255,255,255,.16);
+  -webkit-backdrop-filter:blur(calc(var(--glass-blur,14px) * .5)) saturate(120%);
+          backdrop-filter:blur(calc(var(--glass-blur,14px) * .5)) saturate(120%);
+  box-shadow:0 6px 18px rgba(var(--ds-n100-rgb),.18), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.fact.glass::before{ opacity:.4 }
+.fact.glass::after{ opacity:.2 }
+.fact > *{ position:relative; z-index:1 }
+button.fact:hover{ border-color:rgba(255,255,255,.32); box-shadow:0 10px 26px rgba(var(--ds-n100-rgb),.26), inset 0 1px 0 rgba(255,255,255,.1) }
+button.fact:active{ transform:scale(.98) }
+.fact-label{ display:flex; align-items:center; gap:8px; font-size:14px; color:var(--on-glass); min-width:0 }   /* Body/B3-regular */
+.fact-label svg{ color:var(--beige) }
+.fact-label span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.fact-value{ display:flex; align-items:flex-end; flex:1; justify-content:space-between; gap:8px; min-width:0 }
+.fact-value b{
+  font-size:var(--fact-value); line-height:1.3; font-weight:700;
+  overflow-wrap:break-word; min-width:0;
+}
+button.fact .fact-value b{ text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:1px }
+.fact-value svg{ width:18px; height:18px; color:var(--on-glass); stroke-width:1.65 }
+
+/* ───────────── Compact header ───────────── */
+.compact{
+  position:fixed; inset:0 0 auto; z-index:40; background:var(--navy); color:#fff;
+  padding-top:env(safe-area-inset-top);
+  transform:translateY(-102%); transition:transform .32s var(--ease), box-shadow .3s;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.compact.show{ transform:none; box-shadow:0 6px 20px rgba(var(--ds-blue-rgb),.18) }
+.compact .wrap{ display:flex; align-items:center; gap:8px; min-height:var(--header-h); padding-inline:calc(var(--pad) - 12px) }
+.compact-back{ width:44px; height:44px; display:grid; place-items:center; color:#fff; flex:none; border-radius:22px }
+.compact-back svg{ width:22px; height:22px; stroke-width:1.8 }
+.compact-text{ flex:1; min-width:0; text-align:left; padding:8px 0 }
+/* Local/Eyebrow (HAL Body Bold 12, 12% tracking, uppercase) — not in SBN DS */
+.compact-eyebrow{ display:block; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--on-glass); line-height:var(--lh-body) }
+.compact-eyebrow b{ color:var(--beige) }
+.compact-title{ display:block; font:600 16px/var(--lh-body) var(--sans); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B2-semibold */
+.compact.expanded .compact-title{ white-space:normal }
+
+/* ───────────── Content ───────────── */
+main{ padding-bottom:16px }
+section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var(--header-h) + 16px) }
+/* Local/Eyebrow */
+.eyebrow{ margin:0; font-size:12px; line-height:var(--lh-body); font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-text) }
+.section-title{ margin:8px 0 0; font:400 24px/var(--lh-head) var(--serif); letter-spacing:var(--ls-head); color:var(--blue) }   /* Heading/H2-regular-M */
+.section-body{ margin-top:20px }
+
+.highlights{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:16px }
+.highlight{ display:flex; gap:16px; align-items:flex-start }
+/* A reason with no supporting line centres on its number */
+.highlight:not(:has(p)){ align-items:center }
+.num{
+  flex:none; width:40px; height:40px; border-radius:20px; background:var(--blue-05);
+  display:grid; place-items:center; color:var(--blue);
+  font:400 20px/1 var(--serif); font-variant-numeric:lining-nums;   /* Heading/H3-regular-M */
+}
+.highlight h3{ margin:0; font:400 20px/var(--lh-head) var(--serif); letter-spacing:var(--ls-head); color:var(--blue) }   /* Heading/H3-regular-M */
+.highlight p{ margin:4px 0 0; font-size:14px; color:var(--n70) }   /* Body/B3-regular */
+
+/* SBN DS Button · Type=secondary, Size=large, Icon=icon right (label Body/B1-semibold, as in Figma) */
+.btn-outline{
+  margin-top:24px; display:inline-flex; align-items:center; gap:16px; height:60px; padding:0 32px 0 40px;
+  border:.5px solid var(--blue); border-radius:999px; color:var(--blue); background:var(--ds-white);
+  box-shadow:var(--ds-shadow-small);
+  font-weight:600; font-size:18px; line-height:1; letter-spacing:var(--ls-body);
+  transition:background .2s;
+}
+.btn-outline:hover{ background:var(--ds-white-hover) }
+.btn-outline:active{ background:var(--ds-white-pressed) }
+.btn-outline:focus-visible, .btn-primary:focus-visible{ outline:2px solid var(--ds-focus-blue); outline-offset:3px; border-radius:999px }
+.btn-outline svg{ width:20px; height:20px; stroke-width:1.8; transition:transform .3s var(--ease) }
+/* The full-size label + DS padding needs 335px; narrow phones keep one line by easing the padding */
+.btn-outline{ white-space:nowrap; max-width:100% }
+@media (max-width:389px){ .btn-outline{ padding:0 24px; gap:12px } }
+@media (max-width:359px){ .btn-outline{ font-size:16px; padding:0 20px 0 24px } }   /* Body/B2-semibold */
+.btn-outline[aria-expanded="true"] svg{ transform:rotate(180deg) }
+
+.collapse{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .38s var(--ease) }
+.collapse > div{ overflow:hidden; min-height:0 }
+.collapse.open{ grid-template-rows:1fr }
+@media (prefers-reduced-motion:reduce){ .collapse{ transition:none } }
+.description{ max-width:640px; padding-top:20px }
+.description p{ margin:0 0 12px }
+.description b{ font-weight:600; color:var(--n90) }
+
+.price-heading{ display:flex; align-items:baseline; gap:12px; margin-top:8px }
+.price-heading .amt{ font:400 32px/var(--lh-head) var(--serif); color:var(--blue); letter-spacing:var(--ls-head) }   /* Heading/H2-regular */
+.price-heading .unit{ color:var(--n70) }
+.rates{ margin-top:20px }
+.rate{ display:flex; justify-content:space-between; align-items:baseline; padding:12px 0; border-top:1px solid var(--border) }
+.rate:last-child{ border-bottom:1px solid var(--border) }
+.rate b{ font-weight:700 }
+
+.credit-head{ width:100%; display:flex; align-items:center; gap:12px; min-height:56px; padding:16px; text-align:left; color:var(--blue) }
+.credit-head .star{ width:22px; height:22px; stroke-width:1.5 }
+.credit-head .txt{ flex:1; min-width:0 }
+.credit-head strong{ display:block; font-size:16px; line-height:var(--lh-body) }   /* Body/B2-bold */
+.credit-head small{ display:block; font-size:14px; color:var(--n70) }   /* Body/B3-regular */
+.chev{ width:20px; height:20px; stroke-width:1.8; color:var(--blue); transition:transform .3s var(--ease) }
+[aria-expanded="true"] > .chev{ transform:rotate(180deg) }
+
+.accordion{ margin-top:20px; border-bottom:1px solid var(--border) }
+.acc{ position:relative; border-top:1px solid var(--border) }
+.acc-head{ width:100%; display:flex; align-items:center; gap:12px; min-height:64px; padding:16px 0; text-align:left }
+.acc-head .titles{ flex:1; min-width:0 }
+.acc-head strong{ display:block; font-size:16px; color:var(--blue); line-height:var(--lh-body) }   /* Body/B2-bold */
+.acc-head small{ display:block; font-size:14px; color:var(--n70); overflow:hidden; text-overflow:ellipsis; white-space:nowrap }   /* Body/B3-regular */
+.acc-body{ max-width:640px; padding-bottom:20px; font-size:14px }
+.acc-body p{ margin:0 0 12px }
+/* Local/Link/B3-bold · Underline */
+.text-link{ display:inline-flex; align-items:center; min-height:44px; font-weight:700; font-size:14px; color:var(--blue); text-decoration:underline; text-underline-offset:3px }
+
+/* ───────────── Floating action bar ───────────── */
+.bar-zone{
+  position:fixed; z-index:30; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom));
+}
+@media (min-width:768px){
+  .bar-zone{ left:50%; right:auto; width:min(var(--col), calc(100% - var(--pad) * 2)); transform:translateX(-50%); bottom:calc(16px + env(safe-area-inset-bottom)) }
+}
+.credit-banner{
+  position:absolute; left:0; right:0; bottom:calc(100% - 28px); padding:16px 48px 40px 20px;
+  background:var(--banner); border-radius:24px 24px 0 0; color:var(--n90);
+  box-shadow:0 -2px 18px rgba(var(--ds-blue-rgb),.12);
+  transition:transform .35s var(--ease), opacity .3s;
+}
+.credit-banner.hidden{ transform:translateY(24px); opacity:0; pointer-events:none }
+.credit-banner strong{ display:block; font-size:14px; line-height:var(--lh-body) }   /* Body/B3-bold */
+.credit-banner span{ font-size:12px; color:var(--n70) }   /* Body/B4-regular */
+.credit-banner button{ position:absolute; top:8px; right:8px; width:36px; height:36px; display:grid; place-items:center; color:var(--n70); border-radius:18px }
+.credit-banner button svg{ width:18px; height:18px }
+
+.bar{
+  position:relative; display:flex; align-items:center; gap:16px; padding:12px 12px 12px 20px; border-radius:28px;
+  background:rgba(255,255,255,.72); border:1px solid rgba(255,255,255,.8);
+  -webkit-backdrop-filter:blur(22px) saturate(180%); backdrop-filter:blur(22px) saturate(180%);
+  box-shadow:0 12px 32px rgba(var(--ds-blue-rgb),.16), inset 0 1px 0 rgba(255,255,255,.85);
+}
+.bar-price{ flex:1; min-width:0; text-align:left; display:flex; flex-direction:column; gap:0; border-radius:14px; padding:2px 4px 2px 0 }
+/* Wraps under the full-size SBN DS button on narrow phones, as the Figma action bar does */
+.bar-line1{ display:flex; flex-wrap:wrap; align-items:baseline; column-gap:8px; white-space:nowrap; color:var(--blue) }
+.bar-line1 b{ font-size:20px; line-height:var(--lh-head); font-weight:600 }   /* Heading/H4-semibold-M */
+.bar-line1 .u{ font-size:14px; color:var(--n70) }   /* Body/B3-regular */
+.bar-line1 svg{ width:14px; height:14px; stroke-width:2.4; color:var(--n70); align-self:center; transition:transform .3s var(--ease) }
+.bar-price[aria-expanded="true"] .bar-line1 svg{ transform:rotate(180deg) }
+.bar-line2{ font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B4-regular */
+/* SBN DS Button · Type=primary, Size=large (label Body/B1-semibold, as in Figma).
+   Hover SBN Blue Hover, pressed SBN Blue Pressed, disabled Neutral 10 / Neutral 30 */
+.btn-primary{
+  flex:none; height:60px; padding:0 40px; border-radius:999px;
+  background:var(--blue); color:#fff; font-weight:600; font-size:18px; line-height:1; letter-spacing:var(--ls-body);
+  white-space:nowrap; transition:background .2s, transform .15s;
+}
+.btn-primary:hover{ background:var(--ds-blue-hover) }
+.btn-primary:active{ transform:scale(.97); background:var(--ds-blue-pressed) }
+.btn-primary:disabled{ background:var(--ds-n10); color:var(--ds-n30); cursor:not-allowed; transform:none }
+/* Narrow phones: tighten the price side; the SBN DS button keeps its size */
+@media (max-width:389px){
+  .bar{ gap:8px; padding-left:16px }
+  .bar-line1{ column-gap:4px }
+  .bar-line1 b{ font-size:18px }
+}
+
+/* ───────────── Drawers / modals ───────────── */
+.layer{ position:fixed; inset:0; z-index:60; display:flex; align-items:flex-end; justify-content:center; visibility:hidden }
+.layer.open{ visibility:visible }
+.scrim{ position:absolute; inset:0; background:rgba(var(--ds-blue-rgb),.5); opacity:0; transition:opacity .3s }
+.layer.open .scrim{ opacity:1 }
+.sheet{
+  position:relative; width:100%; max-height:min(88vh, 88dvh); display:flex; flex-direction:column;
+  background:#fff; border-radius:24px 24px 0 0; box-shadow:0 -8px 40px rgba(var(--ds-n100-rgb),.2);
+  transform:translateY(100%); transition:transform .38s var(--ease);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.layer.open .sheet{ transform:translateY(var(--drag,0px)) }
+.sheet.dragging{ transition:none }
+.grabber{ position:absolute; top:8px; left:50%; width:36px; height:4px; margin-left:-18px; border-radius:2px; background:var(--ds-n15) }
+.sheet-head{ position:relative; display:flex; align-items:center; justify-content:center; min-height:60px; padding:12px 56px 4px; touch-action:none; flex:none }
+.sheet-head .close{ position:absolute; left:12px; top:12px; width:44px; height:44px; display:grid; place-items:center; color:var(--blue); border-radius:22px }
+.sheet-head .close:hover{ background:var(--blue-02) }
+.sheet-head .close svg{ width:22px; height:22px; stroke-width:1.8 }
+.sheet-label{ font-weight:700; font-size:16px; color:var(--blue) }   /* Body/B2-bold */
+.sheet-body{ position:relative; overflow:auto; padding:8px var(--pad) 28px; overscroll-behavior:contain }
+.sheet h2{ margin:0 0 16px; font:400 24px/var(--lh-head) var(--serif); color:var(--blue); letter-spacing:var(--ls-head) }   /* Heading/H2-regular-M */
+@media (min-width:768px){
+  .layer{ align-items:center; padding:24px }
+  .sheet{
+    width:560px; max-height:min(84vh, 760px); border-radius:24px;
+    transform:translateY(16px) scale(.97); opacity:0; transition:transform .3s var(--ease), opacity .25s;
+  }
+  .layer.open .sheet{ transform:none; opacity:1 }
+  .grabber{ display:none }
+  .sheet-body{ padding:8px 28px 28px }
+}
+@media (prefers-reduced-motion:reduce){ .sheet,.scrim{ transition:none } }
+
+.d-lead{ margin:-8px 0 16px; color:var(--n70) }
+.d-rows{ border-top:1px solid var(--border) }
+.d-row{ padding:12px 0; border-bottom:1px solid var(--border) }
+.d-row .top{ display:flex; justify-content:space-between; gap:12px; align-items:baseline }
+.d-row .top b{ font-size:16px; color:var(--n90) }   /* Body/B2-bold */
+.d-row .top span{ font-size:14px; color:var(--n70); text-align:right }   /* Body/B3-regular */
+.d-row p{ margin:2px 0 0; font-size:14px; color:var(--n70) }
+.d-note{ margin:16px 0 0; font-size:14px; color:var(--n70) }   /* Body/B3-regular */
+.d-note a{ font-weight:700; color:var(--blue); text-underline-offset:3px }
+.bullets{ margin:0 0 20px; padding-left:24px; font-size:16px }   /* Body/B2-regular */
+.bullets li{ margin-bottom:4px }
+.bullets li::marker{ color:var(--n70) }
+.levels{ display:flex; flex-direction:column; gap:12px }
+.level{ border:1px solid var(--border); border-radius:12px; padding:12px 16px }
+.level b{ color:var(--blue) }
+.level small{ font-size:12px; color:var(--n70); font-weight:500 }   /* Body/B4-medium */
+.level p{ margin:2px 0 0; font-size:14px; color:var(--n70) }
+.level.current{ border:2px solid var(--blue); background:var(--blue-02); padding:11px 15px }
+.d-sub{ margin:24px 0 8px; font-size:12px; line-height:var(--lh-body); font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-text) }   /* Local/Eyebrow */
+.sheet-cta{ margin-top:24px; width:100% }
+
+/* ───────────── Toast & state switcher ───────────── */
+.toast{
+  position:fixed; left:50%; bottom:110px; z-index:80; transform:translate(-50%,16px); opacity:0;
+  background:var(--n90); color:#fff; font-size:14px; padding:12px 16px; border-radius:12px; max-width:calc(100% - 32px);
+  transition:opacity .25s, transform .25s var(--ease); pointer-events:none;
+}
+.toast.show{ opacity:1; transform:translate(-50%,0) }
+
+/* Prototype states — sits at the very bottom of the page */
+.proto-foot{ padding-top:24px; padding-bottom:calc(132px + env(safe-area-inset-bottom)) }
+.proto{ border:1px dashed var(--ds-n20); border-radius:16px; background:var(--blue-02); font-size:13px }
+.proto summary{
+  list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px; padding:14px 16px;
+  font-weight:600; color:var(--blue); font-size:14px; border-radius:16px;
+}
+.proto summary::-webkit-details-marker{ display:none }
+.proto summary small{ font-weight:400; color:var(--n70); margin-left:auto }
+.proto summary svg{ width:18px; height:18px; stroke-width:1.8; transition:transform .3s var(--ease) }
+.proto[open] summary svg{ transform:rotate(180deg) }
+.proto-panel{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:4px 20px; padding:2px 16px 16px }
+.proto-panel fieldset{ border:0; margin:0 0 8px; padding:0 }
+.proto-panel legend{ font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-text); margin-bottom:6px }
+.proto-panel label{ display:flex; gap:8px; align-items:center; padding:3px 0; cursor:pointer }
+.proto-panel input{ accent-color:var(--blue); margin:0 }
+.proto-panel p{ margin:2px 0 0; font-size:12px; color:var(--n70) }
+.proto-reset{
+  grid-column:1/-1; justify-self:start; height:40px; padding:0 18px; border-radius:999px;
+  border:1.5px solid var(--blue); color:var(--blue); font-weight:700; font-size:14px; background:#fff;
+}
+.proto-reset:hover{ background:var(--blue-05) }
+
+/* ───────────── Live HAL examples: additions ───────────── */
+/* Experience-type badge (HISTORY Channel / Accessible Travel Solutions). It labels the excursion, not a system
+   state, so it sits inside the card as a squared label; the round status pill above the card is reserved for availability */
+.xp-badges{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px }
+.xp-badge{
+  display:inline-flex; align-items:center; gap:8px; padding:4px 12px 4px 10px;
+  border-radius:8px; border:1px solid rgba(248,237,220,.55); background:rgba(var(--ds-blue-rgb),.6);
+  font-size:14px; font-weight:600; line-height:var(--lh-body); color:var(--beige); text-shadow:none;   /* Body/B3-semibold */
+}
+.xp-badge svg{ width:16px; height:16px; stroke-width:1.6 }
+.xp-badges[hidden], .xp-badge[hidden]{ display:none }
+.xp-mark{ width:auto; height:18px; flex:none }
+/* HISTORY Channel: gold from the H mark (mid-tone of its gradient), not the cream used by the other badges */
+.xp-badge.xp-history{ color:#f0b63c; border-color:rgba(240,182,60,.7) }
+
+/* Non-interactive fact tile (Meals, and Wheelchair when there's no accessibility detail) */
+div.fact .fact-value{ justify-content:flex-start }
+
+/* Wheelchair-version notice: before Top 3, only on the accessible variant */
+.notice{
+  margin-top:32px; display:flex; gap:12px; padding:16px; border-radius:14px;
+  background:var(--blue-02); border:1px solid var(--blue-05); font-size:14px; color:var(--n90);
+}
+.notice svg{ width:22px; height:22px; color:var(--blue); stroke-width:1.5; margin-top:1px }
+.notice p{ margin:0 }
+.notice b{ color:var(--blue) }
+
+/* Excursion credits card — matches Figma "Dining credit" (HAL Mobile App Redesign 2026, 14953:27539):
+   light blue fill, Neutral 20 border, radius 8, filled Dutch Orange star, Body/B3 SBN Blue with the amount in semibold.
+   Opens to "Using your excursion credit" — that copy is FPO until product confirms it. */
+.credit-card{ margin-top:20px; background:var(--credit-fill); border:1px solid var(--ds-n20); border-radius:8px; color:var(--blue) }
+.credit-card .credit-head{ width:100%; min-height:var(--row-h); display:flex; align-items:center; gap:8px; padding:8px 12px; text-align:left; color:var(--blue); border-radius:8px }
+.credit-card .star{ width:24px; height:24px; fill:var(--ds-dutch-orange); stroke:none; flex:none }
+.credit-card .credit-text{ flex:1; min-width:0; font-size:14px; line-height:var(--lh-body) }   /* Body/B3-regular */
+.credit-card b{ font-weight:600 }   /* Body/B3-semibold */
+.credit-card .chev{ width:24px; height:24px }
+.credit-rules{ margin:0 0 12px; padding:8px 12px 0; border-top:1px solid var(--ds-n20); font-size:12px; line-height:var(--lh-body) }
+.credit-rules .credit-rules-title{ margin:0; font-weight:600; color:var(--blue) }   /* Body/B4-semibold */
+.credit-rules ul{ margin:4px 0 0; padding-left:18px; color:var(--n90) }   /* Body/B4-regular */
+.sheet .credit-card{ margin-top:0 }
+
+/* Know before you go: a row with a value and nothing to expand */
+.acc-head.static{ cursor:default }
+.acc-value{ font-size:16px; color:var(--n90) }   /* Body/B2-regular */
+.acc-body a{ color:var(--blue); font-weight:600; overflow-wrap:anywhere; text-underline-offset:3px }
+
+/* Shore Excursions FAQs: set apart from the accordion and points right, because it opens a drawer instead of expanding */
+.faq-row{
+  width:100%; margin-top:24px; display:flex; align-items:center; gap:12px; min-height:var(--row-h); padding:16px;
+  border:1px solid var(--border); border-radius:14px; background:var(--white); text-align:left; color:var(--blue);
+  transition:background .2s, border-color .2s;
+}
+.faq-row:hover{ background:var(--blue-02); border-color:var(--ds-n15) }
+.faq-row .txt{ flex:1; min-width:0; font-weight:700; font-size:16px; line-height:var(--lh-body) }   /* Body/B2-bold */
+.faq-row svg{ width:22px; height:22px; stroke-width:1.5 }
+.faq-row svg.go{ width:20px; height:20px; stroke-width:1.8 }
+
+/* FAQ drawer: full height on phones so opening an answer never resizes the sheet */
+@media (max-width:767px){
+  .sheet.full{ height:calc(100dvh - max(24px, env(safe-area-inset-top))); max-height:none }
+}
+@media (min-width:768px){ .sheet.full{ height:min(84vh, 760px) } }
+.sheet .accordion{ margin-top:0 }
+.sheet .acc-head strong{ font-size:16px }
+.sheet .bullets{ font-size:14px; margin:0 0 12px; padding-left:20px }
+.sheet .acc-body a{ color:var(--blue); font-weight:600 }
+
+/* Drawer rows that lead with an icon (Duration: clock · anchor · ship) */
+.d-row .top b.ico{ display:flex; align-items:center; gap:10px }
+.d-row .top b.ico svg{ width:18px; height:18px; color:var(--blue); stroke-width:1.5 }
+
+/* ───────────── Multiple start times on the day ───────────── */
+.time-chips{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; margin-top:20px }
+.chip{
+  text-align:left; border:1px solid var(--border); border-radius:14px; padding:12px 16px; min-width:0;
+  background:#fff; transition:border-color .2s, background .2s;
+}
+.chip:hover{ border-color:var(--ds-n30) }
+.chip .t{ display:block; font-weight:700; font-size:16px; color:var(--blue); line-height:var(--lh-body); white-space:nowrap }   /* Body/B2-bold */
+.chip .s{ display:block; font-size:12px; color:var(--n70); line-height:var(--lh-body); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B4-regular */
+.chip .s.warn{ color:var(--accent-text); font-weight:600 }
+.chip.soldout .t{ color:var(--n70) }
+.chip[aria-checked="true"]{ border:2px solid var(--blue); background:var(--blue-02); padding:11px 15px }
+@media (max-width:359px){ .chip{ padding:12px } .chip[aria-checked="true"]{ padding:11px } .chip .t{ font-size:14px } }
+.bar-line2 .pick{ color:var(--blue); font-weight:700; text-decoration:underline; text-underline-offset:3px }
+.time-opt{ width:100%; text-align:left; display:flex; align-items:center; gap:12px }
+.time-opt .txt{ flex:1; min-width:0 }
+.time-opt .radio{ width:20px; height:20px; border-radius:50%; border:1.5px solid var(--ds-n40); flex:none; display:grid; place-items:center }
+.time-opt.current .radio{ border-color:var(--blue) }
+.time-opt.current .radio::after{ content:""; width:10px; height:10px; border-radius:50%; background:var(--blue) }
+.time-opt small.warn{ color:var(--accent-text) }
+
+/* "Read the full description": rounded secondary button at the shared 64px height (FAQ row, credits toggle),
+   Body/B2-semibold, Neutral 20 outline, no shadow */
+#readMore{
+  height:var(--row-h); padding:0 28px 0 32px; gap:12px; margin-top:24px;
+  font-size:16px; border:1px solid var(--ds-n20); box-shadow:none;
+}
+#readMore svg{ width:20px; height:20px }
+@media (max-width:389px){ #readMore{ padding:0 24px 0 28px } }
+@media (max-width:359px){ #readMore{ font-size:16px; padding:0 20px 0 24px } }
+
+/* Prototype states: the element a state changed flashes once after the page scrolls to it */
+.proto-flash{ animation:protoFlash 1.6s var(--ease) }
+@keyframes protoFlash{
+  0%, 100%{ box-shadow:0 0 0 0 rgba(25,121,255,0) }
+  20%, 60%{ box-shadow:0 0 0 4px rgba(25,121,255,.55) }
+}
+@media (prefers-reduced-motion:reduce){ .proto-flash{ animation:none; outline:2px solid var(--ds-focus-blue); outline-offset:4px } }
+
+/* Excursion credits: with more than one credit, a second line says each guest uses one */
+.credit-card .credit-sub{ display:block; font-size:12px; line-height:var(--lh-body); color:var(--n70) }   /* Body/B4-regular */
+.credit-card .credit-sub[hidden], .credit-banner .banner-sub[hidden]{ display:none }
+.credit-banner .banner-sub{ display:block }
+
+/* Phone: static tile values (Wheelchair, Meals) always break between words — "Meal / provided",
+   "Not / accessible" — so the two tiles in the row read the same whatever the width */
+@media (max-width:767px){ div.fact .fact-value b{ width:min-content } }
+
+/* ───────────── SBN DS overrides & additions ───────────── */
+/* SBN Blue (#003A59) is lighter than HAL Blue, so the glass is denser: the lightest stop (.76)
+   still keeps 90% white small text at 4.5:1 over a pure-white photo */
+.glass{
+  background:linear-gradient(143.6deg,rgba(var(--ds-blue-rgb),.80) 0%,rgba(var(--ds-blue-rgb),.76) 50%,rgba(var(--ds-blue-rgb),.78) 100%);
+}
+.fact.glass{
+  border-radius:var(--radius-g);
+  background:linear-gradient(143.6deg,rgba(var(--ds-blue-rgb),.80) 0%,rgba(var(--ds-blue-rgb),.77) 50%,rgba(var(--ds-blue-rgb),.78) 100%);
+}
+.key-label svg, .fact-label svg{ color:var(--ds-gold) }
+.status-pill{ border-radius:2px; background:rgba(var(--ds-blue-rgb),.86); padding:4px 12px }
+/* Status dot keeps the HAL template's circle */
+.status-pill .dot{ background:var(--ds-gold) }
+
+/* Type: SBN headings (GT Super Display) are regular weight, no negative tracking */
+.hero-title{ font-weight:400 }
+.hero-sub{ margin:6px 0 0; font-size:14px; line-height:var(--lh-body); color:var(--on-glass) }   /* Body/B3 regular */
+.key-value{ font-size:22px }   /* H3 mobile */
+@media (min-width:768px){ .key-value{ font-size:28px } }   /* H3 tablet/desktop */
+.section-title{ font-size:28px }   /* H2 mobile = H3 desktop */
+.highlight h3{ font-size:18px; line-height:1.3 }   /* H4 mobile */
+.num{ background:var(--ds-blue-10); color:var(--blue); font-size:18px }
+.price-heading .amt{ font-size:32px }   /* H1 mobile */
+.sheet h2{ font-size:22px }   /* H3 mobile */
+.eyebrow, .d-sub{ letter-spacing:.1em }
+.description{ max-width:640px; padding-top:0 }
+.description p{ color:var(--n90) }
+
+/* Rating under the port line */
+.hero-rating{ display:flex; align-items:center; gap:8px; margin:8px 0 0; font-size:12px; color:var(--on-glass) }   /* Body/B4 */
+.stars{ display:inline-flex; gap:2px; color:var(--ds-gold) }
+.stars svg{ width:14px; height:14px; stroke:none; fill:currentColor }
+.stars .half{ fill:url(#half-gold) }
+.stars .empty{ fill:rgba(255,255,255,.3) }
+
+/* SBN DS Button · Primary (Gold). Small ≤767 (12px × 36px padding, min 135, Label L2 16 semibold),
+   Large ≥768 (20px × 40px padding, min 190). Square corners. Hover/pressed Dark Gold. */
+.btn-primary{
+  height:48px; min-width:135px; padding:0 36px; border-radius:0;
+  background:var(--ds-gold); color:#fff; font-weight:600; font-size:16px; letter-spacing:0;
+}
+.btn-primary:hover, .btn-primary:active{ background:var(--ds-dark-gold) }
+.btn-primary:active{ transform:none }
+.btn-primary:disabled{ background:var(--ds-blue-10); color:var(--ds-light-gray) }
+.btn-primary:focus-visible{ border-radius:0 }
+@media (min-width:768px){ .btn-primary{ height:60px; min-width:190px; padding:0 40px; font-size:18px } }
+
+/* Floating bar, sheets, rows: SBN's near-square corners */
+.bar{ border-radius:4px; padding:12px 12px 12px 20px }
+.bar-price{ border-radius:4px }
+.bar-line1 b{ font:400 22px/var(--lh-head) var(--serif) }   /* H3 mobile */
+.bar-line1{ flex-wrap:nowrap }
+@media (max-width:389px){ .bar-line1 b{ font-size:18px } .bar-line1 .u{ font-size:12px } .btn-primary{ padding:0 24px; min-width:0 } }
+.sheet{ border-radius:8px 8px 0 0 }
+@media (min-width:768px){ .sheet{ border-radius:4px } }
+.notice, .faq-row, .level, .chip, .proto{ border-radius:4px }
+.proto summary{ border-radius:4px }
+.proto-reset{ border-radius:0; border-width:1px }
+.toast{ border-radius:4px }
+.round-btn{ background:rgba(var(--ds-blue-rgb),.4) }
+.scrim{ background:rgba(102,102,102,.2); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px) }   /* Page Overlay #666666, 20% */
+
+/* Notices before Top 3 (double accommodation, Lunar New Year) */
+.notices{ display:flex; flex-direction:column; gap:12px; margin-top:32px }
+.notice-link{ display:inline-flex; align-items:center; min-height:44px; margin-top:4px; font-weight:700; color:var(--blue); text-decoration:underline; text-underline-offset:3px }
+.notices-foot{ margin-top:40px }
+.notices .notice{ margin-top:0; background:var(--ds-blue-5); border-color:var(--ds-blue-10); color:var(--n90) }
+
+/* ───────────── Collection tag (in the hero card, where HISTORY Channel sat) ───────────── */
+.xp-badges{ margin:0 0 12px }
+.xp-badge{
+  border-radius:2px; padding:6px 10px 6px 10px; gap:8px; background:rgba(var(--ds-blue-rgb),.55);
+  border:1px solid rgba(var(--ds-gold-rgb),.85); color:var(--ds-dark-beige);
+  font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; line-height:1.4;
+  text-shadow:none; transition:background .2s, border-color .2s;
+}
+button.xp-badge{ cursor:pointer }
+button.xp-badge:hover{ background:rgba(var(--ds-blue-rgb),.8) }
+.xp-badge .diamond{ width:10px; height:10px; transform:rotate(45deg); flex:none; background:var(--ds-gold) }
+.xp-badge .go{ width:14px; height:14px; stroke-width:2; color:var(--ds-gold); margin-left:2px }
+.xp-curated{ border-color:rgba(178,195,205,.85) }
+.xp-curated .diamond{ background:var(--ds-blue-30) }
+.xp-curated .go{ color:var(--ds-blue-30) }
+.xp-classic{ border-color:rgba(255,255,255,.6) }
+.xp-classic .diamond{ background:transparent; border:1.5px solid #fff }
+.xp-classic .go{ color:#fff }
+
+/* ───────────── Collections modal (Reserve / Curated / Classic) ───────────── */
+.coll-list{ display:flex; flex-direction:column; gap:16px }
+.coll{ position:relative; padding:20px; border-top:4px solid var(--c); background:var(--bg) }
+.coll-name{ display:flex; align-items:center; gap:12px; margin:0; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--t) }
+.coll-name .diamond{ width:11px; height:11px; transform:rotate(45deg); background:var(--c); flex:none }
+.coll-title{ margin:12px 0 0; font:400 22px/var(--lh-head) var(--serif); color:var(--ds-black) }   /* H3 mobile */
+.coll p.body{ margin:8px 0 0; font-size:14px; line-height:var(--lh-body); color:var(--ds-black) }
+.coll-facts{ display:flex; flex-wrap:wrap; gap:4px 24px; margin:16px 0 0; padding-top:12px; border-top:1px solid rgba(var(--ds-black-rgb),.12); font-size:14px }
+.coll-facts span{ color:var(--ds-dark-gray) }
+.coll-facts b{ color:var(--t); font-weight:700; margin-left:6px }
+.coll-here{ display:inline-block; margin:0 0 12px; padding:2px 8px; font-size:12px; font-weight:600; background:var(--ds-blue); color:#fff; border-radius:2px }
+.coll-here[hidden]{ display:none }
+.coll.is-current{ box-shadow:inset 0 0 0 1.5px var(--c) }
+.coll-lorem{ margin:12px 0 0; font-size:12px; color:var(--ds-dark-gray); font-style:italic }
+/* Gold text uses Dark Gold (4.3:1 on Light Beige); Gold itself fails at this size */
+.coll-reserve{ --c:var(--ds-gold); --bg:var(--ds-light-beige); --t:var(--ds-dark-gold) }
+.coll-curated{ --c:var(--ds-blue); --bg:var(--ds-blue-5); --t:var(--ds-blue) }
+.coll-classic{ --c:var(--ds-black); --bg:#f3f3f3; --t:var(--ds-black) }
+.coll-classic .coll-name .diamond{ background:transparent; border:1.5px solid var(--ds-black) }
+
+/* ───────────── Itinerary (multi-day journeys) ───────────── */
+.days{ list-style:none; margin:24px 0 0; padding:0; position:relative }
+.day{ position:relative; display:grid; grid-template-columns:40px minmax(0,1fr); column-gap:16px; padding-bottom:20px }
+.day:last-child{ padding-bottom:0 }
+/* Rail joining the day markers */
+.day::before{ content:""; position:absolute; left:19.5px; top:40px; bottom:0; width:1px; background:var(--ds-blue-20) }
+.day:last-child::before{ display:none }
+.day-mark{
+  width:40px; height:40px; display:grid; place-items:center; background:var(--ds-blue); color:#fff;
+  font:400 18px/1 var(--serif); font-variant-numeric:lining-nums;
+}
+.day-main{ min-width:0; border-bottom:1px solid var(--border) }
+.day:last-child .day-main{ border-bottom:0 }
+/* Day row: collapsed to day + route; the whole row toggles the day's copy */
+.day-head{ width:100%; display:flex; align-items:center; gap:12px; min-height:40px; padding:0 0 20px; text-align:left }
+.day-titles{ flex:1; min-width:0; display:flex; flex-direction:column }
+.day-body{ padding-bottom:20px }
+.day-eyebrow{ display:block; margin:0; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-text); line-height:var(--lh-body) }
+.day-route{ display:block; margin:2px 0 0; font:400 22px/var(--lh-head) var(--serif); color:var(--blue) }   /* H3 mobile */
+.day-text{ margin-top:0; font-size:16px; color:var(--n90) }
+.day-text p{ margin:0 0 12px }
+.day-text p:last-child{ margin-bottom:0 }
+.day-hotel{ display:flex; align-items:center; gap:12px; margin-top:16px; padding:12px 16px; background:var(--ds-light-beige); border:1px solid var(--ds-dark-beige); font-size:14px; color:var(--n90) }
+.day-hotel svg{ width:20px; height:20px; color:var(--ds-dark-gold); stroke-width:1.5 }
+.day-hotel b{ font-weight:700; margin-right:4px }
+/* Tiles that jump to a section on the page */
+button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
+
+/* Prototype panel: list of gaps */
+.proto-gaps{ grid-column:1/-1; margin:4px 0 8px; padding-left:18px; font-size:12px; color:var(--n70) }
+.proto-gaps li{ margin-bottom:2px }
+
+/* Collection section (between Itinerary and Price): this excursion's collection, highlighted */
+.coll-callout{ margin-top:16px }
+.coll-callout .coll{ box-shadow:0 2px 8px rgba(var(--ds-black-rgb),.08) }
+.coll[hidden]{ display:none }
+.compare-link{ gap:6px; margin-top:12px; font-size:16px }
+.compare-link svg{ width:16px; height:16px; stroke-width:2 }
+/* The hero tag now scrolls down the page */
+.xp-badge .go{ transform:rotate(90deg) }
+
+/* Itinerary sits in an outlined container so it reads as its own block, apart from the plain
+   Know before you go rows: Blue 20 outline, a divider per day, the open day tinted Blue 5% */
+.days{ border:1px solid var(--ds-blue-20); border-radius:4px; background:#fff; overflow:hidden }
+.day{ padding:0; grid-template-columns:72px minmax(0,1fr); column-gap:0; border-top:1px solid var(--ds-blue-20); transition:background .2s }
+.day:first-child{ border-top:0 }
+.day::before{ display:none }
+.day:has(.day-head[aria-expanded="true"]){ background:var(--ds-blue-5) }
+.day-mark{ margin:16px 0 0 16px }
+.day-main{ border-bottom:0; padding-right:16px }
+.day-head{ padding:16px 0; min-height:72px }
+.day-head:hover .day-route{ text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:1px }
+.day-body{ padding-bottom:20px }
+.day-hotel{ background:#fff }
+@media (max-width:389px){ .day{ grid-template-columns:64px minmax(0,1fr) } .day-mark{ margin-left:12px } .day-main{ padding-right:12px } }
+
+/* Hotel: plain text with its icon, no container */
+.day-hotel{ background:none; border:0; padding:0; margin-top:16px; font-size:16px }
+/* Collection cards: the collection name is the title, diamond beside it (no eyebrow) */
+.coll-title{ display:flex; align-items:center; gap:12px; margin:0; color:var(--t) }
+.coll-title .diamond{ width:12px; height:12px; transform:rotate(45deg); background:var(--c); flex:none }
+.coll-classic .coll-title .diamond{ background:transparent; border:1.5px solid var(--ds-black) }
+.coll-here + .coll-title{ margin-top:0 }
+
+/* Collection tag is a static label now; the ⓘ beside it opens the collections modal */
+.xp-badges{ align-items:center }
+.xp-info{ width:32px; height:32px; display:grid; place-items:center; margin-left:-4px; border-radius:16px; color:var(--ds-dark-beige); transition:background .2s }
+.xp-info:hover{ background:rgba(255,255,255,.12) }
+.xp-info svg{ width:20px; height:20px; stroke-width:1.6 }
+
+/* Quieter ⓘ: 16px glyph at 75% white (≈3.3:1 over the lightest glass, above the 3:1 minimum for
+   non-text UI), no hover fill. The tap target stays 44×44 through an invisible ::after */
+.xp-info{ position:relative; width:24px; height:24px; margin-left:0; border-radius:12px; color:rgba(255,255,255,.75) }
+.xp-info::after{ content:""; position:absolute; inset:-10px }
+.xp-info:hover{ background:none; color:#fff }
+.xp-info svg{ width:16px; height:16px; stroke-width:1.4 }
+
+/* Phone: the template breaks static tile values between words ("Not / accessible"); a duration
+   ("4.5 hours") stays on one line. Duration is always the first tile */
+@media (max-width:767px){ .facts > div.fact:first-child .fact-value b{ width:auto } }
+
+/* "Read the full description" (single-day pages): SBN DS Tertiary button — white, Blue outline, square */
+#readMore{ border-radius:0; border:1px solid var(--blue); box-shadow:none; color:var(--blue); font-weight:600; font-size:16px; height:48px; padding:0 24px 0 28px }
+#readMore:hover{ background:var(--ds-blue-10) }
+#readMore:focus-visible{ border-radius:0 }
+@media (min-width:768px){ #readMore{ height:60px; padding:0 32px 0 40px } }
+
+/* ───────────── This page’s photo (the only page-specific styling) ───────────── */
+/* gijang-haedong-yonggungsa.webp: 2000×728 banner */
+.photo img{ object-position:62% 50% }
+</style>
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><linearGradient id="half-gold"><stop offset="50%" stop-color="#ab8d45"/><stop offset="50%" stop-color="rgba(255,255,255,.3)"/></linearGradient></defs>
+  <symbol id="i-back" viewBox="0 0 22 22"><path d="M13.75 4.58 7.33 11l6.42 6.42"/></symbol>
+  <symbol id="i-close" viewBox="0 0 22 22"><path d="M5.5 5.5l11 11M16.5 5.5l-11 11"/></symbol>
+  <symbol id="i-right" viewBox="0 0 18 18"><path d="M6.75 4.5 11.25 9l-4.5 4.5"/></symbol>
+  <symbol id="i-down" viewBox="0 0 20 20"><path d="M5 7.5 10 12.5 15 7.5"/></symbol>
+  <symbol id="i-up" viewBox="0 0 14 14"><path d="M3.5 8.75 7 5.25l3.5 3.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M10 5.83V10l2.5 1.67"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 20 20"><path d="M2.5 10h3.33l2.5-5.83 3.34 11.66L14.17 10h3.33"/></symbol>
+  <symbol id="i-meals" viewBox="0 0 20 20"><path d="M5.5 2.5v4.17a1.67 1.67 0 0 0 3.33 0V2.5M7.17 2.5v15M14.17 17.5V2.5c-1.84 0-2.92 2.08-2.92 5.42 0 1.66.83 2.5 2.92 2.5"/></symbol>
+  <symbol id="i-access" viewBox="0 0 20 20"><circle cx="9.17" cy="3.33" r="1.5"/><path d="M9.17 6.25v2.08m0 0v2.5h4.16l2.09 4.59M9.17 8.33h3.75"/><path d="M6.67 8.75a4.58 4.58 0 1 0 6.33 5.83"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 20 20"><path d="M2.5 15.83V4.17M2.5 12.5h15v3.33M17.5 12.5v-2.5a2.5 2.5 0 0 0-2.5-2.5H9.17v5"/><circle cx="5.83" cy="9.17" r="1.67"/></symbol>
+  <symbol id="i-guests" viewBox="0 0 20 20"><circle cx="7.5" cy="6.25" r="2.92"/><path d="M2.08 16.67a5.42 5.42 0 0 1 10.84 0"/><path d="M13.33 3.58a2.92 2.92 0 0 1 0 5.34M15.83 16.67a5.42 5.42 0 0 0-2.5-4.57"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 20 20"><rect x="2.92" y="4.17" width="14.17" height="12.92" rx="1"/><path d="M2.92 8.33h14.16M6.67 2.5v3.33M13.33 2.5v3.33"/></symbol>
+  <symbol id="i-star" viewBox="0 0 22 22"><path d="M11 2.29l2.66 5.5 6.05.83-4.4 4.21 1.1 5.96L11 15.95l-5.41 2.84 1.1-5.96-4.4-4.21 6.05-.83L11 2.29z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M10 9.17v4.16M10 6.67v.01"/></symbol>
+  <symbol id="i-help" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M7.92 7.92a2.08 2.08 0 1 1 2.92 1.9c-.5.23-.84.72-.84 1.27v.66M10 13.75v.01"/></symbol>
+</svg>
+
+<!-- Compact header (slides in once the hero card scrolls away) -->
+<div class="compact" id="compact" aria-hidden="true">
+  <div class="wrap">
+    <a class="compact-back" href="excursions.html" aria-label="Back to Shore Excursions" tabindex="-1"><svg class="i"><use href="#i-back"/></svg></a>
+    <button class="compact-text" id="compactTitle" aria-expanded="false" tabindex="-1">
+      <span class="compact-eyebrow">Busan · <b>Starts 9:00 AM</b></span>
+      <span class="compact-title">Exploring the Historic Temples &amp; Forest of Gijang</span>
+    </button>
+  </div>
+</div>
+
+<header class="hero" id="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="wash" id="wash"><img src="assets/gijang-haedong-yonggungsa.webp" alt=""></div>
+    <div class="photo" id="photo"><img src="assets/gijang-haedong-yonggungsa.webp" alt=""><div class="photo-dim"></div></div>
+    <div class="top-shade"></div>
+    <div class="ramp"></div>
+  </div>
+
+  <div class="topbar"><div class="wrap">
+    <a class="round-btn" href="excursions.html" aria-label="Back to Shore Excursions"><svg class="i"><use href="#i-back"/></svg></a>
+    </div></div>
+
+  <div class="hero-stack wrap">
+    <div class="card-wrap" id="cardWrap">
+      <div class="status-pill" id="statusPill" role="status"><span class="dot"></span><span id="statusText"></span></div>
+      <article class="glass hero-card" id="heroCard">
+        <div class="on-photo">
+          <p class="xp-badges" id="xpBadges"><span class="xp-badge xp-reserve" data-badge="reserve" hidden><span class="diamond" aria-hidden="true"></span><span>The Reserve Collection</span></span><span class="xp-badge xp-curated" data-badge="curated"><span class="diamond" aria-hidden="true"></span><span>The Curated Collection</span></span><span class="xp-badge xp-classic" data-badge="classic" hidden><span class="diamond" aria-hidden="true"></span><span>The Classic Collection</span></span><button class="xp-info" data-drawer="collections" aria-haspopup="dialog" aria-label="How our collections differ"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg></button></p>
+          <h1 class="hero-title">Exploring the Historic Temples &amp; Forest of Gijang</h1>
+          <p class="hero-meta"><span class="meta-port" title="Busan (Pusan), South Korea">Busan (Pusan), South Korea</span><span>Day 5 · Wed, Mar 3, 2027</span></p>
+        </div>
+
+        <div class="key-row on-photo">
+          <div class="key">
+            <p class="key-label"><svg class="i"><use href="#i-clock"/></svg><span>Start time</span></p>
+            <div><div class="key-value">9:00 AM</div></div>
+          </div>
+          <div class="key">
+            <p class="key-label">Per adult</p>
+            <div class="key-price"><div class="key-value">$185.00</div><a class="card-link" href="#price">View all pricing</a></div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="facts" role="list">
+      <div class="fact glass" role="listitem">
+        <span class="fact-label"><svg class="i"><use href="#i-clock"/></svg><span>Duration</span></span>
+        <span class="fact-value"><b>4.5 hours</b></span>
+      </div>
+      <div class="fact glass" role="listitem">
+        <span class="fact-label"><svg class="i"><use href="#i-pulse"/></svg><span>Activity</span></span>
+        <span class="fact-value"><b>Strenuous</b></span>
+      </div>
+      <div class="fact glass" role="listitem">
+        <span class="fact-label"><svg class="i"><use href="#i-access"/></svg><span>Wheelchair</span></span>
+        <span class="fact-value"><b>Not accessible</b></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block" id="overview" aria-labelledby="overviewTitle">
+    <p class="eyebrow">Overview</p>
+    <h2 class="section-title" id="overviewTitle">Top 3 reasons to book</h2>
+    <div class="section-body">
+      <ol class="highlights">
+        <li class="highlight"><span class="num" aria-hidden="true">1</span><h3>The unusual coastal temple of Haedong Yonggungsa</h3></li>
+        <li class="highlight"><span class="num" aria-hidden="true">2</span><h3>A walk in the Ahopsan Forest, preserving the ecosystem</h3></li>
+        <li class="highlight"><span class="num" aria-hidden="true">3</span><h3>Enormous stands of towering bamboo</h3></li>
+      </ol>
+      <button class="btn-outline" id="readMore" aria-expanded="false" aria-controls="desc"><span>Read the full description</span><svg class="i"><use href="#i-down"/></svg></button>
+      <div class="collapse" id="desc"><div><div class="description" style="padding-top:20px">
+        <p>Don’t miss this chance to also visit the Ahopsan Forest, owned and "gardened" by the same family for more than 400 years. It remains in a relatively natural state and was closed to the public for 400 years throughout the Japanese occupation, liberation, war, and industrialization. The forest acts as a green belt and water source, preserving a healthy natural environment and ecosystem. The family opened the forest to the public in 2016 to highlight the importance of conservation. A total of 116 trees are designated protected trees. Red pine, hinoki cypress, and oak trees greet you, but perhaps the most impressive and important element is the enormous stands of towering bamboo.</p>
+        <p>Following this pleasant stroll through the forest, return to the pier, rejuvenated and relaxed.</p>
+      </div></div></div>
+    </div>
+  </section>
+
+  <section class="block" id="collection" aria-labelledby="collEyebrow">
+    <p class="eyebrow" id="collEyebrow">Collection</p>
+    <div class="coll-callout">
+    <article class="coll coll-reserve" hidden data-callout="reserve">
+      <h3 class="coll-title"><span class="diamond" aria-hidden="true"></span>The Reserve Collection</h3>
+      <p class="body">The pinnacle of Seabourn shore exploration. The Reserve Collection represents our most exclusive, small-group offerings—unlocking rare privileges, specialized expedition excursions like guided kayaking, all-inclusive luxury overland journeys, and personalized travel solutions reserved for an intentional few. Unrivaled in intimacy and depth.</p>
+      <p class="coll-facts"><span>Group size:<b>Up to 10 people</b></span><span>Style:<b>Personalized &amp; intimate</b></span></p>
+    </article>
+    <article class="coll coll-curated" data-callout="curated">
+      <h3 class="coll-title"><span class="diamond" aria-hidden="true"></span>The Curated Collection</h3>
+      <p class="body">Crafted for the curious traveler seeking richer connection and specialized perspectives. The Curated Collection brings you closer to the heart of local life through smaller group settings, exclusive access, hands-on workshops, and immersive cultural encounters that go beyond the surface.</p>
+      <p class="coll-facts"><span>Group size:<b>Up to 15 people</b></span><span>Style:<b>Hands-on &amp; immersive</b></span></p>
+    </article>
+    <article class="coll coll-classic" hidden data-callout="classic">
+      <h3 class="coll-title"><span class="diamond" aria-hidden="true"></span>The Classic Collection</h3>
+      <p class="body">Thoughtfully designed to showcase the defining monuments and historic icons of every destination, our Landmark Collection offers a seamless and comprehensive introduction to the world’s most celebrated sites. Guided by premier local experts with full transportation comfort, these journeys capture the essential spirit and history of each port call with Seabourn’s signature warmth.</p>
+      <p class="coll-facts"><span>Group size:<b>Lorem ipsum</b></span><span>Style:<b>Lorem &amp; ipsum</b></span></p>
+      <p class="coll-lorem">Group size and style are placeholders — product to supply.</p>
+    </article>
+    </div>
+    <button class="text-link compare-link" data-drawer="collections" aria-haspopup="dialog">How our collections differ<svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
+  </section>
+
+  <section class="block" id="price" aria-labelledby="priceEyebrow">
+    <p class="eyebrow" id="priceEyebrow">Price</p>
+    <div class="price-heading"><span class="amt">$185.00</span><span class="unit">per adult</span></div>
+    <div class="rates">
+      <div class="rate"><span>Adult</span><b>$185.00</b></div>
+      <div class="rate"><span>Child (12 and under)</span><b>$180.00</b></div>
+    </div>
+  </section>
+
+  <section class="block" id="know" aria-labelledby="knowEyebrow">
+    <p class="eyebrow" id="knowEyebrow">Know before you go</p>
+    <div class="accordion" id="accordion">
+      <div class="acc">
+        <button class="acc-head" aria-expanded="false">
+          <span class="titles"><strong>Cancellation</strong></span>
+          <svg class="i chev"><use href="#i-down"/></svg>
+        </button>
+        <div class="collapse"><div><div class="acc-body">
+          <p>We understand that plans change. Cancellations made more than three days before embarkation will receive a full refund. Last-minute cancellations may incur a fee if within 48 hours. If a tour is canceled by Seabourn due to safety, security, or uncontrollable conditions, a full refund will be issued to the credit card used for the purchase or if onboard, your refund will be issued to the card you registered.</p>
+        </div></div></div>
+      </div>
+      <div class="acc">
+        <div class="acc-head static">
+          <span class="titles"><strong>Language</strong></span>
+          <span class="acc-value">English</span>
+        </div>
+      </div>
+
+      <div class="acc">
+        <button class="acc-head" aria-expanded="false">
+          <span class="titles"><strong>Notes</strong><small id="notesSummary"></small></span>
+          <svg class="i chev"><use href="#i-down"/></svg>
+        </button>
+        <div class="collapse"><div><div class="acc-body" id="notesBody">
+          <p>Terrain includes 108 steps to reach the Haedong Yonggungsa Temple and uneven surfaces. Not advisable for guests using a wheelchair or for those with mobility limitations. Wear comfortable walking shoes.</p>
+        </div></div></div>
+      </div>
+    </div>
+    <button class="faq-row" data-drawer="faq" aria-haspopup="dialog">
+      <svg class="i"><use href="#i-help"/></svg>
+      <span class="txt">Shore Excursions FAQs</span>
+      <svg class="i go"><use href="#i-right"/></svg>
+    </button>
+  </section>
+</main>
+
+<footer class="wrap proto-foot">
+  <details class="proto" id="proto">
+    <summary>Prototype states <small>Review tool only</small><svg class="i"><use href="#i-down"/></svg></summary>
+    <form class="proto-panel" id="protoPanel">
+      <fieldset><legend>Collection tag</legend>
+        <label><input type="radio" name="badge" value="none"> None</label>
+        <label><input type="radio" name="badge" value="reserve"> The Reserve Collection</label><label><input type="radio" name="badge" value="curated" checked> The Curated Collection</label><label><input type="radio" name="badge" value="classic"> The Classic Collection</label>
+        <p>The ⓘ next to the tag, and “How our collections differ” in the Collection section, open all three.</p>
+      </fieldset>
+      <fieldset><legend>Availability</legend>
+        <label><input type="radio" name="avail" value="available" checked> Available</label>
+        <label><input type="radio" name="avail" value="limited"> Limited Capacity</label>
+        <label><input type="radio" name="avail" value="soldout"> Sold Out</label>
+        <p>Sold Out offers the waitlist, per the SBN FAQ.</p>
+      </fieldset>
+      <fieldset style="grid-column:1/-1"><legend>Template gaps (no SBN source copy)</legend>
+        <ul class="proto-gaps"><li>The description opens "Don’t miss this chance to also visit…", but the live page has no lead-in, so the Haedong Yonggungsa temple visit itself isn’t described.</li><li>Curated Collection is set at your request. The live page shows no collection.</li><li>Wheelchair tile shows "Not accessible", based on the Notes ("Not advisable for guests using a wheelchair").</li><li>Meals aren’t mentioned, so there’s no Meals tile.</li><li>Single-day excursion: no itinerary section. The description sits under Top 3 as "Read the full description".</li><li>Cancellation row uses the generic SBN FAQ policy; the live page states no rule of its own.</li><li>Activity level definitions: no SBN copy, so the Activity tile doesn’t open a drawer.</li><li>Excursion credits: no SBN data. The credits card and banner are removed.</li><li>Ratings (4 Ratings, 4.5 stars on the live page) are hidden.</li><li>Ship times: none on the live pages.</li><li>ⓘ tooltips (Sold Out, Strenuous): never captured.</li><li>Classic Collection: group size and style are lorem ipsum. Its new body copy calls it "our Landmark Collection", so the name needs confirming.</li><li>FAQ "Shore Excursion Brochure" points to a "Download eBrochure" button that this page doesn’t have.</li><li>FAQ "Pre, Post or Mid-Cruise Overland Journeys" says "Journey Collection", but this page now uses The Reserve Collection.</li></ul>
+      </fieldset>
+      <button type="button" class="proto-reset" id="protoReset">Reset all states</button>
+    </form>
+  </details>
+</footer>
+
+<!-- Floating booking bar -->
+<div class="bar-zone" id="barZone">
+  <div class="bar">
+    <button class="bar-price" id="barPrice" data-drawer="pricing" aria-haspopup="dialog" aria-expanded="false" aria-label="Show price details">
+      <span class="bar-line1"><b>$185.00</b><span class="u">/ adult</span><svg class="i"><use href="#i-up"/></svg></span>
+      <span class="bar-line2">Mar 3 · 9:00 AM</span>
+    </button>
+    <button class="btn-primary" id="cta">Reserve</button>
+  </div>
+</div>
+
+<!-- Drawer / modal shell -->
+<div class="layer" id="layer" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetLabel" id="sheet" tabindex="-1">
+    <span class="grabber" aria-hidden="true"></span>
+    <div class="sheet-head" id="sheetHead">
+      <button class="close" data-close aria-label="Close"><svg class="i"><use href="#i-close"/></svg></button>
+      <span class="sheet-label" id="sheetLabel"></span>
+    </div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- Drawer content -->
+<template id="t-collections" data-label="How our collections differ" data-full>
+  <div class="coll-list">
+    <article class="coll coll-reserve" data-coll="reserve">
+      <span class="coll-here" hidden>This excursion</span>
+      <h3 class="coll-title"><span class="diamond" aria-hidden="true"></span>The Reserve Collection</h3>
+      <p class="body">The pinnacle of Seabourn shore exploration. The Reserve Collection represents our most exclusive, small-group offerings—unlocking rare privileges, specialized expedition excursions like guided kayaking, all-inclusive luxury overland journeys, and personalized travel solutions reserved for an intentional few. Unrivaled in intimacy and depth.</p>
+      <p class="coll-facts"><span>Group size:<b>Up to 10 people</b></span><span>Style:<b>Personalized &amp; intimate</b></span></p>
+    </article>
+    <article class="coll coll-curated" data-coll="curated">
+      <span class="coll-here" hidden>This excursion</span>
+      <h3 class="coll-title"><span class="diamond" aria-hidden="true"></span>The Curated Collection</h3>
+      <p class="body">Crafted for the curious traveler seeking richer connection and specialized perspectives. The Curated Collection brings you closer to the heart of local life through smaller group settings, exclusive access, hands-on workshops, and immersive cultural encounters that go beyond the surface.</p>
+      <p class="coll-facts"><span>Group size:<b>Up to 15 people</b></span><span>Style:<b>Hands-on &amp; immersive</b></span></p>
+    </article>
+    <article class="coll coll-classic" data-coll="classic">
+      <span class="coll-here" hidden>This excursion</span>
+      <h3 class="coll-title"><span class="diamond" aria-hidden="true"></span>The Classic Collection</h3>
+      <p class="body">Thoughtfully designed to showcase the defining monuments and historic icons of every destination, our Landmark Collection offers a seamless and comprehensive introduction to the world’s most celebrated sites. Guided by premier local experts with full transportation comfort, these journeys capture the essential spirit and history of each port call with Seabourn’s signature warmth.</p>
+      <p class="coll-facts"><span>Group size:<b>Lorem ipsum</b></span><span>Style:<b>Lorem &amp; ipsum</b></span></p>
+      <p class="coll-lorem">Group size and style are placeholders — product to supply.</p>
+    </article>
+  </div>
+</template>
+
+<template id="t-pricing" data-label="Price details">
+  <h2>$185.00 per adult</h2>
+  <div class="d-rows">
+    <div class="d-row"><div class="top"><b>Adult</b><span><strong style="color:var(--n90)">$185.00</strong> per adult</span></div></div>
+    <div class="d-row"><div class="top"><b>Child (12 and under)</b><span><strong style="color:var(--n90)">$180.00</strong> per child</span></div></div>
+  </div>
+  <p class="d-sub">Details</p>
+  <div class="d-rows">
+    <div class="d-row"><div class="top"><b>Date</b><span>Wed, Mar 3, 2027</span></div></div>
+    <div class="d-row"><div class="top"><b>Start time</b><span>9:00 AM</span></div></div>
+    <div class="d-row"><div class="top"><b>Duration</b><span>4.5 hours</span></div></div>
+    <div class="d-row"><div class="top"><b>Port</b><span>Busan (Pusan), South Korea</span></div></div>
+  </div>
+  <button class="btn-primary sheet-cta" data-slot="cta">Reserve</button>
+</template>
+
+<template id="t-faq" data-label="Shore Excursions FAQs" data-full>
+  <div class="accordion">
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Shore Excursion Brochure</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Confirmed guests can download a personalized brochure for their cruise by clicking the "Download eBrochure" button on this page.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Assistance with Tour Selection</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Our shore excursion reservations team is available to assist with tour bookings or answer any queries at <a href="tel:18009843225">800-984-3225</a> (USA or Canada), <a href="tel:800260639">800-260-639</a> (AU), or <a href="tel:+12066269187">+1 206-626-9187</a> from Monday – Friday 7:00 AM to 4:00 PM (Pacific Time).</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Choosing the Right Tours</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Our excursions are categorized into seven Shore Experiences by Seabourn Collections. While browsing or purchasing tours, you can filter to specific ones. Tour descriptions include symbols for difficulty and special interest content. For detailed information on restrictions or suggested cautions, refer to the notes section of the tour descriptions. Upon boarding, our Destinations Team can assist in determining the suitability of a specific shore excursion through a personal consultation.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Digital Tour Tickets</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Your Digital tickets will be available in the Seabourn Source app. Please download the app before sailing. You will find tour meeting times and location on your Digital tour ticket. You can check in for your tour with your digital tour ticket or your stateroom key card.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Scheduling Multiple Tours in a Day</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>While it’s feasible to schedule more than one tour in a day at many ports, please note that our booking system requires a 45-minute gap between scheduled tours.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Cancellation Policy</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>We understand that plans change. Cancellations made more than three days before embarkation will receive a full refund. Last-minute cancellations may incur a fee if within 48 hours. If a tour is canceled by Seabourn due to safety, security, or uncontrollable conditions, a full refund will be issued to the credit card used for the purchase or if onboard, your refund will be issued to the card you registered.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Private Arrangements</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Seabourn has a dedicated department assisting solo travelers, couples, and small groups with expert private touring arrangements. Our team, both onshore and onboard, can organize a personalized tour just for you. For custom requests pre-cruise, reach out to one of our Destination Specialists at <a href="tel:18009843225">800-984-3225</a> or <a href="tel:+12066269187">+1 206-626-9187</a>. Operating hours are Monday – Friday from 7:00 AM to 4:00 PM (Pacific Time).</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Gratuities for Local Guides</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>It is customary to provide gratuities to local tour guides, drivers, and other tour operator staff members. These gratuities are not included in Seabourn tour prices.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Availability of Shore Excursions</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Seabourn’s shore excursions are usually available one year before sailing.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Waitlist for Unavailable Excursions</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>If an excursion is unavailable, guests are encouraged to waitlist for it. Our shore-side teams monitor sales and collaborate with tour providers to add more space or additional departures where feasible. They will also be delighted to discuss any alternative tour options.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Excursion Pricing</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>All excursion prices are subject to change. Guests are advised to book early for the best rates.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Why book with us?</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>At Seabourn, we take immense pride in curating unique and unforgettable experiences for our esteemed guests. Our meticulously designed shore excursions aim not only to explore the beauty and culture of each destination but to do so with an unparalleled level of luxury and comfort. Whether you are basking in the architectural splendor of ancient ruins, savoring the exquisite flavors of local cuisines, or immersing yourself in the natural wonders of exotic landscapes, each moment is crafted to be a seamless blend of adventure and sophistication. With Seabourn, every shore excursion is more than just a visit; it’s a bespoke journey tailored to the discerning tastes of our guests, ensuring memories that will be cherished for a lifetime.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Ventures by Seabourn</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Ventures by Seabourn offers exclusive excursions for our guests with expert expedition teams for in-depth destination exploration. These adventures include sea-level experiences like Zodiac cruises and kayaking, providing unparalleled discovery opportunities. Unlike traditional excursions, Ventures by Seabourn enriches voyages with our own expert-led activities in remote locales, bringing a new dimension of discovery to Seabourn ships.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Seabourn Expeditions</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Seabourn Expeditions offer ultra-luxury cruising with purpose-built expedition ships for comfort and safety. Inclusive Experiences such as curated shore excursions, cultural tours, guided Zodiac® cruises, hikes, nature walks, and snorkeling. There are also optional, guided Expedition Experiences including state-of-the-art custom-built 6-guest submarines, providing the option to extend your expedition further for greater ocean exploration, kayaks, and other destination experiences.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Loyalty Program</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Seabourn offers a comprehensive loyalty program with shore excursion discounts at various levels. Learn more at <a href="https://www.seabourn.com/en/us/seabourn-club">https://www.seabourn.com/en/us/seabourn-club</a>.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Accommodations for Limited Mobility</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Our shore excursion descriptions include activity icons indicating the required activity level. For accessibility queries, email <a href="mailto:SBN_Shorex_Access@seabourn.com">SBN_Shorex_Access@seabourn.com</a> or call <a href="tel:18009843225">800-984-3225</a>.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Bringing Wine or Spirits Onboard</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Guests can bring alcoholic beverages purchased during our Epicurean Collection tours back to the ship with no corkage fees.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Foreign Language Tours</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>While our tour programs are predominantly led by English-speaking guides, our private arrangements team can organize private tours in other languages where available.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Pre, Post or Mid-Cruise Overland Journeys</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Part of our Journey Collection, these are overnight experiences that can be enjoyed before, after or part-way through your cruise. They are multi-day trips that include transportation, hotel stays, and most meals.</p></div></div></div>
+    </div>
+  </div>
+</template>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script id="pageData" type="application/json">{"avail": "available", "badge": "curated", "start": "9:00 AM", "dateShort": "Mar 3"}</script>
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ── Page data (written by build.py) ───── */
+  const EX = JSON.parse($('#pageData').textContent);
+
+  // Notes summary is the notes' own first sentence, so nothing has to be hand-written
+  const notes = $('#notesBody').textContent.trim();
+  $('#notesSummary').textContent = notes.split(/(?<=[.;])\s/)[0].replace(/[;.]$/, '');
+
+  /* ── State ─────────────────────────────── */
+  const state = { avail: EX.avail, badge: EX.badge };
+  // Availability is a fixed label from the excursion system. Sold Out → waitlist (SBN FAQ "Waitlist for Unavailable Excursions")
+  const AVAIL = {
+    available: { pill: null, cta: 'Reserve' },
+    limited:   { pill: '<b>Limited Capacity</b>', cta: 'Reserve' },
+    soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: 'Join waitlist' },
+  };
+
+  function apply() {
+    const a = AVAIL[state.avail];
+    $$('#xpBadges [data-badge]').forEach(b => b.hidden = b.dataset.badge !== state.badge);
+    $('#xpBadges').hidden = state.badge === 'none';
+    // Collection section shows only this excursion's collection; no collection → no section
+    $$('[data-callout]').forEach(c => c.hidden = c.dataset.callout !== state.badge);
+    $('#collection').hidden = state.badge === 'none';
+    const pill = $('#statusPill');
+    pill.classList.toggle('show', !!a.pill);
+    pill.classList.toggle('muted', !!a.muted);
+    $('#statusText').innerHTML = a.pill || '';
+    $('#cta').textContent = a.cta;
+  }
+
+  /* ── Toast / hand-offs ─────────────────── */
+  const toast = $('#toast');
+  let toastTimer;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+  document.addEventListener('click', e => {
+    const h = e.target.closest('[data-handoff]');
+    if (!h || h.disabled) return;
+    e.preventDefault();
+    showToast(`Hand-off: ${h.dataset.handoff}`);
+  });
+  const primaryAction = () => showToast(`${AVAIL[state.avail].cta} → booking flow`);
+  $('#cta').addEventListener('click', primaryAction);
+
+  // Tiles that point at a section (Duration, Includes, Hotel → Itinerary)
+  const smooth = () => reduceMotion.matches ? 'auto' : 'smooth';
+  $$('[data-jump]').forEach(b => b.addEventListener('click', () => {
+    document.getElementById(b.dataset.jump).scrollIntoView({ behavior: smooth(), block: 'start' });
+  }));
+
+  /* ── Scroll: parallax, glass sheen, compact header ── */
+  const hero = $('#hero'), heroBg = $('.hero-bg'), photo = $('#photo'), wash = $('#wash');
+  const heroCard = $('#heroCard'), compact = $('#compact');
+  const glassEls = [heroCard, ...$$('.fact')];
+  let ticking = false, compactOn = false;
+
+  function onScroll() {
+    ticking = false;
+    const y = Math.max(0, window.scrollY);
+    const heroH = hero.offsetHeight;
+    const p = Math.min(1, y / heroH);
+
+    if (!reduceMotion.matches && y < heroH + 200) {
+      const drift = innerWidth < 768 ? 0.7 : 0.55;
+      heroBg.style.setProperty('--photo-y', (y * drift).toFixed(1) + 'px');
+      const zoomP = Math.min(1, y / photo.offsetHeight);
+      photo.style.setProperty('--photo-s', (1 + zoomP * 0.12).toFixed(4));
+      photo.style.setProperty('--dim', (p * 0.25).toFixed(3));
+      wash.style.setProperty('--wash-y', (y * drift * 0.6).toFixed(1) + 'px');
+      const blur = (14 + p * 10).toFixed(1) + 'px';
+      glassEls.forEach((el, i) => {
+        el.style.setProperty('--glass-blur', blur);
+        el.style.setProperty('--sheen-y', (-10 + p * 140 + i * 6).toFixed(1) + '%');
+        el.style.setProperty('--sheen-x', (25 + p * 50).toFixed(1) + '%');
+      });
+    }
+
+    const show = heroCard.getBoundingClientRect().bottom < 60;
+    if (show !== compactOn) {
+      compactOn = show;
+      compact.classList.toggle('show', show);
+      compact.setAttribute('aria-hidden', String(!show));
+      $$('button, a', compact).forEach(b => b.tabIndex = show ? 0 : -1);
+      if (!show) setCompactExpanded(false);
+    }
+  }
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  window.addEventListener('resize', onScroll);
+
+  function setCompactExpanded(on) {
+    compact.classList.toggle('expanded', on);
+    $('#compactTitle').setAttribute('aria-expanded', String(on));
+  }
+  $('#compactTitle').addEventListener('click', () => setCompactExpanded(!compact.classList.contains('expanded')));
+
+  /* ── Disclosures ───────────────────────── */
+  function toggleCollapse(btn, panel, labels) {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', String(open));
+    panel.classList.toggle('open', open);
+    panel.inert = !open;
+    if (labels) btn.querySelector('span').textContent = open ? labels[1] : labels[0];
+  }
+  const inertClosed = root => $$('.collapse', root).forEach(p => p.inert = !p.classList.contains('open'));
+  inertClosed(document);
+  const readMore = $('#readMore');   // single-day pages only
+  if (readMore) readMore.addEventListener('click', () => toggleCollapse(readMore, $('#desc'), ['Read the full description', 'Show less']));
+  document.addEventListener('click', e => {
+    const b = e.target.closest('button.acc-head');
+    if (b) return toggleCollapse(b, b.nextElementSibling);
+    const d = e.target.closest('button[data-toggle]');   // itinerary days
+    if (d) toggleCollapse(d, d.nextElementSibling);
+  });
+
+  /* ── Drawers / modals ─────────────────── */
+  const layer = $('#layer'), sheet = $('#sheet'), body = $('#sheetBody'), label = $('#sheetLabel');
+  let opener = null, current = null;
+
+  function fillPricing() {
+    const cta = $('[data-slot="cta"]', body);
+    cta.textContent = AVAIL[state.avail].cta;
+    cta.addEventListener('click', () => { closeDrawer(); primaryAction(); });
+  }
+  // Collections: mark this excursion's collection and list it first
+  function fillCollections() {
+    const list = $('.coll-list', body);
+    $$('[data-coll]', body).forEach(c => {
+      const here = c.dataset.coll === state.badge;
+      c.classList.toggle('is-current', here);
+      $('.coll-here', c).hidden = !here;
+    });
+    const cur = $(`[data-coll="${state.badge}"]`, body);
+    if (cur) list.prepend(cur);
+  }
+
+  function openDrawer(name, from) {
+    const t = document.getElementById('t-' + name);
+    if (!t) return;
+    opener = from || document.activeElement;
+    current = name;
+    label.textContent = t.dataset.label;
+    body.replaceChildren(t.content.cloneNode(true));
+    inertClosed(body);
+    body.scrollTop = 0;
+    sheet.classList.toggle('full', 'full' in t.dataset);
+    if (name === 'pricing') { fillPricing(); $('#barPrice').setAttribute('aria-expanded', 'true'); }
+    if (name === 'collections') fillCollections();
+    sheet.style.setProperty('--drag', '0px');
+    layer.setAttribute('aria-hidden', 'false');
+    layer.classList.add('open');
+    document.body.classList.add('locked');
+    requestAnimationFrame(() => sheet.focus({ preventScroll: true }));
+  }
+  function closeDrawer() {
+    if (!layer.classList.contains('open')) return;
+    layer.classList.remove('open');
+    layer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('locked');
+    $('#barPrice').setAttribute('aria-expanded', 'false');
+    current = null;
+    if (opener && opener.focus) opener.focus({ preventScroll: true });
+  }
+  $$('[data-drawer]').forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.drawer === 'pricing' && current === 'pricing') return closeDrawer();
+    openDrawer(b.dataset.drawer, b);
+  }));
+  layer.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeDrawer(); });
+  document.addEventListener('keydown', e => {
+    if (!layer.classList.contains('open')) return;
+    if (e.key === 'Escape') return closeDrawer();
+    if (e.key === 'Tab') { // focus trap
+      const f = $$('button:not([disabled]), a[href]', sheet);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === sheet)) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  // Swipe-down to dismiss (bottom-sheet mode only)
+  const isSheet = () => innerWidth < 768;
+  let startY = null, dy = 0;
+  function dragStart(e) {
+    if (!isSheet()) return;
+    if (e.currentTarget === body && body.scrollTop > 0) return;
+    if (e.target.closest('button') && e.currentTarget !== body) return;
+    startY = e.clientY; dy = 0;
+  }
+  function dragMove(e) {
+    if (startY === null) return;
+    dy = Math.max(0, e.clientY - startY);
+    if (dy > 4) { sheet.classList.add('dragging'); sheet.style.setProperty('--drag', dy + 'px'); }
+  }
+  function dragEnd() {
+    if (startY === null) return;
+    sheet.classList.remove('dragging');
+    if (dy > 110) closeDrawer(); else sheet.style.setProperty('--drag', '0px');
+    startY = null;
+  }
+  [$('#sheetHead'), body].forEach(el => el.addEventListener('pointerdown', dragStart));
+  window.addEventListener('pointermove', dragMove);
+  window.addEventListener('pointerup', dragEnd);
+  window.addEventListener('pointercancel', dragEnd);
+
+  /* ── Prototype state switcher ─────────── */
+  // Rule: picking a state scrolls to the element it changed and flashes it
+  const CHANGED = {
+    badge: () => state.badge === 'none' ? $('#heroCard') : $('#collection'),
+    avail: () => $('#cardWrap'),
+  };
+  function revealChange(name) {
+    const el = CHANGED[name] && CHANGED[name]();
+    if (!el) return;
+    el.scrollIntoView({ behavior: smooth(), block: 'center' });
+    el.classList.remove('proto-flash');
+    void el.offsetWidth;
+    el.classList.add('proto-flash');
+    setTimeout(() => el.classList.remove('proto-flash'), 1800);
+  }
+  const DEFAULTS = { ...state };
+  $('#protoPanel').addEventListener('change', e => {
+    state[e.target.name] = e.target.value;
+    apply();
+    revealChange(e.target.name);
+  });
+  $('#protoReset').addEventListener('click', () => {
+    Object.assign(state, DEFAULTS);
+    $('#protoPanel').reset();
+    if (layer.classList.contains('open')) closeDrawer();
+    apply();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    showToast('States reset');
+  });
+
+  apply();
+  onScroll();
+})();
+</script>
+</body>
+</html>

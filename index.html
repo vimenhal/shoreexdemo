@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HAL vs SBN · Mobile</title>
+<style>
+  :root{ --ink:#1d1f23; --muted:#6b7079; --frame:#16181c; --ease:cubic-bezier(.2,.8,.2,1); }
+  *{ box-sizing:border-box }
+  html,body{ margin:0; height:100% }
+  body{
+    background:#fff; color:var(--ink);
+    font:14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:20px; overflow:auto;
+  }
+  .stage{ display:flex; gap:56px; align-items:flex-start; justify-content:center; flex-wrap:wrap }
+  .device-col{ display:flex; flex-direction:column; align-items:center; gap:16px }
+  .logo{ height:52px; display:flex; align-items:center; margin:0 }
+  .logo img{ display:block; width:auto }
+  .logo.hal img{ height:48px }
+  .logo.sbn img{ height:31px }
+  .reset{
+    font:inherit; font-weight:500; font-size:12px; color:var(--muted);
+    background:#fff; border:1px solid #d5d8dd; border-radius:999px; padding:4px 14px; cursor:pointer;
+  }
+  .reset:hover{ color:var(--ink); border-color:#aeb3ba }
+  /* Scale wrapper keeps layout size in sync with the visual scale */
+  .fit{ width:calc(414px * var(--s,1)); height:calc(868px * var(--s,1)) }
+  .phone{
+    width:414px; height:868px; padding:12px;
+    background:var(--frame); border-radius:56px;
+    box-shadow:0 30px 60px rgba(0,0,0,.14), 0 0 0 1px rgba(255,255,255,.06) inset;
+    transform:scale(var(--s,1)); transform-origin:top left;
+  }
+  .screen{ width:390px; height:844px; border-radius:44px; overflow:hidden; background:#fff }
+  .screen iframe{ display:block; width:100%; height:100%; border:0 }
+
+  /* Brand bar: phone only */
+  .brandbar{ display:none }
+
+  /* ───────── Phone: no device frames; each brand fills the screen, swipe between them ───────── */
+  @media (max-width:767px){
+    body{ display:block; padding:0; overflow:hidden; height:100vh; height:100dvh; overscroll-behavior:none }
+    .stage{
+      position:fixed; inset:0; display:flex; flex-wrap:nowrap; gap:0; width:200vw; height:100%;
+      will-change:transform;
+    }
+    .stage.animating{ transition:transform .38s var(--ease) }
+    .device-col{ width:100vw; height:100%; gap:0; flex:none }
+    .device-col .logo, .device-col .reset{ display:none }
+    .fit{ width:100%; height:100% }
+    .phone{ width:100%; height:100%; padding:0; border-radius:0; box-shadow:none; transform:none; background:#fff }
+    .screen{ width:100%; height:100%; border-radius:0 }
+
+    .brandbar{
+      display:flex; position:fixed; z-index:10; top:0; left:0; right:0;
+      padding-top:env(safe-area-inset-top); background:#fff;
+      box-shadow:0 1px 0 rgba(3,15,31,.08);
+      transition:transform .28s var(--ease);
+    }
+    .brandbar.hidden{ transform:translateY(-100%) }
+    .brandbar button{
+      flex:1; height:52px; display:flex; align-items:center; justify-content:center;
+      background:none; border:0; padding:0; cursor:pointer; -webkit-tap-highlight-color:transparent;
+    }
+    .brandbar img{ display:block; width:auto; opacity:.4; transition:opacity .25s }
+    .brandbar button[aria-selected="true"] img{ opacity:1 }
+    .brandbar .hal img{ height:30px }
+    .brandbar .sbn img{ height:19px }
+    .brandbar button:focus-visible{ outline:2px solid #1979ff; outline-offset:-4px }
+    .indicator{
+      position:absolute; left:0; bottom:0; width:50%; height:2px; background:var(--ink);
+      transform:translateX(calc(var(--p,0) * 100%));
+    }
+    .stage.animating ~ .brandbar .indicator{ transition:transform .38s var(--ease) }
+  }
+  @media (max-width:767px) and (prefers-reduced-motion:reduce){
+    .stage.animating, .brandbar, .stage.animating ~ .brandbar .indicator{ transition:none }
+  }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="device-col" id="col-hal">
+    <h2 class="logo hal"><img src="assets/logo-holland-america.png" alt="Holland America"></h2>
+    <div class="fit"><div class="phone"><div class="screen">
+      <iframe id="hal" src="hal/excursions.html" title="Holland America shore excursions"></iframe>
+    </div></div></div>
+    <button class="reset" type="button" data-reset="hal">Reset</button>
+  </div>
+  <div class="device-col" id="col-sbn">
+    <h2 class="logo sbn"><img src="assets/logo-seabourn.png" alt="Seabourn"></h2>
+    <div class="fit"><div class="phone"><div class="screen">
+      <iframe id="sbn" src="sbn/excursions.html" title="Seabourn shore excursions"></iframe>
+    </div></div></div>
+    <button class="reset" type="button" data-reset="sbn">Reset</button>
+  </div>
+</div>
+<nav class="brandbar" id="brandbar" role="tablist" aria-label="Cruise line">
+  <button class="hal" type="button" role="tab" data-i="0" aria-selected="true"><img src="assets/logo-holland-america.png" alt="Holland America"></button>
+  <button class="sbn" type="button" role="tab" data-i="1" aria-selected="false"><img src="assets/logo-seabourn.png" alt="Seabourn"></button>
+  <span class="indicator" aria-hidden="true"></span>
+</nav>
+<script>
+(() => {
+  const ids = ['hal', 'sbn'];
+  const home = { hal:'hal/excursions.html', sbn:'sbn/excursions.html' };
+  const frames = ids.map(id => document.getElementById(id));
+  const cols = ids.map(id => document.getElementById('col-' + id));
+  const stage = document.getElementById('stage');
+  const bar = document.getElementById('brandbar');
+  const tabs = [...bar.querySelectorAll('[role=tab]')];
+  const phoneMQ = matchMedia('(max-width:767px)');
+  const reduced = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const isPhone = () => phoneMQ.matches;
+
+  const load = id => { document.getElementById(id).src = home[id] + '?v=' + Date.now(); };
+
+  // ── Desktop: shrink both phones to fit short windows; screens stay 390px wide ──
+  function fit(){
+    const s = Math.min(1, (innerHeight - 40 - 68 - 56) / 868);
+    document.documentElement.style.setProperty('--s', Math.max(.4, s).toFixed(3));
+  }
+  addEventListener('resize', fit); fit();
+  document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => load(b.dataset.reset)));
+
+  // ── Phone: full-screen brands in a swipeable track ──
+  let idx = location.hash === '#sbn' ? 1 : 0;
+  let barShown = true;
+  const W = () => innerWidth;
+
+  function place(dx = 0, animate = false){
+    stage.classList.toggle('animating', animate && !reduced);
+    stage.style.transform = isPhone() ? `translate3d(${-idx * W() + dx}px,0,0)` : '';
+    const p = Math.min(1, Math.max(0, (idx * W() - dx) / W()));
+    bar.style.setProperty('--p', p);
+  }
+  function go(i, animate = true){
+    idx = Math.max(0, Math.min(ids.length - 1, i));
+    place(0, animate);
+    tabs.forEach((t, n) => t.setAttribute('aria-selected', String(n === idx)));
+    cols.forEach((c, n) => { c.inert = n !== idx; c.setAttribute('aria-hidden', String(n !== idx)); });
+    try { history.replaceState(null, '', '#' + ids[idx]); } catch(e){}
+    showBar(true);
+  }
+
+  function barH(){ return bar.offsetHeight; }
+  // The brand bar belongs to the excursion lists only; detail pages get the whole screen.
+  // Checked live against the page each frame is showing, so it can never go stale.
+  // If the page can't be inspected (e.g. Chrome opening the files straight from disk), keep the bar rather than lose it.
+  function onList(n){
+    try {
+      const d = frames[n].contentDocument;
+      if (!d) return true;
+      if (d.URL === 'about:blank') return true;   // frame hasn't loaded its page yet
+      return !!d.querySelector('.grid .card');
+    } catch(e){ return true; }
+  }
+  function showBar(on){
+    if (!isPhone()) return;
+    barShown = on && onList(idx);
+    bar.classList.toggle('hidden', !barShown);
+  }
+
+  // Bring everything in line with the current layout (phone or desktop) and the pages on screen.
+  // Runs on every page load and whenever the window crosses the phone breakpoint, no reload needed.
+  function sync(){
+    const phone = isPhone();
+    frames.forEach((f, n) => {
+      try {
+        const root = f.contentDocument.documentElement;
+        root.classList.toggle('bb-pad', phone && onList(n));      // list pages make room for the bar
+        if (phone) root.style.setProperty('--bbh', barH() + 'px');
+      } catch(e){}
+    });
+    if (phone) go(idx, false);
+    else {
+      stage.classList.remove('animating'); stage.style.transform = '';
+      cols.forEach(c => { c.inert = false; c.removeAttribute('aria-hidden'); });
+      bar.classList.remove('hidden');
+    }
+  }
+  // Watch for crossing the breakpoint two ways; some browsers and device emulators skip the media-query event
+  let lastPhone = isPhone();
+  function checkLayout(){ if (isPhone() !== lastPhone){ lastPhone = isPhone(); sync(); } }
+  phoneMQ.addEventListener('change', checkLayout);
+  addEventListener('resize', () => { checkLayout(); if (isPhone()) place(0, false); });
+
+  tabs.forEach(t => t.addEventListener('click', () => {
+    const i = +t.dataset.i;
+    if (i === idx) load(ids[i]);      // tapping the current brand returns it to its excursion list
+    else go(i);
+  }));
+
+  // ── Swipe anywhere, with guards ──
+  const EDGE = 24, LOCK = 10;
+  let g = null;   // gesture state
+  function blocked(target, doc){
+    if (doc && doc.querySelector('.layer.open, .compact.expanded, [aria-modal="true"].open')) return true;
+    for (let el = target; el && el.nodeType === 1; el = el.parentElement){
+      if (el.matches('input, textarea, select, [role=dialog], [contenteditable]')) return true;
+      const cs = el.ownerDocument.defaultView.getComputedStyle(el);
+      if (/(auto|scroll)/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 2) return true;
+    }
+    return false;
+  }
+  function attachSwipe(doc, frame){
+    // Touch points inside a frame are converted to page coordinates, because the frame moves with the finger
+    const pt = t => { const r = frame ? frame.getBoundingClientRect() : { left:0, top:0 }; return { x:t.clientX + r.left, y:t.clientY + r.top }; };
+    doc.addEventListener('touchstart', e => {
+      if (!isPhone() || e.touches.length !== 1) { g = null; return; }
+      const p = pt(e.touches[0]);
+      if (p.x < EDGE || p.x > W() - EDGE || blocked(e.target, frame ? doc : null)) { g = null; return; }
+      g = { x0:p.x, y0:p.y, t0:performance.now(), mode:null, dx:0, pt };
+    }, { passive:true });
+    doc.addEventListener('touchmove', e => {
+      if (!g) return;
+      const p = g.pt(e.touches[0]); const dx = p.x - g.x0, dy = p.y - g.y0;
+      if (!g.mode){
+        if (Math.abs(dx) < LOCK && Math.abs(dy) < LOCK) return;
+        g.mode = Math.abs(dx) > Math.abs(dy) * 1.4 ? 'h' : 'v';
+        if (g.mode === 'h') stage.classList.remove('animating');
+      }
+      if (g.mode !== 'h') return;
+      e.preventDefault();
+      const atEdge = (idx === 0 && dx > 0) || (idx === ids.length - 1 && dx < 0);
+      g.dx = atEdge ? dx * .25 : dx;        // rubber-band past the first/last brand
+      place(g.dx);
+    }, { passive:false });
+    const end = () => {
+      if (!g || g.mode !== 'h') { g = null; return; }
+      const v = g.dx / Math.max(1, performance.now() - g.t0);
+      const flip = Math.abs(g.dx) > W() * .25 || (Math.abs(g.dx) > 30 && Math.abs(v) > .45);
+      const next = flip ? idx + (g.dx < 0 ? 1 : -1) : idx;
+      g = null;
+      go(next);
+    };
+    doc.addEventListener('touchend', end);
+    doc.addEventListener('touchcancel', end);
+  }
+  attachSwipe(document, null);
+
+  // ── Each time a frame loads a page: wire swipe + hide-on-scroll (both check the layout live), then sync ──
+  frames.forEach((f, n) => f.addEventListener('load', () => {
+    let doc, win;
+    try { doc = f.contentDocument; win = f.contentWindow; } catch(e){ return; }
+    if (!doc || !doc.body) return;
+    attachSwipe(doc, f);
+    const st = doc.createElement('style');
+    // Under the brand bar, the first tile sits the same distance from the bar as the tiles sit from each other
+    st.textContent = 'html.bb-pad body{ padding-top:var(--bbh, 52px) !important }'
+      + ' html.bb-pad main.wrap{ padding-top:var(--tile-gap, 24px) !important }';
+    const gap = doc.querySelector('.grid') && win.getComputedStyle(doc.querySelector('.grid')).rowGap;
+    if (gap && gap !== 'normal') doc.documentElement.style.setProperty('--tile-gap', gap);
+    doc.head.appendChild(st);
+    win.addEventListener('pageshow', sync);   // pages restored by back/forward don't fire load
+    let last = win.scrollY;
+    win.addEventListener('scroll', () => {
+      if (!isPhone() || n !== idx || !onList(n)) return;
+      const y = win.scrollY, d = y - last;
+      if (y < 24) showBar(true);
+      else if (d > 6) showBar(false);
+      else if (d < -6) showBar(true);
+      last = y;
+    }, { passive:true });
+    sync();
+  }));
+
+  // Cache-bust on every open so edits to the excursion pages always show up
+  if (location.protocol !== 'data:') ids.forEach(load);
+
+  sync();
+  if (isPhone()){
+    // One-time hint that the other brand is a swipe away
+    let seen = false; try { seen = sessionStorage.getItem('swipeHint') === '1'; sessionStorage.setItem('swipeHint', '1'); } catch(e){}
+    if (!seen && !reduced) setTimeout(() => {
+      place(idx === 0 ? -48 : 48, true);
+      setTimeout(() => place(0, true), 520);
+    }, 1200);
+  }
+})();
+</script>
+</body>
+</html>
