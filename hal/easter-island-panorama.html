@@ -624,13 +624,203 @@ div.fact .fact-value{ justify-content:flex-start }
 .credit-card .credit-sub[hidden], .credit-banner .banner-sub[hidden]{ display:none }
 .credit-banner .banner-sub{ display:block }
 
-/* Phone: static tile values (Wheelchair, Meals) always break between words — "Meal / provided",
-   "Not / accessible" — so the two tiles in the row read the same whatever the width */
-@media (max-width:767px){ div.fact .fact-value b{ width:min-content } }
+/* Phone: tile values stay on one line where they fit; they wrap between words only on phones too narrow to hold them */
+@media (max-width:767px){ div.fact .fact-value b{ width:auto } }
 
 /* ───────────── This page’s photo (the only page-specific styling) ───────────── */
 /* easter-island-moai.webp: 2000×711 banner */
 .photo img{ object-position:60% 50% }
+
+/* ───────────── Open hero (this version): no box — the title block sits straight on the photo ─────────────
+   A full-bleed navy tint + progressive blur rides behind the text (it moves with the text, so the
+   guarantee holds through the parallax). Contrast is set for the worst case — a pure-white photo:
+   · badge + title (large text, 3:1): tint ≥ .55 → white ≈ 3.3:1; the badge also has its own .55 fill
+   · everything from just below the title top down (14px/12px copy, 90% white, 4.5:1): tint ≥ .76 → ≈ 5.0:1
+   The blur only softens the photo behind the copy; the numbers above don't rely on it. */
+:root{ --stack-top:56vw }   /* phone: half the second fact row clears the booking bar at 375×812 */
+@media (min-width:768px){ :root{ --stack-top:clamp(280px, calc(38vw + 52px), 372px) } }
+@media (min-width:1024px){ :root{ --stack-top:clamp(220px, calc(16vw + 52px), 372px) } }
+
+.card-wrap{ isolation:auto }
+.card-wrap::before,
+.card-wrap::after{
+  content:""; position:absolute; z-index:-1; pointer-events:none;
+  left:50%; width:100vw; transform:translateX(-50%);
+  top:-180px; bottom:-600px;
+}
+/* Linear blur: none at the top edge, full 6px by the title */
+.card-wrap::before{
+  -webkit-backdrop-filter:blur(6px) saturate(110%); backdrop-filter:blur(6px) saturate(110%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.2) 110px,rgba(0,0,0,.6) 180px,#000 240px);
+          mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.2) 110px,rgba(0,0,0,.6) 180px,#000 240px);
+}
+/* Tint, in px from 180px above the badge: badge top = 180, title top ≈ 216, small copy ≥ 240 */
+.card-wrap::after{
+  background:linear-gradient(180deg,
+    rgba(var(--ds-hal-blue-rgb),0) 0,
+    rgba(var(--ds-hal-blue-rgb),.12) 60px,
+    rgba(var(--ds-hal-blue-rgb),.34) 120px,
+    rgba(var(--ds-hal-blue-rgb),.55) 180px,
+    rgba(var(--ds-hal-blue-rgb),.76) 240px,
+    rgba(var(--ds-hal-blue-rgb),.84) 420px,
+    var(--navy) 640px);
+}
+
+/* Strip the glass from the title block only (fact tiles keep theirs) */
+.hero-card.glass{
+  background:none; border:0; border-radius:0; box-shadow:none; overflow:visible;
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+  padding:0;
+}
+.hero-card.glass::before, .hero-card.glass::after{ display:none }
+.hero-card .on-photo{ text-shadow:0 1px 16px rgba(var(--ds-hal-blue-rgb),.55) }
+.hero-title{ text-wrap:balance }
+.hero-card .key-row{ border-top-color:rgba(255,255,255,.22) }
+.hero-stack{ gap:20px }
+@media (min-width:768px){
+  .hero-card > .on-photo:first-child{ padding-right:40px }
+  .hero-card .key-row{ border-left-color:rgba(255,255,255,.22); padding-left:32px }
+  .hero-card .key + .key{ border-top-color:rgba(255,255,255,.22) }
+}
+
+/* Let the photo run on behind the copy; the text tint above handles the fade, so the photo's own
+   navy ramp starts later and the photo mask holds longer */
+:root{ --photo-h:100vw }   /* phone: square box = the whole square photo, full width (all three towers) */
+@media (min-width:768px){ :root{ --photo-h:clamp(640px, 72vw, 900px) } }
+@media (min-width:1024px){ :root{ --photo-h:max(600px, 52vw) } }
+.photo{
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 82%,rgba(0,0,0,.55) 92%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 0%,#000 82%,rgba(0,0,0,.55) 92%,transparent 100%);
+}
+.ramp{ top:calc(var(--photo-top) + var(--photo-h) * .78); height:calc(var(--photo-h) * .22) }
+
+/* ⓘ sits where the tint is .55: 75% white is only 2.5:1 over pure white, full white is 3.3:1 (3:1 non-text min) */
+.hero-card .xp-info{ color:#fff }
+
+/* No blur: the tint alone carries contrast */
+.card-wrap::before{ display:none }
+
+/* ≥768: "Start time" (12px) sits level with the badge, so the tint must already be ≥ .72 there (4.5:1 for 90% white) */
+@media (min-width:768px){
+  .card-wrap::after{
+    background:linear-gradient(180deg,
+      rgba(var(--ds-hal-blue-rgb),0) 0,
+      rgba(var(--ds-hal-blue-rgb),.16) 60px,
+      rgba(var(--ds-hal-blue-rgb),.46) 120px,
+      rgba(var(--ds-hal-blue-rgb),.72) 176px,
+      rgba(var(--ds-hal-blue-rgb),.78) 240px,
+      rgba(var(--ds-hal-blue-rgb),.84) 420px,
+      var(--navy) 640px);
+  }
+}
+
+/* Fact tiles: fill 30% then 20% lighter (.80/.77/.78 → .45/.43/.44), glass blur kept. They sit inside the hero
+   tint (≥ .84 that far down), so over a pure-white photo the combined navy is still ≥ .90 */
+.fact.glass{
+  background:linear-gradient(143.6deg,rgba(var(--ds-hal-blue-rgb),.45) 0%,rgba(var(--ds-hal-blue-rgb),.43) 50%,rgba(var(--ds-hal-blue-rgb),.44) 100%);
+}
+
+/* Phone: lighter text tint and tiles. Below the photo the hero stays solid navy (the photo's ramp),
+   so shorter or wider photos still land on navy. Where the photo does sit behind the copy, the tint
+   carries contrast on its own, set just over the minimum
+   for a pure-white backdrop: title zone .55 (3.3:1, needs 3), small copy .73 (≈4.8:1 for 90% white, needs 4.5).
+   Tiles add a .12 fill (combined ≈ .76, ≈5:1) to stay legible as tiles. Glass blur unchanged. */
+@media (max-width:767px){
+  .card-wrap::after{
+    background:linear-gradient(180deg,
+      rgba(var(--ds-hal-blue-rgb),0) 0,
+      rgba(var(--ds-hal-blue-rgb),.12) 60px,
+      rgba(var(--ds-hal-blue-rgb),.34) 120px,
+      rgba(var(--ds-hal-blue-rgb),.55) 180px,
+      rgba(var(--ds-hal-blue-rgb),.73) 240px,
+      rgba(var(--ds-hal-blue-rgb),.73) 100%);
+  }
+  .fact.glass{
+    background:linear-gradient(143.6deg,rgba(var(--ds-hal-blue-rgb),.13) 0%,rgba(var(--ds-hal-blue-rgb),.12) 50%,rgba(var(--ds-hal-blue-rgb),.12) 100%);
+  }
+}
+
+/* Scroll blur: eased in with the parallax and zoom (set from the scroll handler). The image overhangs the
+   photo box so blurred edges don't pull in a light fringe; the photo mask clips the overhang */
+.photo img{
+  position:absolute; inset:-28px; width:calc(100% + 56px); height:calc(100% + 56px); max-width:none;
+  filter:blur(var(--photo-blur,0px)); will-change:filter;
+}
+
+/* ───────────── Hero masthead (all sizes) ─────────────
+   One masthead, two arrangements. Phone stacks it: eyebrow tag (no box) → title → serif route deck → fine print →
+   port label over date and time → the price row (one link between two rules). Tablet and desktop keep the
+   two-column hero: the same title block on the left, the same port line and price row on the right, bottom-aligned.
+   Contrast over a pure-white photo: the tint reaches .73 navy at the eyebrow and holds, so every line in the
+   block is ≥4.75:1 (90% white small copy; dark-beige labels are higher). Gold is decoration only. */
+.card-wrap::after{
+  background:linear-gradient(180deg,
+    rgba(var(--ds-hal-blue-rgb),0) 0,
+    rgba(var(--ds-hal-blue-rgb),.2) 60px,
+    rgba(var(--ds-hal-blue-rgb),.5) 120px,
+    rgba(var(--ds-hal-blue-rgb),.73) 180px,
+    rgba(var(--ds-hal-blue-rgb),.73) 100%);
+}
+/* Tags keep their own boxed badge (each brand's original style; the badge fill also backs its text over the photo) */
+/* Title, deck, fine print */
+.hero-title{ font-size:32px }
+.hero-sub{ margin:8px 0 0 }
+.hero-sub .sub-route{ display:block; font:400 19px/1.3 var(--serif); color:var(--on-glass) }
+.hero-sub .sub-acc{ display:block; margin-top:4px; font-size:12px; line-height:var(--lh-body); color:var(--on-glass) }
+/* Port and date join the price block; the old meta lines and time/price column give way to it */
+.hero-meta, .hero-card .key-row{ display:none }
+.mband{ display:block; min-width:0 }
+.mband .mfacts{ margin:0; font-size:14px; line-height:var(--lh-body); color:var(--on-glass) }
+.mband .lbl{ display:block; margin-bottom:2px; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; line-height:var(--lh-body); color:var(--cream) }
+/* The price row is one link between two rules, like a list row (the booking bar's price also opens the pricing drawer) */
+.mband .mrow{ margin-top:16px; display:flex; align-items:center; gap:10px; min-height:60px; padding:14px 0;
+              border-top:1px solid rgba(255,255,255,.22); border-bottom:1px solid rgba(255,255,255,.22);
+              color:#fff; text-decoration:none; transition:opacity .2s }
+.mband .mrow:hover .go{ text-decoration:underline; text-underline-offset:3px }
+.mband .mrow:active{ opacity:.75 }
+.mband .mrow:focus-visible{ border-radius:0; outline-offset:2px }
+.mband .mrow .amt{ font:400 28px/1.1 var(--serif) }
+.mband .mrow .u{ margin-right:auto; font-size:14px; color:var(--on-glass); white-space:nowrap }
+.mband .mrow .go{ display:inline-flex; align-items:center; gap:4px; font-size:14px; font-weight:600; white-space:nowrap }
+.mband .mrow .go svg{ width:16px; height:16px; stroke-width:1.8 }
+
+/* Tablet and desktop: the same pieces side by side */
+@media (min-width:768px){
+  /* Gradient 15% denser than phone (each stop ×1.15): .23 / .575 / .84 */
+  .card-wrap::after{
+    background:linear-gradient(180deg,
+      rgba(var(--ds-hal-blue-rgb),0) 0,
+      rgba(var(--ds-hal-blue-rgb),.23) 60px,
+      rgba(var(--ds-hal-blue-rgb),.575) 120px,
+      rgba(var(--ds-hal-blue-rgb),.84) 180px,
+      rgba(var(--ds-hal-blue-rgb),.84) 100%);
+  }
+  .hero-card{ display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,340px); column-gap:48px; align-items:end }
+  .hero-card > .on-photo:first-child{ padding-right:0 }
+  .hero-title{ font-size:40px }
+  .hero-sub .sub-route{ font-size:20px }
+}
+/* Tablet: a slimmer price column and 36px title keep the title to two lines */
+@media (min-width:768px) and (max-width:1023px){
+  .hero-card{ grid-template-columns:minmax(0,1fr) 312px; column-gap:28px }
+  .hero-title{ font-size:36px }
+  .mband .mrow{ gap:8px }
+}
+
+/* No subtitle on this page: the route deck and fine print are simply absent */
+/* This page only (phone): where the hero copy starts — capped so the copy still overlaps the photo; the second fact row shows in full */
+@media (max-width:767px){ :root{ --stack-top:68vw } }
+
+/* ───────────── Long-title rule (every page) ─────────────
+   The hero copy never starts higher than the standard line for its screen size, so the photo always keeps its
+   minimum visible height. A page may start its copy LOWER (to show more photo), never higher; a long title such as
+   "Kings & Vikings: The Viking Ship Museum & Roskilde Cathedral curated with The HISTORY Channel" therefore pushes
+   the price row and fact boxes down instead of climbing into the photo. Contrast is unaffected: the tint moves
+   with the copy. Enforced with max(), so a lower --stack-top set by any future page is ignored. */
+:root{ --stack-top-min:56vw }
+@media (min-width:768px){ :root{ --stack-top-min:clamp(280px, calc(38vw + 52px), 372px) } }
+@media (min-width:1024px){ :root{ --stack-top-min:clamp(220px, calc(16vw + 52px), 372px) } }
+.hero-stack{ padding-top:calc(56px + max(var(--stack-top), var(--stack-top-min))) }
 </style>
 </head>
 <body>
@@ -697,6 +887,11 @@ div.fact .fact-value{ justify-content:flex-start }
             <p class="key-label">Per adult</p>
             <div class="key-price"><div class="key-value">$299.95</div><a class="card-link" href="#price">View all pricing</a></div>
           </div>
+        </div>
+              <!-- Port label over date and time, then the price row as one link (open hero, direction 04) -->
+        <div class="mband on-photo">
+          <p class="mfacts"><span class="lbl">Easter Island, Chile</span>Day 16 · Wed, Jan 20, 2027 · <span id="mStart">10:00 AM</span></p>
+          <a class="mrow" href="#price" aria-label="$299.95 per adult. View all pricing"><span class="amt">$299.95</span><span class="u">per adult</span><span class="go">View all pricing<svg class="i" aria-hidden="true"><use href="#i-right"/></svg></span></a>
         </div>
       </article>
     </div>
@@ -1015,6 +1210,7 @@ div.fact .fact-value{ justify-content:flex-start }
     $('#startValue').innerHTML = multi()
       ? `<button class="key-value" data-open="times" aria-haspopup="dialog">${st || TIMES.length + ' times'}<svg class="i"><use href="#i-right"/></svg></button>`
       : `<div class="key-value">${st}</div>`;
+    const mStart = $('#mStart'); if (mStart) mStart.textContent = st || TIMES.length + ' times';
     $('#barLine2').innerHTML = EX.dateShort + ' · ' + (st || `<span class="pick">${TIMES.length} times</span>`);
     $('#times').hidden = !multi();
     $('#timeChips').innerHTML = TIMES.map(t => `<button class="chip${t.status === 'soldout' ? ' soldout' : ''}" role="radio" aria-checked="${t.id === state.slot}" data-time="${t.id}">
@@ -1080,6 +1276,9 @@ div.fact .fact-value{ justify-content:flex-start }
       const zoomP = Math.min(1, y / photo.offsetHeight);
       photo.style.setProperty('--photo-s', (1 + zoomP * 0.12).toFixed(4));
       photo.style.setProperty('--dim', (p * 0.25).toFixed(3));
+      // Blur eases in (quadratic) and is near full by the time the hero has almost scrolled away
+      const blurP = Math.min(1, y / (heroH * 0.85));
+      photo.style.setProperty('--photo-blur', (18 * blurP * blurP).toFixed(2) + 'px');
       wash.style.setProperty('--wash-y', (y * drift * 0.6).toFixed(1) + 'px');
       const blur = (14 + p * 10).toFixed(1) + 'px';
       glassEls.forEach((el, i) => {
