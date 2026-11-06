@@ -1110,10 +1110,10 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
         <span class="fact-label"><svg class="i"><use href="#i-clock"/></svg><span>Duration</span></span>
         <span class="fact-value"><b>53 hours</b><svg class="i"><use href="#i-right"/></svg></span>
       </button>
-      <div class="fact glass" role="listitem">
+      <button class="fact glass" role="listitem" data-drawer="activity" aria-haspopup="dialog">
         <span class="fact-label"><svg class="i"><use href="#i-pulse"/></svg><span>Activity</span></span>
-        <span class="fact-value"><b>Strenuous</b></span>
-      </div>
+        <span class="fact-value"><b>Strenuous</b><svg class="i"><use href="#i-right"/></svg></span>
+      </button>
       <div class="fact glass" role="listitem">
         <span class="fact-label"><svg class="i"><use href="#i-access"/></svg><span>Wheelchair</span></span>
         <span class="fact-value"><b>Not accessible</b></span>
@@ -1293,7 +1293,7 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
         <p>Sold Out offers the waitlist, per the SBN FAQ.</p>
       </fieldset>
       <fieldset style="grid-column:1/-1"><legend>Template gaps (no SBN source copy)</legend>
-        <ul class="proto-gaps"><li>Wheelchair tile shows "Not accessible" (the HAL template’s value when there’s no data). The live SBN page doesn’t state access.</li><li>Two-guest notice link: "View single-person booking" is FPO copy, and its target isn’t known.</li><li>Meals tile reads "Meals Included" (your wording). The live page says "Includes: Meal".</li><li>Cancellation row shows this journey’s 60-day rule, taken from its Notes. The FAQ drawer still has the generic SBN Cancellation Policy (full refund 3+ days before embarkation), which contradicts it for this journey.</li><li>Live copy typos kept: "Your next visit the magnificent temple" and "Ta Phrom".</li><li>Itinerary: meals aren’t called out per day, because the API can’t supply them (user). Meals appear only in the day text.</li><li>Ship times: none on the live page, and the journey reboards in Ho Chi Minh City, not Sihanoukville.</li><li>Activity level definitions: no SBN copy, so the Activity tile doesn’t open a drawer.</li><li>Excursion credits: no SBN data. The credits card and banner are removed.</li><li>Ratings (4 Ratings, 4.5 stars on the live page) are hidden.</li><li>Ship times: none on the live pages.</li><li>ⓘ tooltips (Sold Out, Strenuous): never captured.</li><li>Classic Collection: group size and style are lorem ipsum. Its new body copy calls it "our Landmark Collection", so the name needs confirming.</li><li>FAQ "Shore Excursion Brochure" points to a "Download eBrochure" button that this page doesn’t have.</li><li>FAQ "Pre, Post or Mid-Cruise Overland Journeys" says "Journey Collection", but this page now uses The Reserve Collection.</li></ul>
+        <ul class="proto-gaps"><li>Wheelchair tile shows "Not accessible" (the HAL template’s value when there’s no data). The live SBN page doesn’t state access.</li><li>Two-guest notice link: "View single-person booking" is FPO copy, and its target isn’t known.</li><li>Meals tile reads "Meals Included" (your wording). The live page says "Includes: Meal".</li><li>Cancellation row shows this journey’s 60-day rule, taken from its Notes. The FAQ drawer still has the generic SBN Cancellation Policy (full refund 3+ days before embarkation), which contradicts it for this journey.</li><li>Live copy typos kept: "Your next visit the magnificent temple" and "Ta Phrom".</li><li>Itinerary: meals aren’t called out per day, because the API can’t supply them (user). Meals appear only in the day text.</li><li>Ship times: none on the live page, and the journey reboards in Ho Chi Minh City, not Sihanoukville.</li><li>Excursion credits: no SBN data. The credits card and banner are removed.</li><li>Ratings (4 Ratings, 4.5 stars on the live page) are hidden.</li><li>Ship times: none on the live pages.</li><li>ⓘ tooltips (Sold Out, Strenuous): never captured.</li><li>Classic Collection: group size and style are lorem ipsum. Its new body copy calls it "our Landmark Collection", so the name needs confirming.</li><li>FAQ "Shore Excursion Brochure" points to a "Download eBrochure" button that this page doesn’t have.</li><li>FAQ "Pre, Post or Mid-Cruise Overland Journeys" says "Journey Collection", but this page now uses The Reserve Collection.</li></ul>
       </fieldset>
       <button type="button" class="proto-reset" id="protoReset">Reset all states</button>
     </form>
@@ -1346,6 +1346,15 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
       <p class="coll-facts"><span>Group size:<b>Lorem ipsum</b></span><span>Style:<b>Lorem &amp; ipsum</b></span></p>
       <p class="coll-lorem">Group size and style are placeholders — product to supply.</p>
     </article>
+  </div>
+</template>
+
+<template id="t-activity" data-label="Activity level">
+  <h2>Strenuous</h2>
+  <div class="levels">
+    <div class="level"><b>Easy activity</b><p>Very light activity including short distances to walk; may include steps.</p></div>
+    <div class="level"><b>Moderate activity</b><p>Requires intermittent effort throughout, including walking medium distances over uneven surfaces and/or steps.</p></div>
+    <div class="level current"><b>Strenuous activity</b> <small>· This excursion</small><p>Requires active participation, walking long distances over uneven and steep terrain or on steps. In certain instances, paddling or other non-walking activity is required, and guests must be able to participate without discomfort or difficulty breathing.</p></div>
   </div>
 </template>
 
