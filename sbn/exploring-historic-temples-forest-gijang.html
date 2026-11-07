@@ -412,6 +412,15 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .bar-line1 .u{ font-size:14px; color:var(--n70) }   /* Body/B3-regular */
 .bar-line1 svg{ width:14px; height:14px; stroke-width:2.4; color:var(--n70); align-self:center; transition:transform .3s var(--ease) }
 .bar-price[aria-expanded="true"] .bar-line1 svg{ transform:rotate(180deg) }
+/* Price button + date line. The date line sits outside the button so "· 3 times" can be its own link (jumps to Start times) */
+.bar-info{ flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center }
+.bar-info .bar-price{ flex:none; align-self:flex-start; max-width:100% }
+.bar-info .bar-line2{ margin:0 }
+.bar-times a{ color:var(--blue); font-weight:700; text-decoration:underline; text-underline-offset:3px }
+/* Several start times: the preselected time is the control that changes it (opens the Start times drawer) */
+.mband .mtime{ display:inline-flex; align-items:center; gap:2px; padding:0; border:0; background:none; font:inherit; font-weight:600; color:#fff;
+               text-decoration:underline; text-underline-offset:3px; cursor:pointer }
+.mband .mtime svg{ width:16px; height:16px; stroke-width:2 }
 .bar-line2{ font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B4-regular */
 /* SBN DS Button · Type=primary, Size=large (label Body/B1-semibold, as in Figma).
    Hover SBN Blue Hover, pressed SBN Blue Pressed, disabled Neutral 10 / Neutral 30 */
@@ -996,7 +1005,7 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
       rgba(var(--ds-blue-rgb),.84) 180px,
       rgba(var(--ds-blue-rgb),.84) 100%);
   }
-  .hero-card{ display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,340px); column-gap:48px; align-items:end }
+  .hero-card{ display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,340px); column-gap:48px; align-items:center }   /* title block centred on the details column */
   .hero-card > .on-photo:first-child{ padding-right:0 }
   .hero-title{ font-size:40px }
   .hero-sub .sub-route{ font-size:20px }
@@ -1090,7 +1099,7 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
         </div>
               <!-- Port label over date and time, then the price row as one link (open hero, direction 04) -->
         <div class="mband on-photo">
-          <p class="mfacts"><span class="lbl">Busan (Pusan), South Korea</span>Day 5 · Wed, Mar 3, 2027 · 9:00 AM</p>
+          <p class="mfacts"><span class="lbl">Busan (Pusan), South Korea</span>Day 5 · Wed, Mar 3, 2027 · <span id="mStart">9:00 AM</span></p>
           <a class="mrow" href="#price" aria-label="$185.00 per adult. View all pricing"><span class="amt">$185.00</span><span class="u">per adult</span><span class="go">View all pricing<svg class="i" aria-hidden="true"><use href="#i-right"/></svg></span></a>
         </div>
       </article>
@@ -1154,6 +1163,12 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
     <button class="text-link compare-link" data-drawer="collections" aria-haspopup="dialog">How our collections differ<svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
   </section>
 
+  <section class="block" id="times" aria-labelledby="timesTitle" hidden>
+    <p class="eyebrow">Start times</p>
+    <h2 class="section-title" id="timesTitle">Choose a time on Mar 3</h2>
+    <div class="time-chips" role="radiogroup" aria-labelledby="timesTitle" id="timeChips"></div>
+  </section>
+
   <section class="block" id="price" aria-labelledby="priceEyebrow">
     <p class="eyebrow" id="priceEyebrow">Price</p>
     <div class="price-heading"><span class="amt">$185.00</span><span class="unit">per adult</span></div>
@@ -1215,6 +1230,11 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
         <label><input type="radio" name="avail" value="soldout"> Sold Out</label>
         <p>Sold Out offers the waitlist, per the SBN FAQ.</p>
       </fieldset>
+      <fieldset><legend>Start times</legend>
+        <label><input type="radio" name="times" value="single" checked> One start time</label>
+        <label><input type="radio" name="times" value="multi"> Multiple times · first available preselected</label>
+        <p>No SBN page has multiple departures yet; the extra times are filler (2-hour steps) until the API provides them. Each time has its own availability.</p>
+      </fieldset>
       <fieldset style="grid-column:1/-1"><legend>Template gaps (no SBN source copy)</legend>
         <ul class="proto-gaps"><li>The description opens "Don’t miss this chance to also visit…", but the live page has no lead-in, so the Haedong Yonggungsa temple visit itself isn’t described.</li><li>Curated Collection is set at your request. The live page shows no collection.</li><li>Wheelchair tile shows "Not accessible", based on the Notes ("Not advisable for guests using a wheelchair").</li><li>Meals aren’t mentioned, so there’s no Meals tile.</li><li>Single-day excursion: no itinerary section. The description sits under Top 3 as "Read the full description".</li><li>Cancellation row uses the generic SBN FAQ policy; the live page states no rule of its own.</li><li>Excursion credits: no SBN data. The credits card and banner are removed.</li><li>Ratings (4 Ratings, 4.5 stars on the live page) are hidden.</li><li>Ship times: none on the live pages.</li><li>ⓘ tooltips (Sold Out, Strenuous): never captured.</li><li>Classic Collection: group size and style are lorem ipsum. Its new body copy calls it "our Landmark Collection", so the name needs confirming.</li><li>FAQ "Shore Excursion Brochure" points to a "Download eBrochure" button that this page doesn’t have.</li><li>FAQ "Pre, Post or Mid-Cruise Overland Journeys" says "Journey Collection", but this page now uses The Reserve Collection.</li></ul>
       </fieldset>
@@ -1226,10 +1246,12 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
 <!-- Floating booking bar -->
 <div class="bar-zone" id="barZone">
   <div class="bar">
-    <button class="bar-price" id="barPrice" data-drawer="pricing" aria-haspopup="dialog" aria-expanded="false" aria-label="Show price details">
-      <span class="bar-line1"><b>$185.00</b><span class="u">/ adult</span><svg class="i"><use href="#i-up"/></svg></span>
-      <span class="bar-line2">Mar 3 · 9:00 AM</span>
-    </button>
+    <div class="bar-info">
+      <button class="bar-price" id="barPrice" data-drawer="pricing" aria-haspopup="dialog" aria-expanded="false" aria-label="Show price details">
+        <span class="bar-line1"><b>$185.00</b><span class="u">/ adult</span><svg class="i"><use href="#i-up"/></svg></span>
+      </button>
+      <p class="bar-line2"><span id="barLine2">Mar 3 · 9:00 AM</span><span class="bar-times" id="barTimesWrap" hidden> · <a href="#times" id="barTimes">3 times</a></span></p>
+    </div>
     <button class="btn-primary" id="cta">Reserve</button>
   </div>
 </div>
@@ -1290,11 +1312,16 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
   <p class="d-sub">Details</p>
   <div class="d-rows">
     <div class="d-row"><div class="top"><b>Date</b><span>Wed, Mar 3, 2027</span></div></div>
-    <div class="d-row"><div class="top"><b>Start time</b><span>9:00 AM</span></div></div>
+    <div class="d-row"><div class="top"><b>Start time</b><span data-slot="start">9:00 AM</span></div></div>
     <div class="d-row"><div class="top"><b>Duration</b><span>4.5 hours</span></div></div>
     <div class="d-row"><div class="top"><b>Port</b><span>Busan (Pusan), South Korea</span></div></div>
   </div>
   <button class="btn-primary sheet-cta" data-slot="cta">Reserve</button>
+</template>
+
+<template id="t-times" data-label="Start times">
+  <h2>Choose a time on Mar 3</h2>
+  <div class="levels" role="radiogroup" aria-label="Start time" data-slot="options"></div>
 </template>
 
 <template id="t-faq" data-label="Shore Excursions FAQs" data-full>
@@ -1395,7 +1422,7 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
   $('#notesSummary').textContent = notes.split(/(?<=[.;])\s/)[0].replace(/[;.]$/, '');
 
   /* ── State ─────────────────────────────── */
-  const state = { avail: EX.avail, badge: EX.badge };
+  const state = { avail: EX.avail, badge: EX.badge, times: 'single', slot: null };
   // Availability is a fixed label from the excursion system. Sold Out → waitlist (SBN FAQ "Waitlist for Unavailable Excursions")
   const AVAIL = {
     available: { pill: null, cta: 'Reserve' },
@@ -1403,8 +1430,32 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
     soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: 'Join waitlist' },
   };
 
+  // Start times: one departure on today's SBN pages. "Multiple times" uses filler times (2-hour steps) until the API provides them
+  const addHours = (t, h) => {
+    const [, hh, mm, ap] = t.match(/(\d+):(\d+)\s*(AM|PM)/);
+    const m = ((+hh % 12) + (ap === 'PM' ? 12 : 0) + h) * 60 + +mm, H = Math.floor(m / 60) % 24;
+    return `${H % 12 || 12}:${String(m % 60).padStart(2, '0')} ${H < 12 ? 'AM' : 'PM'}`;
+  };
+  const TIMES = [['t0', 0, 'available'], ['t1', 2, 'limited'], ['t2', 4, 'soldout']].map(([id, h, status]) => ({ id, time: addHours(EX.start, h), status }));
+  const STATUS_TEXT = { available: 'Available', limited: 'Limited Capacity', soldout: 'Sold Out' };
+  const multi = () => state.times === 'multi';
+  const slot = () => TIMES.find(t => t.id === state.slot) || null;
+  // The first time that isn't sold out is preselected (all sold out → the first, which shows Sold Out)
+  const firstAvailable = () => TIMES.find(t => t.status !== 'soldout') || TIMES[0];
+  const effAvail = () => multi() ? (slot() ? slot().status : 'available') : state.avail;
+  const startTime = () => multi() && slot() ? slot().time : EX.start;
+
+  // Bar date line: when "date · time · 3 times" doesn't fit beside the button (e.g. Join waitlist), drop the date (the hero still shows it)
+  function fitBarLine() {
+    const l2 = $('.bar-info .bar-line2'), d = $('#barLine2'), st = startTime();
+    if (!st) return;
+    d.textContent = EX.dateShort + ' · ' + st;
+    if (multi() && l2.scrollWidth > l2.clientWidth) d.textContent = st;
+  }
+  addEventListener('resize', () => fitBarLine());
+
   function apply() {
-    const a = AVAIL[state.avail];
+    const a = AVAIL[effAvail()];
     $$('#xpBadges [data-badge]').forEach(b => b.hidden = b.dataset.badge !== state.badge);
     $('#xpBadges').hidden = state.badge === 'none';
     // Collection section shows only this excursion's collection; no collection → no section
@@ -1415,6 +1466,23 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
     pill.classList.toggle('muted', !!a.muted);
     $('#statusText').innerHTML = a.pill || '';
     $('#cta').textContent = a.cta;
+    // Booking bar: a sold-out departure shows "Sold Out" in place of the price line
+    const bl1 = $('#barPrice .bar-line1'); if (!bl1.dataset.price) bl1.dataset.price = bl1.innerHTML;
+    const barSold = effAvail() === 'soldout';
+    // Start times: hero time becomes the control; the bar adds "· 3 times" next to the date
+    const st = startTime();
+    $('#mStart').innerHTML = multi()
+      ? `<button type="button" class="mtime" data-open="times" aria-haspopup="dialog" aria-label="Start time ${st}. Change time">${st}<svg class="i" aria-hidden="true"><use href="#i-down"/></svg></button>`
+      : st;
+    $('#barLine2').textContent = EX.dateShort + ' · ' + st;
+    $('#barTimesWrap').hidden = !multi();
+    $('#barTimes').textContent = TIMES.length + ' times';
+    fitBarLine();
+    $('#times').hidden = !multi();
+    $('#timeChips').innerHTML = TIMES.map(t => `<button class="chip${t.status === 'soldout' ? ' soldout' : ''}" role="radio" aria-checked="${t.id === state.slot}" data-time="${t.id}">
+      <span class="t">${t.time}</span><span class="s${t.status === 'limited' ? ' warn' : ''}">${STATUS_TEXT[t.status]}</span></button>`).join('');
+    bl1.innerHTML = barSold ? '<b>Sold Out</b>' : bl1.dataset.price;
+    $('#barPrice').setAttribute('aria-label', barSold ? 'Sold Out. Show price details' : 'Show price details');
   }
 
   /* ── Toast / hand-offs ─────────────────── */
@@ -1432,7 +1500,7 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
     e.preventDefault();
     showToast(`Hand-off: ${h.dataset.handoff}`);
   });
-  const primaryAction = () => showToast(`${AVAIL[state.avail].cta} → booking flow`);
+  const primaryAction = () => showToast(`${AVAIL[effAvail()].cta}${multi() ? ' · ' + startTime() : ''} → booking flow`);
   $('#cta').addEventListener('click', primaryAction);
 
   // Tiles that point at a section (Duration, Includes, Hotel → Itinerary)
@@ -1514,7 +1582,8 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
 
   function fillPricing() {
     const cta = $('[data-slot="cta"]', body);
-    cta.textContent = AVAIL[state.avail].cta;
+    cta.textContent = AVAIL[effAvail()].cta;
+    $$('[data-slot="start"]', body).forEach(el => el.textContent = startTime());
     cta.addEventListener('click', () => { closeDrawer(); primaryAction(); });
   }
   // Collections: mark this excursion's collection and list it first
@@ -1529,6 +1598,35 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
     if (cur) list.prepend(cur);
   }
 
+  function fillTimes() {
+    const box = $('[data-slot="options"]', body);
+    box.innerHTML = TIMES.map(t => {
+      const cur = t.id === state.slot;
+      return `<button class="level time-opt${cur ? ' current' : ''}" role="radio" aria-checked="${cur}" data-pick="${t.id}">
+        <span class="txt"><b>${t.time}</b> <small class="${t.status === 'limited' ? 'warn' : ''}">· ${STATUS_TEXT[t.status]}</small></span>
+        <span class="radio" aria-hidden="true"></span></button>`;
+    }).join('');
+    box.addEventListener('click', e => {
+      const o = e.target.closest('[data-pick]');
+      if (!o) return;
+      pickTime(o.dataset.pick);
+      closeDrawer();
+      showToast(`${slot().time} selected`);
+    });
+  }
+  function pickTime(id) { state.slot = id; apply(); }
+  document.addEventListener('click', e => {
+    const c = e.target.closest('#timeChips [data-time]');
+    if (c) return pickTime(c.dataset.time);
+    const o = e.target.closest('[data-open]');
+    if (o) openDrawer(o.dataset.open, o);
+  });
+  $('#barTimes').addEventListener('click', e => {
+    e.preventDefault();
+    $('#times').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
+    const cur = $('#timeChips [aria-checked="true"]'); if (cur) cur.focus({ preventScroll: true });
+  });
+
   function openDrawer(name, from) {
     const t = document.getElementById('t-' + name);
     if (!t) return;
@@ -1541,6 +1639,7 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
     sheet.classList.toggle('full', 'full' in t.dataset);
     if (name === 'pricing') { fillPricing(); $('#barPrice').setAttribute('aria-expanded', 'true'); }
     if (name === 'collections') fillCollections();
+    if (name === 'times') fillTimes();
     sheet.style.setProperty('--drag', '0px');
     layer.setAttribute('aria-hidden', 'false');
     layer.classList.add('open');
@@ -1603,6 +1702,7 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
   const CHANGED = {
     badge: () => state.badge === 'none' ? $('#heroCard') : $('#collection'),
     avail: () => $('#cardWrap'),
+    times: () => multi() ? $('#mStart') : $('#heroCard'),
   };
   function revealChange(name) {
     const el = CHANGED[name] && CHANGED[name]();
@@ -1615,7 +1715,9 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
   }
   const DEFAULTS = { ...state };
   $('#protoPanel').addEventListener('change', e => {
-    state[e.target.name] = e.target.value;
+    const { name, value } = e.target;
+    if (name === 'times') { state.times = value; state.slot = value === 'multi' ? firstAvailable().id : null; }
+    else state[name] = value;
     apply();
     revealChange(e.target.name);
   });

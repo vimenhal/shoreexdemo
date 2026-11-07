@@ -406,6 +406,11 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .bar-line1 .u{ font-size:14px; color:var(--n70) }   /* Body/B3-regular */
 .bar-line1 svg{ width:14px; height:14px; stroke-width:2.4; color:var(--n70); align-self:center; transition:transform .3s var(--ease) }
 .bar-price[aria-expanded="true"] .bar-line1 svg{ transform:rotate(180deg) }
+/* Price button + date line. The date line sits outside the button so "· 3 times" can be its own link (jumps to Start times) */
+.bar-info{ flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center }
+.bar-info .bar-price{ flex:none; align-self:flex-start; max-width:100% }
+.bar-info .bar-line2{ margin:0 }
+.bar-times a{ color:var(--hal-blue); font-weight:700; text-decoration:underline; text-underline-offset:3px }
 .bar-line2{ font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B4-regular */
 /* HAL DS Button · Type=primary, Size=large (label Body/B1-semibold, as in Figma).
    Hover HAL Blue Hover, pressed HAL Blue Pressed, disabled Neutral 10 / Neutral 30 */
@@ -538,7 +543,7 @@ div.fact .fact-value{ justify-content:flex-start }
 
 /* Excursion credits card — matches Figma "Dining credit" (HAL Mobile App Redesign 2026, 14953:27539):
    light blue fill, Neutral 20 border, radius 8, filled Dutch Orange star, Body/B3 HAL Blue with the amount in semibold.
-   Opens to "Using your excursion credit" — that copy is FPO until product confirms it. */
+   Opens to the credit each guest carries (guest names are placeholders until product confirms the credits data). */
 .credit-card{ margin-top:20px; background:var(--credit-fill); border:1px solid var(--ds-n20); border-radius:8px; color:var(--hal-blue) }
 .credit-card .credit-head{ width:100%; min-height:var(--row-h); display:flex; align-items:center; gap:8px; padding:8px 12px; text-align:left; color:var(--hal-blue); border-radius:8px }
 .credit-card .star{ width:24px; height:24px; fill:var(--ds-dutch-orange); stroke:none; flex:none }
@@ -548,6 +553,13 @@ div.fact .fact-value{ justify-content:flex-start }
 .credit-rules{ margin:0 0 12px; padding:8px 12px 0; border-top:1px solid var(--ds-n20); font-size:12px; line-height:var(--lh-body) }
 .credit-rules .credit-rules-title{ margin:0; font-weight:600; color:var(--hal-blue) }   /* Body/B4-semibold */
 .credit-rules ul{ margin:4px 0 0; padding-left:18px; color:var(--n90) }   /* Body/B4-regular */
+/* Credits by guest: each guest on the booking and the credit they carry (guest names are placeholders until the credits API supplies them) */
+.credit-rules .credit-guests{ list-style:none; margin:0; padding:0 }
+.credit-guests li{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:6px 0; font-size:14px; color:var(--n90) }   /* Body/B3-regular */
+.credit-guests li + li{ border-top:1px solid var(--ds-n20) }
+.credit-guests li b{ font-weight:600; color:var(--hal-blue); white-space:nowrap }   /* Body/B3-semibold */
+/* Every size: the title breaks after "has", so the credit amount sits on its own line */
+.credit-card .credit-text > span:first-child b{ display:block }
 .sheet .credit-card{ margin-top:0 }
 
 /* Know before you go: a row with a value and nothing to expand */
@@ -783,6 +795,10 @@ div.fact .fact-value{ justify-content:flex-start }
 .mband .mrow .u{ margin-right:auto; font-size:14px; color:var(--on-glass); white-space:nowrap }
 .mband .mrow .go{ display:inline-flex; align-items:center; gap:4px; font-size:14px; font-weight:600; white-space:nowrap }
 .mband .mrow .go svg{ width:16px; height:16px; stroke-width:1.8 }
+/* Several start times: the preselected time is the control that changes it (opens the Start times drawer) */
+.mband .mtime{ display:inline-flex; align-items:center; gap:2px; padding:0; border:0; background:none; font:inherit; font-weight:600; color:#fff;
+               text-decoration:underline; text-underline-offset:3px; cursor:pointer }
+.mband .mtime svg{ width:16px; height:16px; stroke-width:2 }
 
 /* Tablet and desktop: the same pieces side by side */
 @media (min-width:768px){
@@ -795,7 +811,7 @@ div.fact .fact-value{ justify-content:flex-start }
       rgba(var(--ds-hal-blue-rgb),.84) 180px,
       rgba(var(--ds-hal-blue-rgb),.84) 100%);
   }
-  .hero-card{ display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,340px); column-gap:48px; align-items:end }
+  .hero-card{ display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,340px); column-gap:48px; align-items:center }   /* title block centred on the details column */
   .hero-card > .on-photo:first-child{ padding-right:0 }
   .hero-title{ font-size:40px }
   .hero-sub .sub-route{ font-size:20px }
@@ -954,11 +970,9 @@ div.fact .fact-value{ justify-content:flex-start }
     <div class="price-heading"><span class="amt">$299.95</span><span class="unit">per adult</span></div>
     <!-- Excursion credits: CONFIRM WITH PRODUCT what credit data and copy can be shown -->
     <div class="credit-card" id="creditCard">
-      <button class="credit-head" aria-expanded="false" aria-controls="creditRules"><svg class="i star" aria-hidden="true"><use href="#i-star"/></svg><span class="credit-text"><span id="creditTitle">You have <b>2 excursion credits of $100</b></span><span class="credit-sub" data-credit-sub hidden>One credit is used per guest</span></span><svg class="i chev" aria-hidden="true"><use href="#i-down"/></svg></button>
+      <button class="credit-head" aria-expanded="false" aria-controls="creditRules"><svg class="i star" aria-hidden="true"><use href="#i-star"/></svg><span class="credit-text"><span id="creditTitle">Your party has <b>2 excursion credits of $100</b></span></span><svg class="i chev" aria-hidden="true"><use href="#i-down"/></svg></button>
       <div class="collapse" id="creditRules"><div><div class="credit-rules">
-        <!-- FPO: credit rules copy taken from Figma "Dining credit" (14953:27539). Not on the live pages — needs product confirmation. -->
-        <p class="credit-rules-title">Using your excursion credit</p>
-        <ul><li>Your credit covers up to the dollar amount listed.</li><li>Credits expire at the end of the voyage.</li></ul>
+        <ul class="credit-guests" data-credit-guests><li><span>Robert Cruiser</span><b>$100 credit</b></li><li><span>Rhonda Cruiser</span><b>$100 credit</b></li></ul>
       </div></div></div>
     </div>
   </section>
@@ -1006,9 +1020,8 @@ div.fact .fact-value{ justify-content:flex-start }
     <form class="proto-panel" id="protoPanel">
       <fieldset><legend>Start times</legend>
         <label><input type="radio" name="times" value="single" checked> One start time</label>
-        <label><input type="radio" name="times" value="multi"> Multiple times · none picked</label>
-        <label><input type="radio" name="times" value="multi-picked"> Multiple times · first picked</label>
-        <p>Extra times are filler until the API provides them. With multiple times, each time has its own availability.</p>
+        <label><input type="radio" name="times" value="multi"> Multiple times · first available preselected</label>
+        <p>Extra times are filler until the API provides them. With multiple times, each time has its own availability. The first available time is preselected; guests change it from the hero time or the Start times section.</p>
       </fieldset>
       <fieldset><legend>Experience badge</legend>
         <label><input type="radio" name="badge" value="none"> None</label>
@@ -1031,7 +1044,6 @@ div.fact .fact-value{ justify-content:flex-start }
         <label><input type="radio" name="creditValue" value="100" checked> $100</label>
         <label><input type="radio" name="creditValue" value="200"> $200</label>
         <label><input type="radio" name="creditValue" value="300"> $300</label>
-        <p>One credit is used per guest — shown whenever there is more than one.</p>
       </fieldset>
       <fieldset><legend>Ship times</legend>
         <label><input type="radio" name="ship" value="both" checked> Arrive + all aboard</label>
@@ -1047,14 +1059,16 @@ div.fact .fact-value{ justify-content:flex-start }
 <div class="bar-zone" id="barZone">
   <div class="credit-banner hidden" id="creditBanner" role="status">
     <strong id="bannerTitle">2 excursion credits of $100 available</strong>
-    <span class="banner-sub" data-credit-sub hidden>One credit is used per guest</span>
+    
     <button aria-label="Dismiss" id="bannerClose"><svg class="i"><use href="#i-close"/></svg></button>
   </div>
   <div class="bar">
-    <button class="bar-price" id="barPrice" data-drawer="pricing" aria-haspopup="dialog" aria-expanded="false" aria-label="Show price details">
-      <span class="bar-line1"><b>$299.95</b><span class="u">/ adult</span><svg class="i"><use href="#i-up"/></svg></span>
-      <span class="bar-line2" id="barLine2">Apr 18 · 9:00 AM</span>
-    </button>
+    <div class="bar-info">
+      <button class="bar-price" id="barPrice" data-drawer="pricing" aria-haspopup="dialog" aria-expanded="false" aria-label="Show price details">
+        <span class="bar-line1"><b>$299.95</b><span class="u">/ adult</span><svg class="i"><use href="#i-up"/></svg></span>
+      </button>
+      <p class="bar-line2"><span id="barLine2">Apr 18 · 9:00 AM</span><span class="bar-times" id="barTimesWrap" hidden> · <a href="#times" id="barTimes">3 times</a></span></p>
+    </div>
     <button class="btn-primary" id="cta">Reserve</button>
   </div>
 </div>
@@ -1104,11 +1118,9 @@ div.fact .fact-value{ justify-content:flex-start }
   <div data-slot="credits">
     <p class="d-sub">Excursion credits</p>
     <div class="credit-card">
-      <button class="credit-head" aria-expanded="false" aria-controls="sheetCreditRules"><svg class="i star" aria-hidden="true"><use href="#i-star"/></svg><span class="credit-text"><span data-slot="credit-title">You have <b>2 excursion credits of $100</b></span><span class="credit-sub" data-credit-sub hidden>One credit is used per guest</span></span><svg class="i chev" aria-hidden="true"><use href="#i-down"/></svg></button>
+      <button class="credit-head" aria-expanded="false" aria-controls="sheetCreditRules"><svg class="i star" aria-hidden="true"><use href="#i-star"/></svg><span class="credit-text"><span data-slot="credit-title">Your party has <b>2 excursion credits of $100</b></span></span><svg class="i chev" aria-hidden="true"><use href="#i-down"/></svg></button>
       <div class="collapse" id="sheetCreditRules"><div><div class="credit-rules">
-        <!-- FPO: credit rules copy taken from Figma "Dining credit" (14953:27539). Not on the live pages — needs product confirmation. -->
-        <p class="credit-rules-title">Using your excursion credit</p>
-        <ul><li>Your credit covers up to the dollar amount listed.</li><li>Credits expire at the end of the voyage.</li></ul>
+        <ul class="credit-guests" data-credit-guests><li><span>Robert Cruiser</span><b>$100 credit</b></li><li><span>Rhonda Cruiser</span><b>$100 credit</b></li></ul>
       </div></div></div>
     </div>
   </div>
@@ -1183,6 +1195,8 @@ div.fact .fact-value{ justify-content:flex-start }
   const TIMES = EX.times;
   const multi = () => state.times === 'multi';
   const slot = () => TIMES.find(t => t.id === state.slot) || null;
+  // Several times: the first one that isn't sold out is preselected (all sold out → the first, which shows Sold Out)
+  const firstAvailable = () => TIMES.find(t => t.status !== 'soldout') || TIMES[0];
   const needsTime = () => multi() && !slot();
   const effAvail = () => multi() ? (slot() ? slot().status : 'available') : state.avail;
   const startTime = () => multi() ? (slot() ? slot().time : null) : EX.start;
@@ -1198,11 +1212,26 @@ div.fact .fact-value{ justify-content:flex-start }
     soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: 'Join waitlist' },
   };
   // Credit value comes from the credits system: $100, $200 or $300 (confirm with product)
-  const creditHTML = c => { const v = '$' + state.creditValue; return c === '1' ? `You have <b>a ${v} excursion credit</b>`
-                        : c === '0' ? '' : `You have <b>2 excursion credits of ${v}</b>`; };
+  const creditHTML = c => { const v = '$' + state.creditValue; return c === '1' ? `Your party has <b>a ${v} excursion credit</b>`
+                        : c === '0' ? '' : `Your party has <b>2 excursion credits of ${v}</b>`; };
   // With more than one credit, say plainly that each guest uses one
   const multiCredit = () => state.credits === '2' || state.credits === 'banner';
   const creditText = c => creditHTML(c).replace(/<\/?b>/g, '');
+  // Credits by guest (placeholder guests until the credits API supplies them): one credit per guest
+  const CREDIT_GUESTS = ['Robert Cruiser', 'Rhonda Cruiser'];
+  const fillCreditGuests = root => $$('[data-credit-guests]', root).forEach(ul => {
+    const n = state.credits === '1' ? 1 : state.credits === '0' ? 0 : 2;
+    ul.innerHTML = CREDIT_GUESTS.slice(0, n).map(g => `<li><span>${g}</span><b>$${state.creditValue} credit</b></li>`).join('');
+  });
+
+  // Bar date line: when "date · time · 3 times" doesn't fit beside the button (e.g. Join waitlist), drop the date (the hero still shows it)
+  function fitBarLine() {
+    const l2 = $('.bar-info .bar-line2'), d = $('#barLine2'), st = startTime();
+    if (!st) return;
+    d.textContent = EX.dateShort + ' · ' + st;
+    if (multi() && l2.scrollWidth > l2.clientWidth) d.textContent = st;
+  }
+  addEventListener('resize', () => fitBarLine());
 
   function apply() {
     const a = AVAIL[effAvail()];
@@ -1212,7 +1241,7 @@ div.fact .fact-value{ justify-content:flex-start }
     pill.classList.toggle('show', !!a.pill);
     pill.classList.toggle('muted', !!a.muted);
     $('#statusText').innerHTML = a.pill || '';
-    $('#cta').textContent = needsTime() ? 'Select a time' : a.cta;
+    $('#cta').textContent = needsTime() ? 'Select time' : a.cta;
 
     // Hero start time: one time, or a picker until a time is chosen
     const st = startTime();
@@ -1220,16 +1249,28 @@ div.fact .fact-value{ justify-content:flex-start }
     $('#startValue').innerHTML = multi()
       ? `<button class="key-value" data-open="times" aria-haspopup="dialog">${st || TIMES.length + ' times'}<svg class="i"><use href="#i-right"/></svg></button>`
       : `<div class="key-value">${st}</div>`;
-    const mStart = $('#mStart'); if (mStart) mStart.textContent = st || TIMES.length + ' times';
+    const mStart = $('#mStart');
+    if (mStart) mStart.innerHTML = multi()
+      ? `<button type="button" class="mtime" data-open="times" aria-haspopup="dialog" aria-label="Start time ${st || ''}. Change time">${st || TIMES.length + ' times'}<svg class="i" aria-hidden="true"><use href="#i-down"/></svg></button>`
+      : st;
+    // Booking bar: a sold-out departure shows "Sold Out" in place of the price line
+    const bl1 = $('#barPrice .bar-line1'); if (!bl1.dataset.price) bl1.dataset.price = bl1.innerHTML;
+    const barPick = needsTime(), barSold = !barPick && effAvail() === 'soldout';
+    bl1.innerHTML = barSold ? '<b>Sold Out</b>' : bl1.dataset.price;   // multiple times share one price, so the price stays
+    $('#barPrice').setAttribute('aria-label', barSold ? 'Sold Out. Show price details' : 'Show price details');
     $('#barLine2').innerHTML = EX.dateShort + ' · ' + (st || `<span class="pick">${TIMES.length} times</span>`);
+    // Several start times: "· 3 times" next to the date jumps to the Start times section
+    $('#barTimesWrap').hidden = !multi();
+    $('#barTimes').textContent = TIMES.length + ' times';
+    fitBarLine();
     $('#times').hidden = !multi();
     $('#timeChips').innerHTML = TIMES.map(t => `<button class="chip${t.status === 'soldout' ? ' soldout' : ''}" role="radio" aria-checked="${t.id === state.slot}" data-time="${t.id}">
       <span class="t">${t.time}</span><span class="s${t.status === 'limited' ? ' warn' : ''}">${STATUS_TEXT[t.status]}</span></button>`).join('');
 
     const ct = creditText(state.credits);
     $('#creditTitle').innerHTML = creditHTML(state.credits);
+    fillCreditGuests(document);
     $('#bannerTitle').textContent = `2 excursion credits of $${state.creditValue} available`;
-    $$('[data-credit-sub]').forEach(el => el.hidden = !multiCredit());
     $('#creditCard').hidden = !ct;
     $('#creditBanner').classList.toggle('hidden', state.credits !== 'banner' || bannerDismissed || window.scrollY > 160);
   }
@@ -1258,6 +1299,11 @@ div.fact .fact-value{ justify-content:flex-start }
   }
   $('#cta').addEventListener('click', e => primaryAction(e.currentTarget));
   function pickTime(id) { state.slot = id; apply(); }
+  $('#barTimes').addEventListener('click', e => {
+    e.preventDefault();
+    $('#times').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
+    const cur = $('#timeChips [aria-checked="true"]'); if (cur) cur.focus({ preventScroll: true });
+  });
   document.addEventListener('click', e => {
     const c = e.target.closest('#timeChips [data-time]');
     if (c) return pickTime(c.dataset.time);
@@ -1347,9 +1393,9 @@ div.fact .fact-value{ justify-content:flex-start }
     const ct = creditText(state.credits);
     $('[data-slot="credits"]', body).hidden = !ct;
     $('[data-slot="credit-title"]', body).innerHTML = creditHTML(state.credits);
-    $$('[data-credit-sub]', body).forEach(el => el.hidden = !multiCredit());
+    fillCreditGuests(body);
     const cta = $('[data-slot="cta"]', body);
-    cta.textContent = needsTime() ? 'Select a time' : AVAIL[effAvail()].cta;
+    cta.textContent = needsTime() ? 'Select time' : AVAIL[effAvail()].cta;
     cta.addEventListener('click', () => needsTime() ? openDrawer('times', $('#cta')) : (closeDrawer(), primaryAction()));
   }
   // Start-time rows in the Duration and Price details drawers
@@ -1454,7 +1500,7 @@ div.fact .fact-value{ justify-content:flex-start }
   const CHANGED = {
     badge:   () => $('#heroCard'),
     avail:   () => $('#cardWrap'),
-    times:   () => multi() ? $('#times') : $('#heroCard'),
+    times:   () => multi() ? $('#mStart') : $('#heroCard'),
     credits: () => $('#creditCard').hidden ? $('#price') : $('#creditCard'),
     creditValue: () => $('#creditCard').hidden ? $('#price') : $('#creditCard'),
     ship:    () => $('[data-drawer="duration"]'),
@@ -1479,7 +1525,7 @@ div.fact .fact-value{ justify-content:flex-start }
     const { name, value } = e.target;
     if (name === 'times') {
       state.times = value === 'single' ? 'single' : 'multi';
-      state.slot = value === 'multi-picked' ? TIMES[0].id : null;
+      state.slot = value === 'single' ? null : firstAvailable().id;
     } else state[name] = value;
     if (name === 'credits') bannerDismissed = false;
     apply();
