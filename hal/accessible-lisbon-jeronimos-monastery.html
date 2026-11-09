@@ -42,7 +42,6 @@
   --hal-blue:var(--ds-hal-blue);
   --orange-dot:var(--ds-dutch-orange);
   --cream:var(--ds-dutch-cream);
-  --banner:var(--ds-dutch-cream);
   --n70:var(--ds-n70);
   --n90:var(--ds-n90);
   --border:var(--ds-n10);
@@ -381,17 +380,6 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 @media (min-width:768px){
   .bar-zone{ left:50%; right:auto; width:min(var(--col), calc(100% - var(--pad) * 2)); transform:translateX(-50%); bottom:calc(16px + env(safe-area-inset-bottom)) }
 }
-.credit-banner{
-  position:absolute; left:0; right:0; bottom:calc(100% - 28px); padding:16px 48px 40px 20px;
-  background:var(--banner); border-radius:24px 24px 0 0; color:var(--n90);
-  box-shadow:0 -2px 18px rgba(var(--ds-hal-blue-rgb),.12);
-  transition:transform .35s var(--ease), opacity .3s;
-}
-.credit-banner.hidden{ transform:translateY(24px); opacity:0; pointer-events:none }
-.credit-banner strong{ display:block; font-size:14px; line-height:var(--lh-body) }   /* Body/B3-bold */
-.credit-banner span{ font-size:12px; color:var(--n70) }   /* Body/B4-regular */
-.credit-banner button{ position:absolute; top:8px; right:8px; width:36px; height:36px; display:grid; place-items:center; color:var(--n70); border-radius:18px }
-.credit-banner button svg{ width:18px; height:18px }
 
 .bar{
   position:relative; display:flex; align-items:center; gap:16px; padding:12px 12px 12px 20px; border-radius:28px;
@@ -542,7 +530,7 @@ div.fact .fact-value{ justify-content:flex-start }
 .notice b{ color:var(--hal-blue) }
 
 /* Excursion credits card — matches Figma "Dining credit" (HAL Mobile App Redesign 2026, 14953:27539):
-   light blue fill, Neutral 20 border, radius 8, filled Dutch Orange star, Body/B3 HAL Blue with the amount in semibold.
+   light blue fill, Neutral 20 border, radius 8, filled Dutch Orange star, Body/B3-regular HAL Blue headline.
    Opens to the credit each guest carries (guest names are placeholders until product confirms the credits data). */
 .credit-card{ margin-top:20px; background:var(--credit-fill); border:1px solid var(--ds-n20); border-radius:8px; color:var(--hal-blue) }
 .credit-card .credit-head{ width:100%; min-height:var(--row-h); display:flex; align-items:center; gap:8px; padding:8px 12px; text-align:left; color:var(--hal-blue); border-radius:8px }
@@ -558,8 +546,8 @@ div.fact .fact-value{ justify-content:flex-start }
 .credit-guests li{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:6px 0; font-size:14px; color:var(--n90) }   /* Body/B3-regular */
 .credit-guests li + li{ border-top:1px solid var(--ds-n20) }
 .credit-guests li b{ font-weight:600; color:var(--hal-blue); white-space:nowrap }   /* Body/B3-semibold */
-/* Every size: the title breaks after "has", so the credit amount sits on its own line */
-.credit-card .credit-text > span:first-child b{ display:block }
+/* Under the guests: how the credit is applied in the cart */
+.credit-rules .credit-note{ margin:0; padding-top:8px; font-size:12px; line-height:var(--lh-body); color:var(--n70) }   /* Body/B4-regular */
 .sheet .credit-card{ margin-top:0 }
 
 /* Know before you go: a row with a value and nothing to expand */
@@ -633,8 +621,7 @@ div.fact .fact-value{ justify-content:flex-start }
 
 /* Excursion credits: with more than one credit, a second line says each guest uses one */
 .credit-card .credit-sub{ display:block; font-size:12px; line-height:var(--lh-body); color:var(--n70) }   /* Body/B4-regular */
-.credit-card .credit-sub[hidden], .credit-banner .banner-sub[hidden]{ display:none }
-.credit-banner .banner-sub{ display:block }
+.credit-card .credit-sub[hidden]{ display:none }
 
 /* Phone: tile values stay on one line where they fit; they wrap between words only on phones too narrow to hold them */
 @media (max-width:767px){ div.fact .fact-value b{ width:auto } }
@@ -970,9 +957,10 @@ div.fact .fact-value{ justify-content:flex-start }
     <div class="price-heading"><span class="amt">$299.95</span><span class="unit">per adult</span></div>
     <!-- Excursion credits: CONFIRM WITH PRODUCT what credit data and copy can be shown -->
     <div class="credit-card" id="creditCard">
-      <button class="credit-head" aria-expanded="false" aria-controls="creditRules"><svg class="i star" aria-hidden="true"><use href="#i-star"/></svg><span class="credit-text"><span id="creditTitle">Your party has <b>2 excursion credits of $100</b></span></span><svg class="i chev" aria-hidden="true"><use href="#i-down"/></svg></button>
+      <button class="credit-head" aria-expanded="false" aria-controls="creditRules"><svg class="i star" aria-hidden="true"><use href="#i-star"/></svg><span class="credit-text"><span id="creditTitle">Your party has shore excursion credit(s) available</span></span><svg class="i chev" aria-hidden="true"><use href="#i-down"/></svg></button>
       <div class="collapse" id="creditRules"><div><div class="credit-rules">
         <ul class="credit-guests" data-credit-guests><li><span>Robert Cruiser</span><b>$100 credit</b></li><li><span>Rhonda Cruiser</span><b>$100 credit</b></li></ul>
+        <p class="credit-note">Discounts will automatically be applied at checkout</p>
       </div></div></div>
     </div>
   </section>
@@ -1037,7 +1025,6 @@ div.fact .fact-value{ justify-content:flex-start }
         <label><input type="radio" name="credits" value="2" checked> 2 credits of $100</label>
         <label><input type="radio" name="credits" value="1"> 1 credit of $100</label>
         <label><input type="radio" name="credits" value="0"> No credits</label>
-        <label><input type="radio" name="credits" value="banner"> Credit introduction banner</label>
         <p>Confirm with product what credit data can be shown.</p>
       </fieldset>
       <fieldset><legend>Credit value</legend>
@@ -1057,11 +1044,6 @@ div.fact .fact-value{ justify-content:flex-start }
 
 <!-- Floating booking bar -->
 <div class="bar-zone" id="barZone">
-  <div class="credit-banner hidden" id="creditBanner" role="status">
-    <strong id="bannerTitle">2 excursion credits of $100 available</strong>
-    
-    <button aria-label="Dismiss" id="bannerClose"><svg class="i"><use href="#i-close"/></svg></button>
-  </div>
   <div class="bar">
     <div class="bar-info">
       <button class="bar-price" id="barPrice" data-drawer="pricing" aria-haspopup="dialog" aria-expanded="false" aria-label="Show price details">
@@ -1118,9 +1100,10 @@ div.fact .fact-value{ justify-content:flex-start }
   <div data-slot="credits">
     <p class="d-sub">Excursion credits</p>
     <div class="credit-card">
-      <button class="credit-head" aria-expanded="false" aria-controls="sheetCreditRules"><svg class="i star" aria-hidden="true"><use href="#i-star"/></svg><span class="credit-text"><span data-slot="credit-title">Your party has <b>2 excursion credits of $100</b></span></span><svg class="i chev" aria-hidden="true"><use href="#i-down"/></svg></button>
+      <button class="credit-head" aria-expanded="false" aria-controls="sheetCreditRules"><svg class="i star" aria-hidden="true"><use href="#i-star"/></svg><span class="credit-text"><span data-slot="credit-title">Your party has shore excursion credit(s) available</span></span><svg class="i chev" aria-hidden="true"><use href="#i-down"/></svg></button>
       <div class="collapse" id="sheetCreditRules"><div><div class="credit-rules">
         <ul class="credit-guests" data-credit-guests><li><span>Robert Cruiser</span><b>$100 credit</b></li><li><span>Rhonda Cruiser</span><b>$100 credit</b></li></ul>
+        <p class="credit-note">Discounts will automatically be applied at checkout</p>
       </div></div></div>
     </div>
   </div>
@@ -1211,11 +1194,10 @@ div.fact .fact-value{ justify-content:flex-start }
     spots:     { pill: `<b>${EX.spots} ${EX.spots === 1 ? 'Spot' : 'Spots'} Left</b>`, cta: 'Reserve' },
     soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: 'Join waitlist' },
   };
-  // Credit value comes from the credits system: $100, $200 or $300 (confirm with product)
-  const creditHTML = c => { const v = '$' + state.creditValue; return c === '1' ? `Your party has <b>a ${v} excursion credit</b>`
-                        : c === '0' ? '' : `Your party has <b>2 excursion credits of ${v}</b>`; };
+  // One headline for any number of credits; the per-guest amounts ($100 / $200 / $300) come from the credits system (confirm with product)
+  const creditHTML = c => c === '0' ? '' : 'Your party has shore excursion credit(s) available';
   // With more than one credit, say plainly that each guest uses one
-  const multiCredit = () => state.credits === '2' || state.credits === 'banner';
+  const multiCredit = () => state.credits === '2';
   const creditText = c => creditHTML(c).replace(/<\/?b>/g, '');
   // Credits by guest (placeholder guests until the credits API supplies them): one credit per guest
   const CREDIT_GUESTS = ['Robert Cruiser', 'Rhonda Cruiser'];
@@ -1270,9 +1252,7 @@ div.fact .fact-value{ justify-content:flex-start }
     const ct = creditText(state.credits);
     $('#creditTitle').innerHTML = creditHTML(state.credits);
     fillCreditGuests(document);
-    $('#bannerTitle').textContent = `2 excursion credits of $${state.creditValue} available`;
     $('#creditCard').hidden = !ct;
-    $('#creditBanner').classList.toggle('hidden', state.credits !== 'banner' || bannerDismissed || window.scrollY > 160);
   }
 
   /* ── Toast / hand-offs ─────────────────── */
@@ -1315,7 +1295,7 @@ div.fact .fact-value{ justify-content:flex-start }
   const hero = $('#hero'), heroBg = $('.hero-bg'), photo = $('#photo'), wash = $('#wash');
   const heroCard = $('#heroCard'), compact = $('#compact');
   const glassEls = [heroCard, ...$$('.fact')];
-  let ticking = false, compactOn = false, bannerDismissed = false;
+  let ticking = false, compactOn = false;
 
   function onScroll() {
     ticking = false;
@@ -1353,9 +1333,6 @@ div.fact .fact-value{ justify-content:flex-start }
       if (!show) setCompactExpanded(false);
     }
 
-    if (state.credits === 'banner' && !bannerDismissed) {
-      $('#creditBanner').classList.toggle('hidden', y > 160);
-    }
   }
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   window.addEventListener('resize', onScroll);
@@ -1365,8 +1342,6 @@ div.fact .fact-value{ justify-content:flex-start }
     $('#compactTitle').setAttribute('aria-expanded', String(on));
   }
   $('#compactTitle').addEventListener('click', () => setCompactExpanded(!compact.classList.contains('expanded')));
-
-  $('#bannerClose').addEventListener('click', () => { bannerDismissed = true; $('#creditBanner').classList.add('hidden'); });
 
   /* ── Disclosures ───────────────────────── */
   function toggleCollapse(btn, panel, labels) {
@@ -1506,7 +1481,6 @@ div.fact .fact-value{ justify-content:flex-start }
     ship:    () => $('[data-drawer="duration"]'),
   };
   function revealChange(name, value) {
-    if (name === 'credits' && value === 'banner') return; // the banner has its own jump to the top
     const el = CHANGED[name] && CHANGED[name]();
     if (!el) return;
     el.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'center' });
@@ -1518,7 +1492,6 @@ div.fact .fact-value{ justify-content:flex-start }
     if (name === 'ship') setTimeout(() => openDrawer('duration', el), 500);
   }
   const DEFAULTS = { ...state };
-  const banner = $('#creditBanner');
   function toTop() { window.scrollTo({ top: 0, behavior: 'instant' }); }
 
   $('#protoPanel').addEventListener('change', e => {
@@ -1527,19 +1500,11 @@ div.fact .fact-value{ justify-content:flex-start }
       state.times = value === 'single' ? 'single' : 'multi';
       state.slot = value === 'single' ? null : firstAvailable().id;
     } else state[name] = value;
-    if (name === 'credits') bannerDismissed = false;
     apply();
     revealChange(name, value);
-    if (name === 'credits' && value === 'banner') {
-      // Jump to the top, then let the banner slide in so its entrance plays
-      banner.classList.add('hidden');
-      toTop();
-      setTimeout(() => { if (state.credits === 'banner' && !bannerDismissed) banner.classList.remove('hidden'); }, 450);
-    }
   });
   $('#protoReset').addEventListener('click', () => {
     Object.assign(state, DEFAULTS);
-    bannerDismissed = false;
     $('#protoPanel').reset();
     if (layer.classList.contains('open')) closeDrawer();
     apply();

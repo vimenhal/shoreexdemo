@@ -55,7 +55,6 @@
   --blue:var(--ds-blue);
   --accent-dot:var(--ds-gold);
   --beige:var(--ds-dark-beige);
-  --banner:var(--ds-dark-beige);
   --n70:var(--ds-dark-gray);
   --n90:var(--ds-black);
   --border:var(--ds-blue-10);
@@ -387,17 +386,6 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 @media (min-width:768px){
   .bar-zone{ left:50%; right:auto; width:min(var(--col), calc(100% - var(--pad) * 2)); transform:translateX(-50%); bottom:calc(16px + env(safe-area-inset-bottom)) }
 }
-.credit-banner{
-  position:absolute; left:0; right:0; bottom:calc(100% - 28px); padding:16px 48px 40px 20px;
-  background:var(--banner); border-radius:24px 24px 0 0; color:var(--n90);
-  box-shadow:0 -2px 18px rgba(var(--ds-blue-rgb),.12);
-  transition:transform .35s var(--ease), opacity .3s;
-}
-.credit-banner.hidden{ transform:translateY(24px); opacity:0; pointer-events:none }
-.credit-banner strong{ display:block; font-size:14px; line-height:var(--lh-body) }   /* Body/B3-bold */
-.credit-banner span{ font-size:12px; color:var(--n70) }   /* Body/B4-regular */
-.credit-banner button{ position:absolute; top:8px; right:8px; width:36px; height:36px; display:grid; place-items:center; color:var(--n70); border-radius:18px }
-.credit-banner button svg{ width:18px; height:18px }
 
 .bar{
   position:relative; display:flex; align-items:center; gap:16px; padding:12px 12px 12px 20px; border-radius:28px;
@@ -636,8 +624,7 @@ div.fact .fact-value{ justify-content:flex-start }
 
 /* Excursion credits: with more than one credit, a second line says each guest uses one */
 .credit-card .credit-sub{ display:block; font-size:12px; line-height:var(--lh-body); color:var(--n70) }   /* Body/B4-regular */
-.credit-card .credit-sub[hidden], .credit-banner .banner-sub[hidden]{ display:none }
-.credit-banner .banner-sub{ display:block }
+.credit-card .credit-sub[hidden]{ display:none }
 
 /* Phone: tile values stay on one line where they fit ("Not accessible", "Meals Included" are ~105px in a
    ~130px tile at 375). They wrap between words only on phones too narrow to hold them (≈ under 340px) */
@@ -1313,7 +1300,7 @@ button.fact[data-jump] .fact-value svg{ transform:rotate(90deg) }
         <p>No SBN page has multiple departures yet; the extra times are filler (2-hour steps) until the API provides them. Each time has its own availability.</p>
       </fieldset>
       <fieldset style="grid-column:1/-1"><legend>Template gaps (no SBN source copy)</legend>
-        <ul class="proto-gaps"><li>Wheelchair tile shows "Not accessible" (the HAL template’s value when there’s no data). The live SBN page doesn’t state access.</li><li>Two-guest notice link: "View single-person booking" is FPO copy, and its target isn’t known.</li><li>Meals tile reads "Meals Included" (your wording). The live page says "Includes: Meal".</li><li>Cancellation row shows this journey’s 60-day rule, taken from its Notes. The FAQ drawer still has the generic SBN Cancellation Policy (full refund 3+ days before embarkation), which contradicts it for this journey.</li><li>Live copy typos kept: "Your next visit the magnificent temple" and "Ta Phrom".</li><li>Itinerary: meals aren’t called out per day, because the API can’t supply them (user). Meals appear only in the day text.</li><li>Ship times: none on the live page, and the journey reboards in Ho Chi Minh City, not Sihanoukville.</li><li>Excursion credits: no SBN data. The credits card and banner are removed.</li><li>Ratings (4 Ratings, 4.5 stars on the live page) are hidden.</li><li>Ship times: none on the live pages.</li><li>ⓘ tooltips (Sold Out, Strenuous): never captured.</li><li>Classic Collection: group size and style are lorem ipsum. Its new body copy calls it "our Landmark Collection", so the name needs confirming.</li><li>FAQ "Shore Excursion Brochure" points to a "Download eBrochure" button that this page doesn’t have.</li><li>FAQ "Pre, Post or Mid-Cruise Overland Journeys" says "Journey Collection", but this page now uses The Reserve Collection.</li></ul>
+        <ul class="proto-gaps"><li>Wheelchair tile shows "Not accessible" (the HAL template’s value when there’s no data). The live SBN page doesn’t state access.</li><li>Two-guest notice link: "View single-person booking" is FPO copy, and its target isn’t known.</li><li>Meals tile reads "Meals Included" (your wording). The live page says "Includes: Meal".</li><li>Cancellation row shows this journey’s 60-day rule, taken from its Notes. The FAQ drawer still has the generic SBN Cancellation Policy (full refund 3+ days before embarkation), which contradicts it for this journey.</li><li>Live copy typos kept: "Your next visit the magnificent temple" and "Ta Phrom".</li><li>Itinerary: meals aren’t called out per day, because the API can’t supply them (user). Meals appear only in the day text.</li><li>Ship times: none on the live page, and the journey reboards in Ho Chi Minh City, not Sihanoukville.</li><li>Excursion credits: no SBN data. The credits card is removed.</li><li>Ratings (4 Ratings, 4.5 stars on the live page) are hidden.</li><li>Ship times: none on the live pages.</li><li>ⓘ tooltips (Sold Out, Strenuous): never captured.</li><li>Classic Collection: group size and style are lorem ipsum. Its new body copy calls it "our Landmark Collection", so the name needs confirming.</li><li>FAQ "Shore Excursion Brochure" points to a "Download eBrochure" button that this page doesn’t have.</li><li>FAQ "Pre, Post or Mid-Cruise Overland Journeys" says "Journey Collection", but this page now uses The Reserve Collection.</li></ul>
       </fieldset>
       <button type="button" class="proto-reset" id="protoReset">Reset all states</button>
     </form>
