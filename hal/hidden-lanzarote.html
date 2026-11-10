@@ -402,7 +402,13 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .bar-line2{ font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B4-regular */
 /* HAL DS Button · Type=primary, Size=large (label Body/B1-semibold, as in Figma).
    Hover HAL Blue Hover, pressed HAL Blue Pressed, disabled Neutral 10 / Neutral 30 */
-.btn-primary[hidden]{ display:none !important }   /* Sold Out: no booking button */
+.btn-primary[hidden]{ display:none !important }   /* Sold Out onboard: no button */
+/* Sold out · pre-cruise: Join Waitlist, never wider than half the bar. Onboard: a desk line under the date */
+.bar #cta{ max-width:50% }
+.bar #cta.wait{ overflow:hidden; text-overflow:ellipsis }
+@media (max-width:767px){ .bar #cta.wait{ padding:0 20px; min-width:0 } }
+.bar-wait{ display:block; margin:0; font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:normal }
+.bar-wait[hidden]{ display:none }
 .btn-primary{
   flex:none; height:60px; padding:0 40px; border-radius:999px;
   background:var(--hal-blue); color:#fff; font-weight:600; font-size:18px; line-height:1; letter-spacing:var(--ls-body);
@@ -1176,6 +1182,11 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
           <div class="ps-k"><span>Availability</span></div>
           <div class="ps-seg"><label><input type="radio" name="avail" value="available" checked><span>Available</span></label><label><input type="radio" name="avail" value="limited"><span>Limited</span></label><label><input type="radio" name="avail" value="spots"><span>1 left</span></label><label><input type="radio" name="avail" value="soldout"><span>Sold out</span></label></div>
         </div>
+        <div class="ps-row" role="radiogroup" aria-label="Guest">
+          <div class="ps-k"><span>Guest</span> <button type="button" class="ps-i" aria-label="About Guest" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="ctx" value="precruise" checked><span>Pre-cruise</span></label><label><input type="radio" name="ctx" value="onboard"><span>Onboard</span></label></div>
+          <p class="ps-note" hidden>Sold out: pre-cruise shows Join Waitlist (checks waitlist availability on our website); onboard points to the Shore Excursions Desk.</p>
+        </div>
         <div class="ps-row" role="radiogroup" aria-label="Credits">
           <div class="ps-k"><span>Credits</span> <button type="button" class="ps-i" aria-label="About Credits" aria-expanded="false">i</button></div>
           <div class="ps-seg"><label><input type="radio" name="credits" value="2" checked><span>2</span></label><label><input type="radio" name="credits" value="1"><span>1</span></label><label><input type="radio" name="credits" value="0"><span>None</span></label></div>
@@ -1388,6 +1399,28 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     spots:     { pill: `<b>${EX.spots} ${EX.spots === 1 ? 'Spot' : 'Spots'} Left</b>`, cta: 'Reserve' },
     soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: null },
   };
+
+  // Sold out (approved 2026-11-10): still no booking, but guests are pointed to a waitlist.
+  // Pre-cruise the bar button hands off to the waitlist on our website (button ≤ half the bar);
+  // onboard there's no button and the bar says to visit the Shore Excursions Desk.
+  state.ctx = 'precruise';
+  const WAIT_LABEL = 'Join Waitlist';
+  const soldNow = () => !(typeof needsTime === 'function' && needsTime()) && (typeof effAvail === 'function' ? effAvail() : state.avail) === 'soldout';
+  const waitAction = () => showToast(state.ctx === 'onboard' ? 'Visit the Shore Excursions Desk to join the waitlist' : 'Hand-off: Check waitlist availability on our website');
+  function soldWait() {
+    const sold = soldNow(), pre = state.ctx !== 'onboard', cta = $('#cta');
+    cta.classList.toggle('wait', sold && pre);
+    if (sold && pre) { cta.hidden = false; cta.textContent = WAIT_LABEL; }
+    let w = $('#barWait');
+    if (!w) {
+      const l2 = $('.bar .bar-line2');
+      w = document.createElement(l2.tagName === 'P' ? 'p' : 'span');
+      w.className = 'bar-wait'; w.id = 'barWait';
+      w.textContent = 'Join the waitlist at the Shore Excursions Desk';
+      l2.after(w);
+    }
+    w.hidden = !(sold && !pre);
+  }
   // One headline for any number of credits; the per-guest amounts ($100 / $200 / $300) come from the credits system (confirm with product)
   const creditHTML = c => c === '0' ? '' : 'Your party has shore excursion credit(s) available';
   // With more than one credit, say plainly that each guest uses one
@@ -1475,7 +1508,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
   $('.mband .mrow').addEventListener('click', e => {
     if (state.booked === 'no' || !AVAIL[effAvail()].cta) return;
     e.preventDefault();
-    showToast('Book again → booking flow');
+    goReserve();
   });
   function bkSetNotch() {
     const r = $('.bk-rule', bkCard);
@@ -1519,6 +1552,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     $('#statusText').innerHTML = a.pill || '';
     $('#cta').textContent = needsTime() ? 'Select time' : (a.cta || '');
     $('#cta').hidden = !needsTime() && !a.cta;   // Sold Out: no booking, so no button
+    soldWait();
 
     // Hero start time: one time, or a picker until a time is chosen
     const st = startTime();
@@ -1567,10 +1601,21 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     showToast(`Hand-off: ${h.dataset.handoff}`);
   });
 
+  function goReserve() {
+    const p = new URLSearchParams({ ex: location.pathname.split('/').pop().replace(/\.html$/, '') });
+    if (multi() && slot()) { p.set('times', 'multi'); p.set('time', TIMES.indexOf(slot())); }
+    const av = effAvail();
+    if (av === 'limited') p.set('spots', 'limited');
+    if (av === 'spots') { p.set('spots', 'limited'); p.set('left', EX.spots); }
+    p.set('credits', state.credits); p.set('creditValue', state.creditValue);
+    if (state.ctx === 'onboard') p.set('ctx', 'onb');
+    location.href = 'reserve.html?' + p;
+  }
   // Primary CTA: pick a time first when the day has several start times
   function primaryAction(from) {
+    if (soldNow()) return waitAction();
     if (needsTime()) return openDrawer('times', from);
-    showToast(`${AVAIL[effAvail()].cta}${multi() ? ' · ' + startTime() : ''} → booking flow`);
+    goReserve();
   }
   $('#cta').addEventListener('click', e => primaryAction(e.currentTarget));
   function pickTime(id) { state.slot = id; apply(); }
@@ -1667,6 +1712,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     const cta = $('[data-slot="cta"]', body);
     cta.textContent = needsTime() ? 'Select time' : (AVAIL[effAvail()].cta || '');
     cta.hidden = !needsTime() && !AVAIL[effAvail()].cta;
+    if (soldNow() && state.ctx !== 'onboard') { cta.hidden = false; cta.textContent = WAIT_LABEL; }
     cta.addEventListener('click', () => needsTime() ? openDrawer('times', $('#cta')) : (closeDrawer(), primaryAction()));
   }
   // Start-time rows in the Duration and Price details drawers
@@ -1769,6 +1815,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
   /* ── Prototype state switcher ─────────── */
   // Rule: picking a state scrolls to the element it changed and flashes it, so the reviewer sees the result
   const CHANGED = {
+    ctx:     () => $('#barZone'),
     booked:  () => state.booked === 'no' ? $('#heroCard') : $('#bkCard'),
     meals:   () => mealsTile.isConnected ? mealsTile : $('.facts'),
     badge:   () => $('#heroCard'),

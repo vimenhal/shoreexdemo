@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reserve</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gelasio:wght@400;500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* HAL version. Source: HAL Working File enhntJFm1OiQTFHLws1Kvt, section 404:33931 (Kauai boards); SBN original: section 2142:1488 "Phone · 393 — Reserve (step 3 · after Details)".
+   Base tokens are SBN; the HAL theme block at the end of this <style> overrides them with HAL DS values. */
+:root{
+  --blue:#003a59; --blue-hover:#194e6a; --gold:#ab8d45; --dark-gold:#a06c00;
+  --blue-30:#b2c3cd; --blue-20:#ccd8de; --blue-10:#e6ecef; --blue-5:#f2f5f7;
+  --dark-beige:#f4f0e6; --light-beige:#fbf9f5;
+  --black:#231f20; --dark-gray:#666; --gray:#7a7c81; --light-gray:#a8aaad;
+  --white:#fff; --red:#bb0000; --red-bg:#fdecec; --focus:#1979ff;
+  --ok:#2e7d4f; --ok-bg:#eaf4ee;
+  --serif:"GT Super Display","Gilda Display",Georgia,serif;
+  --sans:"Open Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:4px; --pad:20px;
+  --bar-h:98px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--white);color:var(--black);font:400 15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+button:disabled{cursor:not-allowed}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+svg.i{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── App bar + step indicator ───────────────────────────── */
+.appbar{background:var(--blue);color:var(--white);position:sticky;top:0;z-index:20}
+.appbar-in{max-width:none;margin:0 auto;padding:0 var(--pad) 0 8px}
+.ab-row{display:flex;align-items:center;gap:12px;height:56px}
+.ab-back{width:44px;height:44px;display:grid;place-items:center;border-radius:var(--r)}
+.ab-back:hover{background:rgba(255,255,255,.08)}
+.ab-title{font:400 20px/1.35 var(--sans);margin:0;letter-spacing:0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:0 0 8px 12px}
+.step{font:400 11px/1.3 var(--sans);color:rgba(255,255,255,.85);padding-top:7px;border-top:2px solid rgba(255,255,255,.45)}
+.step:nth-child(2){text-align:center}.step:nth-child(3){text-align:right}
+.step.on{border-top:3px solid var(--white);padding-top:6px;font-weight:700;color:var(--white)}
+.step.done{border-top-color:rgba(255,255,255,.8)}
+.appbar.hide{display:none}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{padding:16px var(--pad) calc(var(--bar-h) + 40px)}
+main{min-width:0}
+.view{display:none}.view.on{display:block}
+.stack>*+*{margin-top:16px}
+
+/* ── Type ───────────────────────────────────────────────── */
+.ex-title{font:400 22px/1.2 var(--serif);color:var(--blue);margin:0}
+.ex-port{font-size:13px;color:var(--dark-gray);margin:2px 0 0}
+.eyebrow{font:700 11px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin:0}
+.serif-amt{font:400 26px/1.1 var(--serif);color:var(--blue);white-space:nowrap}
+
+/* ── Card ───────────────────────────────────────────────── */
+.card{border:1px solid var(--blue-20);border-radius:var(--r);background:var(--white);overflow:hidden}
+.card-b{padding:12px}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:12px;border-bottom:1px solid var(--blue-10)}
+.card-h .meta{font-size:13px;color:var(--dark-gray)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px}
+.row .k{color:var(--black)}
+.row .v{font-weight:700;text-align:right}
+.row.total{border-top:1px solid var(--blue-10);margin-top:4px;padding-top:6px}
+.row.total .k{font-weight:700}
+.row.col{flex-direction:column;align-items:stretch;justify-content:center;padding:8px 0}
+.dash{font-weight:700}
+.credit-note{display:flex;gap:10px;align-items:flex-start;background:var(--blue-10);padding:12px;font-size:13px;color:var(--blue);line-height:1.45}
+.credit-note b{font-weight:600}
+svg.star{color:var(--gold);fill:var(--gold);stroke:none;width:12px;height:12px;margin-top:3px}
+
+/* ── Pills / badges ─────────────────────────────────────── */
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;font:600 13px/1 var(--sans);padding:7px 12px}
+.pill.spots{background:var(--blue);color:var(--white)}
+.pill.acc{background:var(--blue-5);border:1px solid var(--blue-20);color:var(--black);padding:6px 6px 6px 12px}
+.pill.acc .info{width:24px;height:24px;display:grid;place-items:center;border-radius:50%}
+.pill.acc .info:hover{background:var(--blue-10)}
+
+/* ── Stepper ────────────────────────────────────────────── */
+.stepper{display:inline-flex;align-items:center;gap:8px;background:var(--blue-10);border-radius:999px;padding:3px}
+.stepper button{width:32px;height:32px;border-radius:50%;background:var(--white);display:grid;place-items:center;color:var(--blue);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.stepper button:disabled{color:var(--blue-30);background:rgba(255,255,255,.55);box-shadow:none}
+.stepper output{min-width:16px;text-align:center;font-size:14px;color:var(--blue);font-weight:600}
+
+/* ── Time chips ─────────────────────────────────────────── */
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.chip{border:1px solid var(--blue-20);border-radius:6px;padding:9px 10px;text-align:left;min-width:0}
+.chip b{display:block;font:700 15px/1.3 var(--sans);color:var(--blue)}
+.chip span{display:block;font-size:11px;color:var(--dark-gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip.lim span{color:var(--dark-gold)}
+.chip.on{border:2px solid var(--blue);background:var(--blue-5);padding:8px 9px}
+.chip:disabled b,.chip:disabled span{color:var(--light-gray)}
+.chip:not(:disabled):not(.on):hover{border-color:var(--blue-30)}
+
+/* ── Select ─────────────────────────────────────────────── */
+.field{position:relative;border:1px solid var(--blue-30);border-radius:var(--r);background:var(--white)}
+.field label{position:absolute;left:12px;top:7px;font-size:11px;color:var(--black)}
+.field label i{color:var(--red);font-style:normal}
+.field select,.field input{appearance:none;border:0;background:transparent;width:100%;font:600 14px/1.4 var(--sans);color:var(--black);padding:24px 40px 8px 12px;border-radius:var(--r)}
+.field select:focus,.field input:focus{outline:2px solid var(--focus);outline-offset:-1px}
+.field .chev{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--blue)}
+.field.empty input{padding:14px 12px}
+.field.empty label{top:50%;transform:translateY(-50%);font-size:15px;font-weight:600}
+.field:focus-within label,.field.filled label{top:7px;transform:none;font-size:11px;font-weight:400}
+.field:focus-within input,.field.filled input{padding:24px 12px 8px}
+.field.err{border-color:var(--red);background:var(--red-bg)}
+.field.err input{color:var(--red)}
+.err-msg{font-size:12px;color:var(--red);margin:6px 0 0}
+
+/* ── Notices ────────────────────────────────────────────── */
+.notice{background:var(--dark-beige);border-radius:var(--r);padding:12px;font-size:13px;line-height:1.5}
+.notice a{color:var(--blue);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.notice.plain{background:var(--blue-5);border:2px solid var(--blue-20);padding:14px;font-size:13px;line-height:1.6}
+
+/* ── Guests ─────────────────────────────────────────────── */
+.room{padding:14px 0 6px}
+.room-h{font-size:13px;color:var(--dark-gray);margin:0 0 6px}
+.g{padding:4px 0 8px}
+.g-line{display:flex;align-items:center;gap:10px;min-height:32px;cursor:pointer;font-size:14px}
+.g-line input{position:absolute;opacity:0;pointer-events:none}
+.box{width:20px;height:20px;border:1.5px solid var(--blue);border-radius:2px;display:grid;place-items:center;flex:none;color:var(--white);background:var(--white)}
+.box svg{width:14px;height:14px;stroke-width:2.5;opacity:0}
+input:checked+.box{background:var(--blue)}
+input:checked+.box svg{opacity:1}
+input:focus-visible+.box{outline:2px solid var(--focus);outline-offset:2px}
+.g.dis .g-line{color:var(--light-gray);cursor:not-allowed}
+.g.dis .box{border-color:var(--blue-20);background:var(--blue-5)}
+.radio{width:20px;height:20px;border:1.5px solid var(--blue);border-radius:50%;flex:none;display:grid;place-items:center}
+.radio::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--blue);transform:scale(0);transition:transform .12s}
+input:checked+.radio::after{transform:scale(1)}
+input:focus-visible+.radio{outline:2px solid var(--focus);outline-offset:2px}
+.g.dis .radio{border-color:var(--blue-20)}
+.g-sub{margin:4px 0 0 30px}
+.g-sub>*+*{margin-top:8px}
+.credit-chip{display:flex;align-items:center;gap:6px;background:var(--blue-10);border-radius:2px;padding:6px 10px;font-size:12px;color:var(--dark-gray)}
+.credit-chip .star{margin:0}
+.linked{border-top:1px solid var(--blue-10);margin-top:4px}
+.linked-h{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;padding:12px 0 8px}
+.linked-h b{display:block;color:var(--blue);font-weight:600;font-size:14px}
+.linked-h small{display:block;font-size:12px;color:var(--dark-gray)}
+.linked-h svg{color:var(--blue);transition:transform .2s}
+.linked-h[aria-expanded="true"] svg{transform:rotate(180deg)}
+.minor-note{background:var(--dark-beige);border-radius:2px;padding:8px 12px;font-size:13px;margin:4px 0 4px 30px}
+.add{border:1px solid var(--blue);border-radius:var(--r)}
+.add-h{display:flex;align-items:center;gap:12px;width:100%;padding:12px;color:var(--blue);font-weight:600;font-size:14px;text-align:left}
+.add-h .ico{width:28px;height:28px;border-radius:50%;background:var(--blue-10);display:grid;place-items:center}
+.add-h .ico svg{width:16px;height:16px}
+.add-h .chev{transition:transform .2s}
+.add-h[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.add-b{padding:0 12px 12px;font-size:13px;color:var(--dark-gray)}
+.fpo{display:inline-block;font:700 10px/1 var(--sans);letter-spacing:.08em;background:#ffe9a8;color:#6b4e00;padding:3px 5px;border-radius:2px;vertical-align:middle;margin-left:4px}
+
+/* ── Review ─────────────────────────────────────────────── */
+.rv-when{font-weight:700;color:var(--blue);margin:12px 0 4px}
+.rv-names{margin:0 0 4px}
+.rv-cost{border-top:1px solid var(--blue-10);margin-top:12px;padding-top:4px}
+.credit-row{display:flex;justify-content:space-between;align-items:center;background:var(--blue-10);padding:10px 12px;border-radius:2px;margin:4px 0}
+.credit-row span{display:flex;align-items:center;gap:8px}
+.credit-row .star{margin:0}
+.credit-row b{font-weight:700}
+.acc-h{display:flex;justify-content:space-between;align-items:center;width:100%;padding:18px 12px;text-align:left;color:var(--blue);font-weight:700;font-size:15px}
+.acc-h svg{transition:transform .2s}
+.acc-h[aria-expanded="true"] svg{transform:rotate(180deg)}
+.acc-b{padding:0 12px 14px;font-size:14px}
+.acc-b p{margin:0 0 10px}
+.terms{border-top:1px solid var(--blue-10);padding:16px 12px}
+.terms h3{margin:0 0 12px;font-size:15px;color:var(--blue)}
+.terms a{color:var(--black)}
+
+/* ── Confirmed ──────────────────────────────────────────── */
+.conf-hero{background:var(--blue);color:var(--white);text-align:center;padding:28px var(--pad) 110px}
+.conf-hero svg{width:44px;height:44px;stroke-width:1.6}
+.conf-hero h1{font:400 24px/1.2 var(--serif);margin:8px 0 6px}
+.conf-hero p{margin:0 auto;max-width:300px;font-size:14px;line-height:1.5;color:rgba(255,255,255,.9)}
+.conf-wrap{margin-top:-96px;position:relative}
+.ticket-note{background:var(--blue-5);border-radius:2px;padding:10px 12px;font-size:13px;color:var(--dark-gray);margin-top:8px}
+.shell.conf{padding-top:0}
+body.is-conf .appbar{display:none}
+
+/* ── Action bar ─────────────────────────────────────────── */
+.actionbar{position:fixed;left:12px;right:12px;bottom:12px;z-index:15;background:var(--white);border-radius:var(--r);box-shadow:0 -2px 18px rgba(0,30,50,.10),0 1px 3px rgba(0,0,0,.06);padding:12px;display:flex;align-items:center;gap:12px;min-height:74px}
+.bar-info{flex:1;min-width:0}
+.bar-amt{font:400 22px/1.15 var(--serif);color:var(--blue)}
+.bar-lbl{font:700 16px/1.25 var(--sans);color:var(--blue)}
+.bar-sub{font-size:12px;color:var(--dark-gray);margin-top:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:0;font:600 15px/1 var(--sans);transition:background .15s}
+.btn-primary{background:var(--gold);color:var(--white);min-width:154px}
+.btn-primary:hover:not(:disabled){background:var(--dark-gold)}
+.btn-primary:disabled{background:var(--blue-20);color:var(--white)}
+.btn-text{color:var(--blue);padding:0 16px}
+.btn-text:hover{text-decoration:underline}
+a.btn{text-decoration:none}
+.bar-two{display:flex;width:100%;gap:8px;justify-content:space-between;align-items:center}
+.bar-two .btn{flex:1}
+.bar-two .btn-text{flex:none;white-space:nowrap;padding:0 12px}
+
+/* ── Desktop summary rail (≥1024 only) ──────────────────── */
+.sum-card{display:none}
+
+/* ── Toast ──────────────────────────────────────────────── */
+.toast{position:fixed;left:20px;right:20px;bottom:calc(var(--bar-h) + 8px);z-index:16;display:flex;align-items:center;gap:10px;background:var(--ok-bg);border:1px solid #cfe6d8;color:var(--black);font-size:13px;padding:11px 12px;border-radius:var(--r);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.show{opacity:1;transform:none}
+.toast svg{color:var(--ok);width:18px;height:18px}
+
+/* ── Flash for the prototype panel ──────────────────────── */
+@keyframes flash{0%,100%{box-shadow:0 0 0 0 rgba(171,141,69,0)}25%,70%{box-shadow:0 0 0 4px rgba(171,141,69,.55)}}
+.flash{animation:flash 1.4s ease 1;border-radius:var(--r)}
+
+/* ═══ Tablet ≥768: centered 640 column, floating bar matches it ═══ */
+@media (min-width:768px){
+  :root{--pad:32px}
+  .appbar-in,.shell>.grid,.conf-hero>*{max-width:640px;margin-left:auto;margin-right:auto}
+  .appbar-in{padding:0}
+  .ab-row{height:64px}
+  .ab-title{font-size:22px}
+  .steps{padding-left:0;padding-bottom:10px}
+  .step{font-size:12px}
+  .shell{padding-top:28px}
+  .ex-title{font-size:30px}
+  .ex-port{font-size:14px}
+  .card-b{padding:20px}
+  .row{min-height:52px}
+  .serif-amt{font-size:30px}
+  .actionbar{left:50%;right:auto;width:640px;transform:translateX(-50%);bottom:20px;padding:14px 16px}
+  .toast{left:50%;right:auto;width:640px;transform:translate(-50%,8px)}
+  .toast.show{transform:translate(-50%,0)}
+  .chip{padding:12px 14px}.chip.on{padding:11px 13px}
+  .conf-hero{padding-top:44px}
+  .conf-hero h1{font-size:30px}
+  .conf-hero p{max-width:420px}
+}
+
+/* ═══ Desktop ≥1024: two columns, summary rail replaces the bottom bar ═══ */
+@media (min-width:1024px){
+  :root{--pad:40px}
+  .appbar{position:static}
+  .appbar-in{max-width:calc(1120px + 2 * var(--pad));padding:0 var(--pad) 0 calc(var(--pad) - 12px)}
+  .steps{padding-left:12px}
+  .ab-row{height:72px}
+  .ab-title{font:400 28px/1.2 var(--serif)}
+  .steps{max-width:560px;padding-bottom:14px}
+  .shell{padding:36px var(--pad) 80px}
+  .shell>.grid{max-width:1120px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:48px;align-items:start}
+  .ex-title{font-size:34px}
+  aside.rail{position:sticky;top:24px}
+  .sum-card{display:block;border:1px solid var(--blue-20);border-radius:var(--r);overflow:hidden;background:var(--white)}
+  .sum-photo{aspect-ratio:16/9;background:var(--blue-10) center/cover no-repeat;background-position:38% 55%}
+  .sum-b{padding:16px 20px 4px}
+  .sum-b .ex-title{font-size:20px}
+  .sum-rows{margin-top:10px;border-top:1px solid var(--blue-10)}
+  .sum-rows .row{min-height:40px;font-size:14px}
+  .sum-rows .credit-row{font-size:14px}
+  .sum-rows .row.total{min-height:56px}
+  .sum-rows .serif-amt{font-size:26px}
+  .actionbar{position:static;transform:none;width:auto;box-shadow:none;border-radius:0;border:1px solid var(--blue-20);border-top:0;padding:16px 20px 20px;flex-direction:column;align-items:stretch;gap:12px}
+  .actionbar .bar-amt{display:none}
+  .actionbar .btn-primary{width:100%}
+  .bar-sub{margin-top:0}
+  .actionbar.solo{border:1px solid var(--blue-20);border-radius:var(--r)}
+  .toast{bottom:28px;left:auto;right:40px;width:360px;transform:translateY(8px)}
+  .toast.show{transform:none}
+  /* Confirmed: single centred column, actions inline */
+  body.is-conf .shell>.grid{max-width:640px;display:block}
+  body.is-conf .sum-card{display:none}
+  body.is-conf aside.rail{position:static;margin-top:16px}
+  body.is-conf .actionbar{border:0;padding:0}
+  body.is-conf .bar-two{justify-content:flex-end}
+  body.is-conf .bar-two .btn{flex:none;min-width:190px}
+  body.is-conf .actionbar .btn-primary{width:auto}
+  body.is-conf .ex-title{font-size:28px}
+  .conf-hero{padding:56px var(--pad) 120px}
+  .conf-hero h1{font-size:36px}
+  .conf-wrap{margin-top:-104px}
+}
+
+/* ── Add guests from another cabin (Figma "adding guests" expanded / Variant3) ── */
+.add-form{padding:0 12px 12px;display:grid;gap:12px}
+.add-err{background:var(--red-bg);color:var(--red);font-size:13px;padding:10px 12px;border-radius:2px;margin:0}
+.btn-outline{min-height:44px;border:1px solid var(--blue);border-radius:999px;color:var(--blue);font-weight:600;width:100%}
+.btn-outline:hover{background:var(--blue-5)}
+.proto-hint{font-size:11px;color:var(--dark-gray);margin:-4px 0 0}
+.room.added{border-top:1px solid var(--blue-10);margin-top:4px}
+
+/* ── Checkout (pattern from SBN "Dining Checkout Screens" 2028:153) ── */
+.co-sum{box-shadow:0 1px 4px rgba(0,0,0,.12);border-radius:2px;padding:14px 12px}
+.co-sum h3{margin:0;font:600 16px/1.35 var(--sans)}
+.co-sum .when{font-size:12px;margin:2px 0 10px}
+.co-sum .disc{color:var(--ok)}
+.co-due{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--blue-10);margin-top:10px;padding-top:12px;font-size:17px}
+.co-h{font:400 22px/1.2 var(--serif);color:var(--blue);margin:0}
+.stack>.co-h{margin-top:28px}
+.stack>.co-h+*{margin-top:12px}
+.co-fields input::placeholder{color:var(--black);opacity:1}
+.co-card{border:1px solid var(--blue-20);border-radius:var(--r);padding:14px 16px;font-size:14px;line-height:1.75}
+.co-card .top{display:flex;justify-content:space-between;align-items:baseline}
+.co-card b{font-weight:600;font-size:15px}
+.co-card .edit{color:var(--blue-hover);font-size:13px}
+.co-card .edit:hover{text-decoration:underline}
+.co-card small{display:block;font-size:12px;color:var(--dark-gray);line-height:1.5;margin-top:2px}
+.co-fields{display:grid;gap:12px}
+.co-fields .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.co-fields .field{border-color:var(--dark-gray);border-radius:0}
+.co-fields .field input,.co-fields .field select{border-radius:0}
+.co-help{font-size:12px;color:var(--dark-gray);margin:0}
+.co-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-navy{background:var(--blue);color:#fff;min-height:44px;font-weight:600}
+.btn-navy:hover:not(:disabled){background:var(--blue-hover)}
+.btn-navy:disabled{background:var(--blue-10);color:#fff}
+.btn-ghost{border:1px solid var(--blue-20);color:var(--blue);min-height:44px;font-weight:600}
+.co-check{display:flex;align-items:center;gap:10px;color:var(--blue);font-weight:600;font-size:15px;cursor:pointer}
+.co-check input{position:absolute;opacity:0}
+.co-home{background:var(--blue-10);padding:12px 16px;font-size:14px;line-height:1.75}
+.co-home small{display:block;font-size:12px;color:var(--dark-gray);line-height:1.5;margin-top:4px}
+.cvv{position:relative}
+.cvv .q{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:28px;height:28px;display:grid;place-items:center;border-radius:50%;color:var(--black)}
+.cvv .q:hover{background:var(--blue-5)}
+.tip{position:absolute;right:-6px;bottom:calc(100% + 8px);width:min(300px,86vw);background:#fff;border-radius:4px;box-shadow:0 4px 18px rgba(0,0,0,.18);padding:10px 12px;font-size:13px;line-height:1.55;z-index:5}
+.tip::after{content:"";position:absolute;right:20px;bottom:-6px;width:12px;height:12px;background:#fff;transform:rotate(45deg);box-shadow:3px 3px 4px rgba(0,0,0,.06)}
+.field select{padding-right:40px}
+.field.select .chev{right:12px}
+.actionbar.has-err{flex-wrap:wrap}
+.actionbar.has-err .pay-err{flex:0 0 100%}
+.pay-err{color:var(--red);font-size:12px;margin:0}
+.btn-pay{width:100%}
+@media (min-width:1024px){ .main-only{display:none} }
+
+/* ═══ HAL theme (tokens from shore-ex-mobile-compare/hal pages: HAL DS) ═══ */
+:root{
+  --blue:#022658; --blue-hover:#1c4379; --gold:#022658; --dark-gold:#a34c17;
+  --blue-30:rgba(2,38,88,.30); --blue-20:#cdcfd2; --blue-10:rgba(2,38,88,.08); --blue-5:#f2f3f4;
+  --dark-beige:#f8eddc; --black:#1d2736; --dark-gray:#4f5763; --gray:#9a9fa5; --light-gray:#b4b7bc;
+  --orange:#ff7f32;
+  --serif:"HAL Headline","Gelasio",Georgia,serif;
+  --sans:"HAL Body","Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:8px;
+}
+body{font-size:14px}
+svg.star{color:var(--orange);fill:var(--orange)}
+.btn{border-radius:999px;min-height:56px;font-weight:600;font-size:17px}
+.btn-primary{background:var(--blue)}
+.btn-primary:hover:not(:disabled){background:var(--blue-hover)}
+.btn-primary:disabled{background:var(--blue-20)}
+.btn-text{font-size:14px}
+.actionbar{border-radius:16px}
+.chip{border-radius:8px}
+.chip.lim span{color:var(--dark-gold)}
+.pill.spots{background:var(--blue)}
+.eyebrow{letter-spacing:.12em}
+.card{border-color:var(--blue-20)}
+.credit-note{color:var(--blue)}
+.co-h{font:600 20px/1.3 var(--sans)}
+.co-card{border-color:var(--blue-20);border-radius:var(--r)}
+.co-fields .field{border-radius:6px;border-color:var(--light-gray)}
+.cvv-row{display:flex;align-items:center;gap:12px}
+.cvv-row .field{width:50%}
+.cvv-row .q{position:static;transform:none}
+.btn-navy,.btn-ghost{border-radius:999px}
+@media (min-width:1024px){ .actionbar{border-radius:0 0 var(--r) var(--r)} body.is-conf .actionbar{border-radius:0} .sum-card{border-radius:var(--r) var(--r) 0 0} }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.2l2.8 2.8L16.2 9.6"/></symbol>
+  <symbol id="i-addp" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 19c.6-3.3 3-5 6-5s5.4 1.7 6 5M18 8v6M15 11h6"/></symbol>
+  <symbol id="i-wheel" viewBox="0 0 24 24"><circle cx="12" cy="4" r="1.6" fill="currentColor" stroke="none"/><path d="M11 7.5v6h5.5l2 5M11 10.5h5"/><path d="M8.2 11.3a5.2 5.2 0 1 0 7.3 6.3"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.9.6c0 1.7-2.5 2.1-2.5 3.6"/><circle cx="12" cy="16.9" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="M12 11v6" stroke="#fff" stroke-width="2.2"/><circle cx="12" cy="7.5" r="1.3" fill="#fff" stroke="none"/></symbol>
+</svg>
+
+<header class="appbar" id="appbar">
+  <div class="appbar-in">
+    <div class="ab-row">
+      <button class="ab-back" id="back" aria-label="Back"><svg class="i" style="width:24px;height:24px"><use href="#i-back"/></svg></button>
+      <h1 class="ab-title" id="abTitle">Availability</h1>
+    </div>
+    <nav class="steps" aria-label="Booking steps">
+      <div class="step" data-s="1">Availability</div>
+      <div class="step" data-s="2">Guests</div>
+      <div class="step" data-s="3">Review</div>
+    </nav>
+  </div>
+</header>
+
+<div id="confHero" class="conf-hero" hidden>
+  <div>
+    <svg class="i"><use href="#i-ok"/></svg>
+    <h1>Excursion confirmed</h1>
+    <p>Your excursion is confirmed and added to your itinerary.</p>
+  </div>
+</div>
+
+<div class="shell" id="shell">
+  <div class="grid">
+    <main id="main" aria-live="polite"></main>
+    <aside class="rail">
+      <div class="sum-card" id="sum"></div>
+      <div class="actionbar" id="bar"></div>
+    </aside>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"><svg class="i"><use href="#i-ok"/></svg><span></span></div>
+
+
+<script>
+/* ── Content: flow copy from HAL Figma 404:33931 (Kauai reserve boards) unless marked FPO ── */
+/* One Reserve flow for every HAL compare page. The details page opens it as
+   reserve.html?ex=<page file name>[&times=multi&time=N][&spots=limited][&ctx=onb].
+   Title, port, date, start time and adult rate are taken from each details page. */
+const REGISTRY = {
+  'kauai-hiking-adventure': {title:'Kauai Hiking Adventure', port:'Nawiliwili, Kauai, Hawaii, US', photo:'assets/kauai-napali-coast.webp', focal:'50% 50%', dateLong:'Monday, Feb 1, 2027', dateShort:'Monday, Feb 1', start:'8:30 AM', price:199.95},
+  'accessible-lisbon-jeronimos-monastery': {title:'Accessible Lisbon & Jeronimos Monastery', port:'Lisbon, Portugal', photo:'assets/lisbon-jeronimos.webp', focal:'50% 50%', dateLong:'Sunday, Apr 18, 2027', dateShort:'Sunday, Apr 18', start:'9:00 AM', price:299.95, access:true},
+  'easter-island-panorama': {title:'Easter Island Panorama', port:'Easter Island, Chile', photo:'assets/easter-island-moai.webp', focal:'50% 50%', dateLong:'Wednesday, Jan 20, 2027', dateShort:'Wednesday, Jan 20', start:'10:00 AM', price:299.95},
+  'hidden-lanzarote': {title:'Hidden Lanzarote', port:'Arrecife, Lanzarote, Canary Islands, Spain', photo:'assets/lanzarote-cactus-garden.webp', focal:'50% 50%', dateLong:'Wednesday, Apr 14, 2027', dateShort:'Wednesday, Apr 14', start:'9:15 AM', price:89.95},
+  'kings-vikings-roskilde': {title:'Kings & Vikings: The Viking Ship Museum & Roskilde Cathedral curated with The HISTORY Channel', port:'Copenhagen, Denmark', photo:'assets/roskilde-cathedral.webp', focal:'50% 50%', dateLong:'Friday, Apr 30, 2027', dateShort:'Friday, Apr 30', start:'10:30 AM', price:189.95},
+  'seaplane-flight-fine-dining': {title:'Seaplane Flight & Fine Dining', port:'Sydney, Australia', photo:'assets/sydney-opera-house.webp', focal:'50% 50%', dateLong:'Wednesday, Feb 10, 2027', dateShort:'Wednesday, Feb 10', start:'10:30 AM', price:964.95},
+  'tahiti-lagoon-discovery': {title:'Tahiti Lagoon Discovery', port:'Papeete, French Polynesia', photo:'assets/tahiti-lagoon.webp', focal:'50% 50%', dateLong:'Tuesday, Jan 26, 2027', dateShort:'Tuesday, Jan 26', start:'8:30 AM', price:139.95}
+};
+const Q0 = new URLSearchParams(location.search);
+const EX_ID = REGISTRY[Q0.get('ex')] ? Q0.get('ex') : 'kauai-hiking-adventure';
+const EX = {
+  ...REGISTRY[EX_ID], file: EX_ID + '.html',
+  credit: +(Q0.get('creditValue') || 100), creditCount: Q0.has('credits') ? +Q0.get('credits') : 2,
+  spotsLeft: Math.max(1, +(Q0.get('left') || 2)),
+  vehicles: [ /* FPO: vehicle types and prices are not in the Figma file */
+    {id:'v1', name:'Vehicle option 1', price:400},
+    {id:'v2', name:'Vehicle option 2', price:650}
+  ]
+};
+/* Same filler times as the details pages: start, +2 h (limited), +4 h (sold out) */
+function addHours(t, h){
+  const [, hh, mm, ap] = t.match(/(\d+):(\d+)\s*(AM|PM)/);
+  let m = ((+hh % 12) + (ap==='PM'?12:0)) * 60 + +mm + h*60;
+  const H = Math.floor(m/60) % 24, A = H>=12 ? 'PM' : 'AM';
+  return `${(H % 12) || 12}:${String(m % 60).padStart(2,'0')} ${A}`;
+}
+const TIMES = [
+  {t:EX.start, s:'Available'},
+  {t:addHours(EX.start,2), s:'Limited Capacity', lim:true},
+  {t:addHours(EX.start,4), s:'Sold Out', out:true}
+];
+document.title = `Reserve · ${EX.title}`;
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+addEventListener('load', () => scrollTo(0, 0));
+const GUESTS = [
+  {id:'robert', name:'Robert Cruiser', room:'own', credit:true},
+  {id:'rhonda', name:'Rhonda Cruiser', room:'own', credit:true, second:true},
+  {id:'roger',  name:'Roger Cruiser',  room:'linked'},
+  {id:'ronny',  name:'Ronny Cruiser',  room:'linked', minor:true},
+  /* Added via "Add guests from another cabin". Stateroom + names are placeholders (user, 2026-11-10: same pattern as 4082, different number and names) */
+  {id:'jamie',  name:'Jamie Ellis',  room:'added'},
+  {id:'taylor', name:'Taylor Ellis', room:'added'}
+];
+const ADDED = {room:'4090', last:'Ellis'};
+/* Checkout: Robert's profile data, same placeholders as the SBN dining checkout boards (2028:153) */
+const PROFILE = {first:'Robert', last:'Cruiser', email:'robert.cruiser@example.com', phone:'+1 (206) 555-0142'};
+const HOME = ['1234 Harbor View Dr, Apt 5B','Seattle, WA 98119','United States'];
+const CVV_TIP = 'Enter the 3-digit security code on the back of your card. For American Express, enter the 4-digit code on the front, above the card number.';
+const ACCESS_COPY = 'This tour is the wheelchair accessible version of the standard tour for this port. Only guests using a wheelchair should book this tour as it ensures accessible transportation. If you or anyone in your party do not require the use of a wheelchair during the tour, please book the standard tour option. Bookings with the accessibility requirement will be verified onboard.';
+/* Cancellation: HAL cancellation policy, verbatim from content-inventory.md (used by every HAL details page) */
+const CANCEL = ["Online cancellations will not be accepted during the 3-day period prior to cruise departure. Instead, you will need to cancel once you board the ship. All onboard cancellations are subject to at least a 10% cancellation fee. If you cancel a Signature Collection Shore Excursions within 3 days of sailing, a 100% cancellation fee will apply since transportation and services will have already been arranged with the appropriate Shore Excursion operator. If cancellation occurs onboard after the cancellation deadline for a specific Shore Excursion, a 100% cancellation fee will apply. The ship's Shore Excursions Office will be able to advise you of the cancellation deadline applicable to each Shore Excursion. Passengers who wish to cancel should visit the Shore Excursions Office upon embarkation. Optional Shore Excursions during the land portion of an Alaska Land+Sea Journey are non-refundable within 3 days of your Land+Sea Journey departure date.", "In the case of online cancellations made by you (which cannot be made during the 3-day period prior to cruise departure) or cancellations made by us more than 3 days prior to cruise departure, we will issue a credit on the credit card that was used to pay for the booking. For all other cancellations (whether by you, Holland America Line or the Shore Excursion operator), a credit will not be given on your credit card. Instead, we will apply an ONBOARD CREDIT ONLY policy under which the refund (less any cancellation fee) will show up as a credit to the shipboard account of the person who was to take the Shore Excursion. If the credit is not fully utilized during the cruise, the balance will be paid to that passenger by the ship's Purser at the end of the voyage."];
+const W_MIN = 40, W_MAX = 300;
+
+/* ── State ── */
+const S = {
+  step: 1, sub: null,             // sub: 'owner' on the Guests step
+  ctx: 'pre', times: 'single', spots: 'open', access: false, pricing: 'adult',
+  credits: !EX.included && EX.creditCount > 0, weight: false, owner: false, access: !!EX.access,
+  party: 2, time: 0, vehicle: '',
+  sel: ['robert','rhonda'], linkedOpen: false, addOpen: false,
+  weights: {}, touched: {}, ownerId: 'robert', terms: true, cancelOpen: false,
+  added: false, addRoom: '', addLast: '', addErr: false,
+  // checkout
+  contact: {...PROFILE, note:'From your profile'}, cEdit: false, cDraft: null,
+  billing: {useHome: true, first:'Robert', last:'Cruiser', country:'United States', a1:'', a2:'', city:'', state:'', zip:'', note:'Using your home address'},
+  bEdit: false, bDraft: null, card: {num:'4111 1111 1111 1111', mm:'08', yy:'29', cvv:'123'} /* prototype test card, prefilled so Pay works in one click */, cardErr: {}, tip: false, errs: {}
+};
+let prevSelCount = null;
+
+const $ = s => document.querySelector(s);
+const money = n => '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const ico = (id, cls='i', st='') => `<svg class="${cls}" ${st?`style="${st}"`:''}><use href="#i-${id}"/></svg>`;
+const esc = s => s.replace(/&/g,'&amp;');
+const cap = () => S.spots === 'open' ? 8 : EX.spotsLeft;
+const isVeh = () => S.pricing === 'vehicle';
+const veh = () => EX.vehicles.find(v => v.id === S.vehicle);
+const visGuests = () => GUESTS.filter(g => g.room!=='added' || S.added);
+const selGuests = () => visGuests().filter(g => S.sel.includes(g.id));
+const creditTotal = n => S.credits ? Math.min(selGuests().filter(g=>g.credit).length, EX.creditCount, n ?? 99) * EX.credit : 0;
+const gross = n => EX.included ? 0 : isVeh() ? (veh() ? veh().price : null) : n * EX.price;
+const timeTxt = () => TIMES[S.time].t;
+const listNames = a => a.length < 2 ? a.join('') : a.length === 2 ? a.join(' and ') : a.slice(0,-1).join(', ') + ', and ' + a.at(-1);
+const weightOk = id => { const w = +S.weights[id]; return S.weights[id] !== undefined && S.weights[id] !== '' && w >= W_MIN && w <= W_MAX; };
+
+/* ── Views ── */
+function titleBlock(){
+  return `<div><h2 class="ex-title">${esc(EX.title)}</h2><p class="ex-port">${EX.port}</p></div>`;
+}
+function creditNote(){
+  return S.credits ? `<div class="credit-note">${ico('star','i star')}<div><b>Shore excursion credit(s) available.</b><br>Discounts will be applied at checkout.</div></div>` : '';
+}
+function waitBanner(){
+  const head = `This excursion has <b>${EX.spotsLeft} spot${EX.spotsLeft===1?'':'s'}</b> available and can’t fit all selected guests.`;
+  return S.ctx === 'pre'
+    ? `<div class="notice" id="waitBanner">${head}<br><a href="#" data-act="noop">Check waitlist availability on our website</a></div>`
+    : `<div class="notice" id="waitBanner">${head} To join the waitlist, visit the Shore Excursions Desk.</div>`;
+}
+
+function vStep1(){
+  const over = S.party > cap();
+  const badge = S.access
+    ? `<div><span class="pill acc" id="accBadge">${ico('wheel','i','width:18px;height:18px')}Fully Accessible<button class="info" data-act="accInfo" aria-label="About accessible tours">${ico('info','i','width:16px;height:16px;color:var(--blue)')}</button></span></div>`
+    : S.spots !== 'open' ? `<div><span class="pill spots" id="spotsPill">${EX.spotsLeft} spot${EX.spotsLeft===1?'':'s'} left</span></div>` : '';
+  const timeRow = S.times === 'multi'
+    ? `<div class="row col" id="timeRow"><span class="k">Departure time</span><div class="chips" role="radiogroup" aria-label="Departure time">${TIMES.map((t,i)=>`<button class="chip ${t.lim?'lim':''} ${S.time===i?'on':''}" role="radio" aria-checked="${S.time===i}" data-act="time" data-i="${i}" ${t.out?'disabled':''}><b>${t.t}</b><span>${t.s}</span></button>`).join('')}</div></div>`
+    : `<div class="row" id="timeRow"><span class="k">Departure time</span><span class="v">${timeTxt()}</span></div>`;
+  const vehRows = isVeh() ? `
+      <div style="padding:4px 0 12px" id="vehRow"><div class="field">
+        <label for="vehSel"><i>*</i>Vehicle type</label>
+        <select id="vehSel" data-act="veh"><option value="">Select</option>${EX.vehicles.map(v=>`<option value="${v.id}" ${S.vehicle===v.id?'selected':''}>${v.name}</option>`).join('')}</select>
+        ${ico('down','i chev')}
+      </div></div>
+      <div class="row" style="border-top:1px solid var(--blue-10)"><span class="k">Price per vehicle</span>${veh()?`<span class="v">${money(veh().price)} <span class="fpo">FPO</span></span>`:'<span class="dash">—</span>'}</div>
+      <div class="row total" style="border-top:0"><span class="k">Total cost</span>${veh()?`<span class="serif-amt">${money(veh().price)}</span>`:'<span class="dash">—</span>'}</div>`
+    : EX.included ? `
+      <div class="row"><span class="k">Price</span><span class="v">Included · Sign-up required</span></div>`
+    : `
+      <div class="row"><span class="k">Price</span><span class="v">${money(EX.price)} / adult</span></div>
+      <div class="row total"><span class="k">Total cost</span><span class="serif-amt" id="s1Total">${money(S.party*EX.price)}</span></div>`;
+  return `<div class="stack">
+    ${titleBlock()}
+    ${badge}
+    <div class="card" id="selCard">
+      <div class="card-b">
+        <div class="card-h" style="padding-bottom:10px"><p class="eyebrow">Your selections</p></div>
+        <div class="row"><span class="k">Date</span><span class="v">${EX.dateLong}</span></div>
+        ${timeRow}
+        <div class="row" id="partyRow"><span class="k">Party size</span>
+          <span class="stepper"><button data-act="minus" aria-label="Fewer guests" ${S.party<=1?'disabled':''}>${ico('minus','i','width:18px;height:18px')}</button><output aria-live="polite">${S.party}</output><button data-act="plus" aria-label="More guests" ${S.party>=cap()?'disabled':''}>${ico('plus','i','width:18px;height:18px')}</button></span>
+        </div>
+        ${vehRows}
+      </div>
+      ${creditNote()}
+    </div>
+    ${over ? waitBanner() : ''}
+    ${S.access ? `<div class="notice plain" id="accNotice">${ACCESS_COPY}</div>` : ''}
+  </div>`;
+}
+
+function guestRow(g, mode){
+  const checked = S.sel.includes(g.id);
+  if (mode === 'owner'){
+    const dis = g.minor;
+    return `<div class="g ${dis?'dis':''}"><label class="g-line"><input type="radio" name="owner" value="${g.id}" data-act="owner" ${S.ownerId===g.id?'checked':''} ${dis?'disabled':''}><span class="radio"></span>${g.name}</label></div>`
+      + (dis ? `<div class="minor-note">Minors can’t be selected as the lead guest.</div>` : '');
+  }
+  const atCap = S.sel.length >= cap() && !checked && S.spots !== 'tried';
+  const sub = [];
+  if (checked && g.credit && S.credits && !(g.second && EX.creditCount < 2)) sub.push(`<div class="credit-chip">${ico('star','i star')}$${EX.credit} credit applied</div>`);
+  if (checked && S.weight){
+    const v = S.weights[g.id] ?? '';
+    const bad = S.touched[g.id] && !weightOk(g.id);
+    sub.push(`<div><div class="field ${v===''?'empty':'filled'} ${bad?'err':''}" data-wf="${g.id}"><label for="w-${g.id}"><i>*</i>Weight (in lbs)</label><input id="w-${g.id}" inputmode="numeric" maxlength="3" value="${v}" data-act="weight" data-id="${g.id}" aria-invalid="${bad}" ${bad?`aria-describedby="we-${g.id}"`:''}></div>${bad?`<p class="err-msg" id="we-${g.id}">Enter a weight between ${W_MIN} and ${W_MAX} lbs.</p>`:''}</div>`);
+  }
+  return `<div class="g ${atCap?'dis':''}"><label class="g-line"><input type="checkbox" value="${g.id}" data-act="guest" ${checked?'checked':''} ${atCap?'disabled':''}><span class="box">${ico('check','i')}</span>${g.name}</label>${sub.length?`<div class="g-sub">${sub.join('')}</div>`:''}</div>`;
+}
+
+function vStep2(){
+  const owner = S.sub === 'owner';
+  const pool = owner ? selGuests() : GUESTS;
+  const own = pool.filter(g=>g.room==='own'), linked = pool.filter(g=>g.room==='linked'), added = (owner?pool:visGuests()).filter(g=>g.room==='added');
+  const over = S.sel.length > cap();
+  const linkedBlock = linked.length || !owner ? `
+      <div class="linked">
+        <button class="linked-h" data-act="linked" aria-expanded="${S.linkedOpen}" aria-controls="linkedList"><span><b>Linked bookings</b><small>Stateroom 4084 · 2 guests</small></span>${ico('down')}</button>
+        <div id="linkedList" ${S.linkedOpen?'':'hidden'}>${linked.map(g=>guestRow(g, owner?'owner':'')).join('')}</div>
+      </div>` : '';
+  return `<div class="stack">
+    ${S.weight && !owner ? `<div class="notice" id="weightBanner"><b>Weight limit.</b> This excursion has a weight limit of ${W_MIN} to ${W_MAX} pounds.</div>` : ''}
+    <div class="card" id="partyCard"><div class="card-b">
+      <div class="card-h"><p class="eyebrow">${owner?'Guest owner':'Your party'}</p><span class="meta">${owner?'Choose 1':`${S.sel.length} guest${S.sel.length===1?'':'s'}`}</span></div>
+      <div class="room"><p class="room-h">Stateroom 4082 · Your booking</p>${own.map(g=>guestRow(g, owner?'owner':'')).join('')}</div>
+      ${linkedBlock}
+      ${added.length ? `<div class="room added" id="addedRoom"><p class="room-h">Stateroom ${ADDED.room} · Added booking</p>${added.map(g=>guestRow(g, owner?'owner':'')).join('')}</div>` : ''}
+    </div></div>
+    ${owner ? '' : `<div class="add" id="addBox">
+      <button class="add-h" data-act="add" aria-expanded="${S.addOpen}"><span class="ico">${ico('addp')}</span>Add guests from another cabin${ico('down','i chev')}</button>
+      ${S.addOpen ? `<div class="add-form">
+        ${S.addErr ? `<p class="add-err" role="alert">No booking found for that number and last name. Please try again.</p>` : ''}
+        ${fld('addRoom','Stateroom number', S.addRoom, {req:true, mode:'numeric', bind:'addRoom'})}
+        ${fld('addLast','Guest last name', S.addLast, {req:true, bind:'addLast'})}
+        <button class="btn-outline" data-act="addBooking">Add booking</button>
+        <p class="proto-hint">Prototype: stateroom ${ADDED.room}, last name ${ADDED.last} finds a booking; anything else shows the error.</p>
+      </div>` : ''}
+    </div>`}
+    ${over && !owner ? waitBanner() : ''}
+  </div>`;
+}
+
+function fld(id, label, val, o={}){
+  const v = val ?? '';
+  const bad = o.err;
+  const inp = o.options
+    ? `<select id="${id}" data-bind="${o.bind}">${o.options.map(x=>`<option ${x===v?'selected':''} value="${['Select','MM','YY'].includes(x)?'':x}">${x}</option>`).join('')}</select>${ico('down','i chev')}`
+    : `<input id="${id}" value="${String(v).replace(/"/g,'&quot;')}" data-bind="${o.bind}" ${o.mode?`inputmode="${o.mode}"`:''} ${o.max?`maxlength="${o.max}"`:''} ${o.ph?`placeholder="${o.ph}"`:''} autocomplete="${o.ac||'off'}" aria-invalid="${!!bad}">`;
+  const filled = o.options || v!=='' || o.ph;
+  return `<div class="field ${o.options?'select filled':filled?'filled':'empty'} ${bad?'err':''} ${o.cls||''}"><label for="${id}">${o.req?'<i>*</i>':''}${label}</label>${inp}${o.extra||''}</div>`;
+}
+
+/* ── Checkout (step 3 · after Review, before Confirmed) ── */
+function vPay(){
+  const n = S.sel.length, g = gross(n)||0, c = creditTotal(), due = Math.max(0,g-c);
+  const C = S.contact, B = S.billing, cd = S.cDraft, bd = S.bDraft, E = S.errs;
+  const contact = S.cEdit ? `<div class="co-fields" id="contactForm">
+      <p class="co-help">Changes apply to this reservation only.</p>
+      <div class="two">${fld('cFirst','First name',cd.first,{req:true,bind:'c.first',err:E.cfirst})}${fld('cLast','Last name',cd.last,{req:true,bind:'c.last',err:E.clast})}</div>
+      ${fld('cEmail','Email',cd.email,{req:true,bind:'c.email',err:E.cemail,ac:'email'})}
+      ${fld('cPhone','Phone',cd.phone,{req:true,bind:'c.phone',err:E.cphone,mode:'tel'})}
+      <div class="co-actions"><button class="btn-navy" data-act="cSave">Save changes</button><button class="btn-ghost" data-act="cCancel">Cancel</button></div>
+    </div>`
+    : `<div class="co-card" id="contactCard"><div class="top"><b>${C.first} ${C.last}</b><button class="edit" data-act="cEdit">Edit</button></div>${C.email}<br>${C.phone}<small>${C.note}</small></div>`;
+  const nameRow = `<p class="co-help">Billing name — enter the name of the person paying.</p>
+      <div class="two">${fld('bFirst','First name',bd?.first,{req:true,bind:'b.first',err:E.bfirst})}${fld('bLast','Last name',bd?.last,{req:true,bind:'b.last',err:E.blast})}</div>`;
+  const billing = S.bEdit ? `<div class="co-fields" id="billingForm">
+      <label class="co-check"><input type="checkbox" data-act="useHome" ${bd.useHome?'checked':''}><span class="box">${ico('check','i')}</span>Use home address for billing</label>
+      ${bd.useHome ? `<div class="co-home">${HOME.join('<br>')}<small>From your profile. Changes here won’t update your profile.</small></div>${nameRow}`
+      : `${nameRow}
+      ${fld('bCountry','Country',bd.country,{req:true,bind:'b.country',options:['United States','Canada','United Kingdom','Australia']})}
+      ${fld('bA1','Address line 1',bd.a1,{req:true,bind:'b.a1',err:E.ba1})}
+      ${fld('bA2','Address line 2',bd.a2,{bind:'b.a2'})}
+      ${fld('bCity','City',bd.city,{req:true,bind:'b.city',err:E.bcity})}
+      <div class="two">${fld('bState','State',bd.state,{req:true,bind:'b.state',err:E.bstate,options:['Select','Oregon','Washington','California','Florida','New York']})}${fld('bZip','ZIP code',bd.zip,{req:true,bind:'b.zip',err:E.bzip,mode:'numeric',max:10})}</div>`}
+      <div class="co-actions"><button class="btn-navy" data-act="bSave">Save changes</button><button class="btn-ghost" data-act="bCancel">Cancel</button></div>
+    </div>`
+    : `<div class="co-card" id="billingCard"><div class="top"><b>${B.first} ${B.last}</b><button class="edit" data-act="bEdit">Edit</button></div>${(B.useHome?HOME:[B.a1,B.a2,`${B.city}, ${STATE_AB[B.state]||B.state} ${B.zip}`,B.country].filter(Boolean)).join('<br>')}<small>${B.note}</small></div>`;
+  const K = S.card, KE = S.cardErr;
+  return `<div class="stack">
+    <div class="main-only" id="paySum">${bookingCard('pay')}</div>
+    <h2 class="co-h">Contact details</h2>
+    ${contact}
+    <h2 class="co-h">Payment method</h2>
+    <div class="co-fields" id="cardForm">
+      ${fld('kNum','Credit card number',K.num,{req:true,bind:'k.num',err:KE.num,mode:'numeric',max:19,ac:'cc-number'})}
+      <div class="two">${fld('kMM','Expiry Month',K.mm||'MM',{req:true,bind:'k.mm',err:KE.mm,options:['MM',...Array.from({length:12},(_,i)=>String(i+1).padStart(2,'0'))]})}${fld('kYY','Expiry Year',K.yy||'YY',{req:true,bind:'k.yy',err:KE.yy,options:['YY',...Array.from({length:10},(_,i)=>String(26+i))]})}</div>
+      <div class="cvv cvv-row">${fld('kCvv','Security Code',K.cvv,{req:true,bind:'k.cvv',err:KE.cvv,mode:'numeric',max:4,ac:'cc-csc'})}
+        <button class="q" data-act="tip" aria-label="What is the security code?" aria-expanded="${S.tip}">${ico('help','i','width:22px;height:22px')}</button>
+        ${S.tip?`<div class="tip" role="tooltip">${CVV_TIP}</div>`:''}</div>
+    </div>
+    <h2 class="co-h">Billing details</h2>
+    ${billing}
+  </div>`;
+}
+const STATE_AB = {Oregon:'OR', Washington:'WA', California:'CA', Florida:'FL', 'New York':'NY'};
+
+function costBlock(withNote){
+  const n = S.sel.length, g = gross(n), c = creditTotal();
+  if (EX.included) return `<div class="row"><span class="k">Price</span><span>Included</span></div>`;
+  const line = isVeh()
+    ? `<div class="row"><span class="k">Vehicle cost</span><span>${veh()?`${veh().name} · ${money(veh().price)}`:'—'}</span></div>`
+    : `<div class="row"><span class="k">Adult cost</span><span>${n} x ${money(EX.price)} = ${money(g)}</span></div>`;
+  return `${withNote==='rv'||withNote==='pay'?line:''}
+    ${c?`<div class="credit-row"><span>${ico('star','i star')}Excursion credits</span><b>−${money(c)}</b></div>`:''}
+    <div class="row"><span class="k" style="font-weight:700">${withNote==='pay'?'Total due today':'Total cost'}</span><span class="serif-amt">${money(Math.max(0,(g||0)-c))}</span></div>`;
+}
+function bookingCard(kind){
+  const names = listNames(selGuests().map(g=>g.name));
+  return `<div class="card" id="${kind}Card"><div class="card-b">
+    ${titleBlock()}
+    <p class="rv-when">${EX.dateShort} at ${timeTxt()}</p>
+    <p class="rv-names">${names}</p>
+    <div class="rv-cost">${costBlock(kind==='cf'?'':kind)}</div>
+    ${kind==='cf' && S.ctx==='pre' ? `<div class="ticket-note">Your shore excursion tickets will be available once onboard.</div>` : ''}
+  </div></div>`;
+}
+function vStep3(){
+  return `<div class="stack">
+    ${bookingCard('rv')}
+    <div class="card" id="termsCard">
+      <button class="acc-h" data-act="cancel" aria-expanded="${S.cancelOpen}">Cancellation${ico('down')}</button>
+      ${S.cancelOpen?`<div class="acc-b">${CANCEL.map(p=>`<p>${p}</p>`).join('')}</div>`:''}
+      <div class="terms"><h3>Terms &amp; Conditions</h3>
+        <label class="g-line"><input type="checkbox" data-act="terms" ${S.terms?'checked':''}><span class="box">${ico('check','i')}</span><span>I accept the <a href="#" data-act="noop">terms &amp; conditions</a></span></label>
+      </div>
+    </div>
+  </div>`;
+}
+function vStep4(){ return `<div class="conf-wrap">${bookingCard('cf')}</div>`; }
+
+/* ── Action bar + desktop summary ── */
+function barState(){
+  const n = S.step===1 ? S.party : S.sel.length;
+  const stepTxt = `Step ${S.step} of 3`;
+  const net = Math.max(0,(gross(n)||0) - (S.step===1?0:creditTotal()));
+  if (S.step===1){
+    if (S.party > cap()) return {lbl:`${EX.spotsLeft} spot${EX.spotsLeft===1?'':'s'} left`, sub:stepTxt, btn:'Continue', dis:true};
+    if (isVeh() && !veh()) return {lbl:'Pick a vehicle', sub:stepTxt, btn:'Continue', dis:true};
+    return {amt:EX.included?'Included':money(net), sub:`${n} guest${n===1?'':'s'} · ${stepTxt}`, btn:'Continue'};
+  }
+  if (S.step===2){
+    if (!n) return {lbl:'Select guests', sub:stepTxt, btn:'Continue', dis:true};
+    if (n > cap()) return {lbl:`${EX.spotsLeft} spot${EX.spotsLeft===1?'':'s'} left`, sub:stepTxt, btn:'Continue', dis:true};
+    if (S.weight && S.sub!=='owner' && selGuests().some(g=>!weightOk(g.id))) return {lbl:'Check weights', sub:stepTxt, btn:'Continue', dis:true};
+    return {amt:EX.included?'Included':money(net), sub:`${n} guest${n===1?'':'s'} · ${stepTxt}`, btn:'Continue'};
+  }
+  if (S.step===3 && S.sub==='pay'){
+    const err = S.cEdit && S.bEdit ? 'Save or cancel your contact and billing changes to continue.'
+      : S.cEdit ? 'Save or cancel your contact changes to continue.'
+      : S.bEdit ? 'Save or cancel your billing details changes to continue.' : '';
+    return {pay:true, amt:money(net), sub:`${n} guests · ${stepTxt}`, btn:'Pay', err, dis:!!err};
+  }
+  if (S.step===3) return {amt:EX.included?'Included':money(net), sub:`${n} guest${n===1?'':'s'} · ${stepTxt}`, btn:EX.included?'Confirm':'Continue', dis:!S.terms};
+  return null;
+}
+function renderBar(){
+  const bar = $('#bar');
+  if (S.step===4){
+    bar.classList.add('solo');
+    bar.innerHTML = S.ctx==='pre'
+      ? `<div class="bar-two"><a class="btn btn-text" href="excursions.html">All Excursions</a><button class="btn btn-primary" data-act="noop">View Itinerary</button></div>`
+      : `<div class="bar-two"><button class="btn btn-text" data-act="noop">View Itinerary</button><button class="btn btn-primary" data-act="noop">View Ticket</button></div>`;
+    return;
+  }
+  bar.classList.remove('solo');
+  const b = barState();
+  bar.classList.toggle('has-err', !!b.err);
+  bar.innerHTML = `${b.err?`<p class="pay-err" role="alert">${b.err}</p>`:''}<div class="bar-info">${b.amt?`<div class="bar-amt">${b.amt}</div>`:`<div class="bar-lbl">${b.lbl}</div>`}<div class="bar-sub">${b.sub}</div></div>
+    <button class="btn btn-primary" data-act="${b.pay?'pay':'next'}" ${b.dis?'disabled':''}>${b.btn}</button>`;
+  renderSum();
+}
+function renderSum(){
+  if (S.step===4) return;
+  const n = S.step===1 ? S.party : S.sel.length;
+  const g = gross(n), c = S.step===1 ? 0 : creditTotal();
+  const rows = [
+    ['Date', EX.dateLong],
+    ['Departure time', timeTxt()],
+    ['Guests', S.step===1 ? `${n}` : (n ? listNames(selGuests().map(x=>x.name.split(' ')[0])) : '—')],
+    isVeh() ? ['Vehicle', veh()?veh().name:'—'] : ['Price', EX.included ? 'Included' : `${money(EX.price)} / adult`]
+  ];
+  $('#sum').innerHTML = `<div class="sum-photo" style="background-image:url('${EX.photo}');background-position:${EX.focal}" role="img" aria-label="${esc(EX.title)}"></div>
+    <div class="sum-b">
+      <h2 class="ex-title">${esc(EX.title)}</h2><p class="ex-port">${EX.port}</p>
+      <div class="sum-rows">
+        ${rows.map(r=>`<div class="row"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`).join('')}
+        ${c?`<div class="credit-row"><span>${ico('star','i star')}Excursion credits</span><b>−${money(c)}</b></div>`:''}
+        <div class="row total" ${EX.included?'hidden':''}><span class="k">${S.sub==='pay'?'Total due today':'Total cost'}</span><span class="serif-amt">${g==null?'—':money(Math.max(0,g-c))}</span></div>
+      </div>
+    </div>
+    `;
+}
+
+/* ── Render ── */
+const TITLES = {1:'Availability', 2:'Select Guests', owner:'Select Guest Owner', pay:'Checkout', 3:'Review & confirm'};
+function render(){
+  document.body.classList.toggle('is-conf', S.step===4);
+  $('#confHero').hidden = S.step!==4;
+  $('#abTitle').textContent = S.sub ? TITLES[S.sub] : TITLES[S.step] || '';
+  document.querySelectorAll('.step').forEach(el=>{
+    const n = +el.dataset.s;
+    el.classList.toggle('on', n===S.step); el.classList.toggle('done', n<S.step);
+    el.toggleAttribute('aria-current', n===S.step);
+  });
+  $('#main').innerHTML = (S.sub==='pay' ? vPay : [null, vStep1, vStep2, vStep3, vStep4][S.step])();
+  renderBar();
+}
+
+function go(step, sub=null){
+  if (step===2 && S.step===1){
+    // Carry the party size over: preselect guests in list order up to the party
+    const vg = visGuests(); S.sel = vg.slice(0, Math.min(S.party, vg.length)).map(g=>g.id);
+    if (S.sel.some(id => GUESTS.find(g=>g.id===id).room==='linked')) S.linkedOpen = true;
+    prevSelCount = S.sel.length;
+  }
+  if (step===2 && sub==='owner' && !S.sel.includes(S.ownerId)) S.ownerId = (selGuests().find(g=>!g.minor)||{}).id;
+  S.step = step; S.sub = sub;
+  render();
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+let toastT;
+function toast(msg){
+  const t = $('#toast'); t.querySelector('span').textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+function flash(sel){
+  const el = typeof sel==='string' ? document.querySelector(sel) : sel;
+  if (!el) return;
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+}
+
+/* ── Events ── */
+document.addEventListener('click', e=>{
+  const t = e.target.closest('[data-act]'); if (!t) return;
+  const a = t.dataset.act;
+  if (a==='noop'){ e.preventDefault(); toast('Not linked in this prototype'); return; }
+  if (a==='plus'){ S.party = Math.min(cap(), S.party+1); render(); }
+  if (a==='minus'){ S.party = Math.max(1, S.party-1); if (S.spots==='tried' && S.party<=cap()) S.spots='limited'; render(); }
+  if (a==='time'){ S.time = +t.dataset.i; render(); }
+  if (a==='accInfo'){ flash('#accNotice'); }
+  if (a==='linked'){ S.linkedOpen = !S.linkedOpen; render(); }
+  if (a==='add'){ S.addOpen = !S.addOpen; render(); }
+  if (a==='cancel'){ S.cancelOpen = !S.cancelOpen; render(); }
+  if (a==='next'){
+    if (S.step===1) go(2);
+    else if (S.step===2 && S.owner && S.sub!=='owner') go(2,'owner');
+    else if (S.step===2) go(3);
+    else if (S.step===3) EX.included ? go(4) : go(3,'pay');   // included tour: no payment
+  }
+  if (a==='addBooking'){
+    if (S.addRoom.trim()===ADDED.room && S.addLast.trim().toLowerCase()===ADDED.last.toLowerCase()){
+      S.added = true; S.addOpen = false; S.addErr = false; S.addRoom = ''; S.addLast = '';
+      S.sel = visGuests().map(g=>g.id).filter(x=>S.sel.includes(x) || GUESTS.find(g=>g.id===x).room==='added');
+      render(); flash('#addedRoom');
+      if (S.sel.length <= cap()) toast(`Party size updated to ${S.sel.length} guests`);
+      prevSelCount = S.sel.length;
+    } else { S.addErr = true; render(); document.getElementById('addRoom')?.focus(); }
+  }
+  // checkout
+  if (a==='tip'){ S.tip = !S.tip; render(); }
+  if (a==='cEdit'){ S.cEdit = true; S.cDraft = {...S.contact}; render(); document.getElementById('cFirst')?.focus(); }
+  if (a==='cCancel'){ S.cEdit = false; S.errs = {}; render(); }
+  if (a==='cSave'){
+    const d = S.cDraft, e = {}; ['first','last','email','phone'].forEach(k=>{ if(!String(d[k]).trim()) e['c'+k]=true; });
+    if (d.email && !/^\S+@\S+\.\S+$/.test(d.email)) e.cemail = true;
+    S.errs = e; if (Object.keys(e).length){ render(); return; }
+    const changed = ['first','last','email','phone'].some(k=>d[k]!==PROFILE[k]);
+    S.contact = {...d, note: changed ? 'Updated for this reservation only' : 'From your profile'}; S.cEdit = false; render(); flash('#contactCard');
+  }
+  if (a==='bEdit'){ S.bEdit = true; S.bDraft = {...S.billing}; render(); }
+  if (a==='bCancel'){ S.bEdit = false; S.errs = {}; render(); }
+  if (a==='bSave'){
+    const d = S.bDraft, e = {}, req = d.useHome ? ['first','last'] : ['first','last','a1','city','state','zip'];
+    req.forEach(k=>{ if(!String(d[k]||'').trim()) e['b'+k]=true; });
+    S.errs = e; if (Object.keys(e).length){ render(); return; }
+    S.billing = {...d, note: d.useHome ? 'Using your home address' : 'Entered for this purchase'}; S.bEdit = false; render(); flash('#billingCard');
+  }
+  if (a==='pay'){
+    const K = S.card, e = {};
+    if (K.num.replace(/\D/g,'').length < 13) e.num = true;
+    if (!(+K.mm>=1 && +K.mm<=12)) e.mm = true;
+    if (K.yy.length!==2) e.yy = true;
+    if (K.cvv.length < 3) e.cvv = true;
+    S.cardErr = e;
+    if (Object.keys(e).length){ render(); const f = document.querySelector('#cardForm .field.err input'); f?.focus(); f?.scrollIntoView({block:'center'}); return; }
+    go(4);
+  }
+});
+document.addEventListener('change', e=>{
+  const t = e.target, a = t.dataset.act;
+  if (a==='guest'){
+    const id = t.value;
+    S.sel = t.checked ? GUESTS.map(g=>g.id).filter(x=>S.sel.includes(x)||x===id) : S.sel.filter(x=>x!==id);
+    render();
+    if (S.sel.length !== prevSelCount && S.sel.length && S.sel.length <= cap()) toast(`Party size updated to ${S.sel.length} guest${S.sel.length===1?'':'s'}`);
+    prevSelCount = S.sel.length;
+  }
+  if (a==='owner'){ S.ownerId = t.value; }
+  if (a==='terms'){ S.terms = t.checked; renderBar(); }
+  if (a==='useHome'){ S.bDraft.useHome = t.checked; S.errs = {}; render(); }
+  if (t.dataset.bind && t.tagName==='SELECT') setBind(t);
+  if (a==='veh'){ S.vehicle = t.value; render(); }
+});
+function setBind(t){
+  const [k, f] = t.dataset.bind.split('.');
+  let v = t.value;
+  if (k==='k'){
+    v = v.replace(/\D/g,'');
+    if (f==='num'){ v = v.slice(0,16).replace(/(\d{4})(?=\d)/g,'$1 '); t.value = v; }
+    else t.value = v;
+    S.card[f] = v; if (S.cardErr[f]) { S.cardErr[f] = false; t.closest('.field').classList.remove('err'); }
+  } else if (k==='c') S.cDraft[f] = v;
+  else if (k==='b') S.bDraft[f] = v;
+  else S[k] = v;
+  const fl = t.closest('.field');
+  if (fl && !fl.classList.contains('select') && !t.placeholder){ fl.classList.toggle('filled', v!==''); fl.classList.toggle('empty', v===''); }
+}
+document.addEventListener('input', e=>{
+  const t = e.target;
+  if (t.dataset.bind){ setBind(t); return; }
+  if (t.dataset.act!=='weight') return;
+  t.value = t.value.replace(/\D/g,''); S.weights[t.dataset.id] = t.value;
+  t.closest('.field').classList.toggle('filled', t.value!==''); t.closest('.field').classList.toggle('empty', t.value==='');
+  renderBar();
+});
+document.addEventListener('focusout', e=>{
+  const t = e.target; if (t.dataset?.act!=='weight') return;
+  S.touched[t.dataset.id] = true;
+  const id = t.dataset.id;
+  // re-render after the blur settles so the next focused field keeps focus
+  setTimeout(()=>{ const nextId = document.activeElement?.id; render(); if (nextId) document.getElementById(nextId)?.focus(); }, 0);
+});
+$('#back').addEventListener('click', ()=>{
+  if (S.sub==='owner') go(2);
+  else if (S.sub==='pay') go(3);
+  else if (S.step>1) go(S.step-1);
+  else location.href = EX.file + (S.ctx==='onb' ? '?ctx=onboard' : '');
+});
+
+/* Deep link for the viewer: ?step=2&weight=1 etc. */
+const q = new URLSearchParams(location.search);
+/* Hand-off from a details page later: ?party=3&time=1 (index into TIMES) carry the
+   details-page selection in. Any other state key can be set too, e.g. ?spots=limited&times=multi&step=2 */
+const num = v => (/^\d+$/.test(v) ? +v : v==='true' ? true : v==='false' ? false : v);
+for (const [k,v] of q){ if (k in S && k!=='step' && k!=='sel') S[k] = num(v); }
+if (S.ctx==='onboard') S.ctx='onb';
+// carried over from a details page: start the party at the spots that are left (Figma "Limited spots (party at max)")
+if (!q.has('party') && S.spots==='limited') S.party = Math.min(S.party, cap());
+if (S.time && !TIMES[S.time] || TIMES[S.time]?.out) S.time = 0;
+render();
+const qStep = +q.get('step');
+if (qStep >= 2){ go(2); if (qStep===2 && q.get('sub')==='owner') go(2,'owner'); if (qStep>2) go(qStep, q.get('sub')==='pay' ? 'pay' : null); }
+</script>
+</body>
+</html>

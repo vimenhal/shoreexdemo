@@ -412,7 +412,13 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .bar-line2{ font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B4-regular */
 /* SBN DS Button · Type=primary, Size=large (label Body/B1-semibold, as in Figma).
    Hover SBN Blue Hover, pressed SBN Blue Pressed, disabled Neutral 10 / Neutral 30 */
-.btn-primary[hidden]{ display:none !important }   /* Sold Out: no booking button */
+.btn-primary[hidden]{ display:none !important }   /* Sold Out onboard: no button */
+/* Sold out · pre-cruise: Join Waitlist, never wider than half the bar. Onboard: a desk line under the date */
+.bar #cta{ max-width:50% }
+.bar #cta.wait{ overflow:hidden; text-overflow:ellipsis }
+@media (max-width:767px){ .bar #cta.wait{ padding:0 20px; min-width:0 } }
+.bar-wait{ display:block; margin:0; font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:normal }
+.bar-wait[hidden]{ display:none }
 .btn-primary{
   flex:none; height:60px; padding:0 40px; border-radius:999px;
   background:var(--blue); color:#fff; font-weight:600; font-size:18px; line-height:1; letter-spacing:var(--ls-body);
@@ -1357,7 +1363,6 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     <summary class="ps-fab" aria-label="Prototype states"><span class="ps-word">States</span><span class="ps-ping"></span></summary>
     <div class="ps-sheet" role="dialog" aria-label="Prototype states">
       <div class="ps-head"><strong>Prototype states</strong><button type="button" class="proto-reset" id="protoReset">Reset</button><button type="button" class="ps-x" aria-label="Close">×</button></div>
-      <div class="ps-tabs" role="tablist"><button type="button" role="tab" data-tab="states" aria-selected="true">States</button><button type="button" role="tab" data-tab="gaps" aria-selected="false">Gaps<b>11</b></button></div>
       <form class="proto-panel ps-body" id="protoPanel" data-pane="states">
         <div class="ps-row" role="radiogroup" aria-label="Booking">
           <div class="ps-k"><span>Booking</span> <button type="button" class="ps-i" aria-label="About Booking" aria-expanded="false">i</button></div>
@@ -1372,7 +1377,12 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
         <div class="ps-row" role="radiogroup" aria-label="Availability">
           <div class="ps-k"><span>Availability</span> <button type="button" class="ps-i" aria-label="About Availability" aria-expanded="false">i</button></div>
           <div class="ps-seg"><label><input type="radio" name="avail" value="available" checked><span>Available</span></label><label><input type="radio" name="avail" value="limited"><span>Limited</span></label><label><input type="radio" name="avail" value="soldout"><span>Sold out</span></label></div>
-          <p class="ps-note" hidden>Sold out hides the booking button.</p>
+          <p class="ps-note" hidden>Sold out: no booking. Guest sets the waitlist message.</p>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Guest">
+          <div class="ps-k"><span>Guest</span> <button type="button" class="ps-i" aria-label="About Guest" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="ctx" value="precruise" checked><span>Pre-cruise</span></label><label><input type="radio" name="ctx" value="onboard"><span>Onboard</span></label></div>
+          <p class="ps-note" hidden>Sold out: pre-cruise shows Join Waitlist (checks waitlist availability on our website); onboard points to the Shore Excursions Desk.</p>
         </div>
         <div class="ps-row" role="radiogroup" aria-label="Start times">
           <div class="ps-k"><span>Start times</span> <button type="button" class="ps-i" aria-label="About Start times" aria-expanded="false">i</button></div>
@@ -1385,7 +1395,6 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
           <p class="ps-note" hidden>Snack is FPO. None shows a static “Not Included” tile.</p>
         </div>
       </form>
-      <ol class="ps-gaps" data-pane="gaps" hidden><li>Description starts “Don’t miss this chance to also visit…”: the temple visit itself isn’t described.</li><li>Curated set by request; live shows no collection.</li><li>Wheelchair “Not accessible” comes from Notes.</li><li>No meals mentioned, so the Meals tile reads “Not Included”.</li><li>Single day: no itinerary; description sits under Top 3.</li><li>Cancellation uses the generic SBN FAQ policy.</li><li>No credits data: card removed.</li><li>Ratings hidden (live: 4 ratings, 4.5★).</li><li>No ship times on live pages.</li><li>ⓘ tooltips (Sold Out, Strenuous) never captured.</li><li>Classic: group size + style are lorem ipsum; copy says “Landmark Collection”: confirm name.</li></ol>
     </div>
   </details>
 </footer>
@@ -1560,6 +1569,28 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: null },
   };
 
+  // Sold out (approved 2026-11-10): still no booking, but guests are pointed to a waitlist.
+  // Pre-cruise the bar button hands off to the waitlist on our website (button ≤ half the bar);
+  // onboard there's no button and the bar says to visit the Shore Excursions Desk.
+  state.ctx = 'precruise';
+  const WAIT_LABEL = 'Join Waitlist';
+  const soldNow = () => !(typeof needsTime === 'function' && needsTime()) && (typeof effAvail === 'function' ? effAvail() : state.avail) === 'soldout';
+  const waitAction = () => showToast(state.ctx === 'onboard' ? 'Visit the Shore Excursions Desk to join the waitlist' : 'Hand-off: Check waitlist availability on our website');
+  function soldWait() {
+    const sold = soldNow(), pre = state.ctx !== 'onboard', cta = $('#cta');
+    cta.classList.toggle('wait', sold && pre);
+    if (sold && pre) { cta.hidden = false; cta.textContent = WAIT_LABEL; }
+    let w = $('#barWait');
+    if (!w) {
+      const l2 = $('.bar .bar-line2');
+      w = document.createElement(l2.tagName === 'P' ? 'p' : 'span');
+      w.className = 'bar-wait'; w.id = 'barWait';
+      w.textContent = 'Join the waitlist at the Shore Excursions Desk';
+      l2.after(w);
+    }
+    w.hidden = !(sold && !pre);
+  }
+
   // Start times: one departure on today's SBN pages. "Multiple times" uses filler times (2-hour steps) until the API provides them
   const addHours = (t, h) => {
     const [, hh, mm, ap] = t.match(/(\d+):(\d+)\s*(AM|PM)/);
@@ -1650,7 +1681,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
   $('.mband .mrow').addEventListener('click', e => {
     if (state.booked === 'no' || !AVAIL[effAvail()].cta) return;
     e.preventDefault();
-    showToast('Book again → booking flow');
+    goReserve();
   });
   function bkSetNotch() {
     const r = $('.bk-rule', bkCard);
@@ -1697,6 +1728,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     $('#statusText').innerHTML = a.pill || '';
     $('#cta').textContent = a.cta || '';
     $('#cta').hidden = !a.cta;   // Sold Out: no booking, so no button
+    soldWait();
     // Booking bar: a sold-out departure shows "Sold Out" in place of the price line
     const bl1 = $('#barPrice .bar-line1'); if (!bl1.dataset.price) bl1.dataset.price = bl1.innerHTML;
     const barSold = effAvail() === 'soldout';
@@ -1731,7 +1763,14 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     e.preventDefault();
     showToast(`Hand-off: ${h.dataset.handoff}`);
   });
-  const primaryAction = () => showToast(`${AVAIL[effAvail()].cta}${multi() ? ' · ' + startTime() : ''} → booking flow`);
+  const goReserve = () => {
+    const p = new URLSearchParams({ ex: location.pathname.split('/').pop().replace(/\.html$/, '') });
+    if (multi() && slot()) { p.set('times', 'multi'); p.set('time', TIMES.indexOf(slot())); }
+    if (effAvail() === 'limited') p.set('spots', 'limited');
+    if (state.ctx === 'onboard') p.set('ctx', 'onb');
+    location.href = 'reserve.html?' + p;
+  };
+  const primaryAction = () => soldNow() ? waitAction() : goReserve();
   $('#cta').addEventListener('click', primaryAction);
 
   // Tiles that point at a section (Duration, Includes, Hotel → Itinerary)
@@ -1815,6 +1854,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     const cta = $('[data-slot="cta"]', body);
     cta.textContent = AVAIL[effAvail()].cta || '';
     cta.hidden = !AVAIL[effAvail()].cta;
+    if (soldNow() && state.ctx !== 'onboard') { cta.hidden = false; cta.textContent = WAIT_LABEL; }
     $$('[data-slot="start"]', body).forEach(el => el.textContent = startTime());
     cta.addEventListener('click', () => { closeDrawer(); primaryAction(); });
   }
@@ -1932,6 +1972,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
   /* ── Prototype state switcher ─────────── */
   // Rule: picking a state scrolls to the element it changed and flashes it
   const CHANGED = {
+    ctx:     () => $('#barZone'),
     booked:  () => state.booked === 'no' ? $('#heroCard') : $('#bkCard'),
     meals:   () => mealsTile.isConnected ? mealsTile : $('.facts'),
     badge: () => state.badge === 'none' ? $('#heroCard') : $('#collection'),
