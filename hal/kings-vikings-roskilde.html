@@ -402,6 +402,7 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .bar-line2{ font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B4-regular */
 /* HAL DS Button · Type=primary, Size=large (label Body/B1-semibold, as in Figma).
    Hover HAL Blue Hover, pressed HAL Blue Pressed, disabled Neutral 10 / Neutral 30 */
+.btn-primary[hidden]{ display:none !important }   /* Sold Out: no booking button */
 .btn-primary{
   flex:none; height:60px; padding:0 40px; border-radius:999px;
   background:var(--hal-blue); color:#fff; font-weight:600; font-size:18px; line-height:1; letter-spacing:var(--ls-body);
@@ -574,6 +575,7 @@ div.fact .fact-value{ justify-content:flex-start }
 .sheet .accordion{ margin-top:0 }
 .sheet .acc-head strong{ font-size:16px }
 .sheet .bullets{ font-size:14px; margin:0 0 12px; padding-left:20px }
+.bullets ul{ margin:4px 0 0; padding-left:20px; list-style:circle }
 .sheet .acc-body a{ color:var(--hal-blue); font-weight:600 }
 
 /* Drawer rows that lead with an icon (Duration: clock · anchor · ship) */
@@ -826,6 +828,85 @@ div.fact .fact-value{ justify-content:flex-start }
 @media (min-width:768px){ :root{ --stack-top-min:clamp(280px, calc(38vw + 52px), 372px) } }
 @media (min-width:1024px){ :root{ --stack-top-min:clamp(220px, calc(16vw + 52px), 372px) } }
 .hero-stack{ padding-top:calc(56px + max(var(--stack-top), var(--stack-top-min))) }
+
+/* ───────────── Hero scroll fix ─────────────
+   The hero clips its photo layers. With overflow:hidden it was still a scroll container, so scrollIntoView()
+   (used by the Prototype states jump) scrolled the hero box itself and left an empty navy band below the tiles.
+   overflow:clip clips the same way but can't be scrolled. */
+.hero{ overflow:clip }
+
+/* ───────────── Booked state (prototype) ─────────────
+   A guest who has booked comes back to the page: title → port → confirmation card → price row with Book again.
+   Key facts move below the fold (light tiles), the credits banner and spots pill go, and the booking bar becomes
+   the confirmation footer (View Shore Excursion Ticket + View in Itinerary onboard; View in Itinerary pre-cruise). */
+.bk-port, .bk-card, .bk-bar, .bk-facts{ display:none }
+body.booked .bk-port{ display:block; margin:8px 0 0; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; line-height:var(--lh-body); color:var(--cream) }
+body.booked .mband .mfacts{ display:none }
+body.booked .mband .mrow{ margin-top:0; border-bottom:0 }
+body.booked .status-pill{ display:none !important }
+body.booked .hero-card{ display:flex; flex-direction:column; align-items:stretch; gap:20px }
+body.booked .hero-card > .on-photo:first-child{ padding-right:0 }
+
+/* Confirmation card: the fact-tile glass plus a 10% white lift, a frosted blur, and ticket notches on the dashed rule.
+   The border and the dashed rule share one value (22% white). The mask cuts the notches; the rings redraw their edge. */
+body.booked .bk-card{
+  display:block; position:relative; z-index:1; border-radius:18px; color:#fff; overflow:hidden; text-shadow:none;
+  --ny:96px; --edge:rgba(255,255,255,.22);
+  background:linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,.1)),
+             linear-gradient(143.6deg,rgba(var(--ds-hal-blue-rgb),.13) 0%,rgba(var(--ds-hal-blue-rgb),.12) 50%,rgba(var(--ds-hal-blue-rgb),.12) 100%);
+  box-shadow:inset 0 0 0 1px var(--edge);
+  -webkit-backdrop-filter:blur(24px) saturate(130%); backdrop-filter:blur(24px) saturate(130%);
+  -webkit-mask:radial-gradient(circle at 0 var(--ny),transparent 8px,#000 8px) left / 51% 100% no-repeat,
+               radial-gradient(circle at 100% var(--ny),transparent 8px,#000 8px) right / 51% 100% no-repeat;
+          mask:radial-gradient(circle at 0 var(--ny),transparent 8px,#000 8px) left / 51% 100% no-repeat,
+               radial-gradient(circle at 100% var(--ny),transparent 8px,#000 8px) right / 51% 100% no-repeat;
+}
+@media (min-width:768px){
+  body.booked .bk-card{
+    background:linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,.1)),
+               linear-gradient(143.6deg,rgba(var(--ds-hal-blue-rgb),.45) 0%,rgba(var(--ds-hal-blue-rgb),.43) 50%,rgba(var(--ds-hal-blue-rgb),.44) 100%);
+  }
+}
+.bk-notch{ position:absolute; top:calc(var(--ny) - 9px); width:18px; height:18px; border-radius:50%; border:1px solid var(--edge); box-sizing:border-box; pointer-events:none }
+.bk-notch.l{ left:-9px } .bk-notch.r{ right:-9px }
+.bk-top{ padding:20px 16px 16px }
+.bk-head{ display:flex; align-items:center; justify-content:space-between; gap:12px }
+.bk-eyebrow, .bk-cols dt{ font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; line-height:var(--lh-body); color:var(--on-glass) }
+.bk-chip{ display:inline-flex; align-items:center; gap:6px; padding:4px 12px 4px 10px; border-radius:999px; background:rgba(255,255,255,.12); font-size:14px; font-weight:700; line-height:var(--lh-body) }
+.bk-chip i{ width:8px; height:8px; border-radius:50%; background:#3ecf7a }
+.bk-title{ margin:16px 0 0; font:400 24px/1.25 var(--serif); color:#fff }
+.bk-rule{ height:1px; margin:0 16px; background:repeating-linear-gradient(90deg,var(--edge) 0 4px,transparent 4px 8px) }
+.bk-bottom{ padding:16px 16px 20px }
+.bk-cols{ display:grid; grid-template-columns:repeat(3,auto); justify-content:space-between; column-gap:16px; margin:0 }
+@media (min-width:768px){ .bk-cols{ grid-template-columns:repeat(3,minmax(0,1fr)); justify-content:normal } }
+.bk-cols dd{ margin:4px 0 0; white-space:nowrap; font-size:16px; font-weight:700; line-height:var(--lh-body); color:#fff }
+.bk-names{ margin:16px 0 0; font-size:14px; line-height:var(--lh-body); color:var(--on-glass) }
+
+/* Key facts below the fold, on white */
+body.booked .bk-facts{ display:block; padding-top:32px }
+body.booked .bk-facts .fact.glass{
+  background:#e8eff7; border-color:transparent; box-shadow:none; color:var(--hal-blue);
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+}
+body.booked .bk-facts .fact.glass::before, body.booked .bk-facts .fact.glass::after{ display:none }
+body.booked .bk-facts .fact-label{ color:var(--n70) }
+body.booked .bk-facts .fact-label svg, body.booked .bk-facts .fact-value svg{ color:var(--hal-blue) }
+body.booked .bk-facts button.fact:hover{ border-color:transparent; box-shadow:0 4px 14px rgba(var(--ds-hal-blue-rgb),.12) }
+
+/* Confirmation footer: the floating details bar, split 50/50 — secondary link | primary button (Figma "Action bar · Full button") */
+body.booked #barZone{ display:none }
+body.booked .bk-bar{ display:block; position:fixed; z-index:30; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom)) }
+@media (min-width:768px){
+  body.booked .bk-bar{ left:50%; right:auto; width:min(var(--col), calc(100% - var(--pad) * 2)); transform:translateX(-50%); bottom:calc(16px + env(safe-area-inset-bottom)) }
+}
+.bar.bk-bar-in{ padding:12px }
+.bar.bk-bar-in > *{ flex:1 1 0; min-width:0 }
+.bk-bar .btn-primary{ width:auto; min-width:0; padding:0 12px; white-space:nowrap; text-align:center }
+@media (max-width:389px){ .bk-bar .btn-primary{ font-size:16px } }
+.bk-link{ order:-1; display:flex; align-items:center; justify-content:center; min-height:44px; padding:0 12px; text-align:center;
+          font-size:14px; font-weight:600; line-height:var(--lh-body); color:var(--ds-hal-blue-hover, var(--blue)); text-decoration:none }
+.bk-link:hover{ text-decoration:underline; text-underline-offset:3px }
+body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)) }
 </style>
 </head>
 <body>
@@ -914,7 +995,7 @@ div.fact .fact-value{ justify-content:flex-start }
         <span class="fact-label"><svg class="i"><use href="#i-access"/></svg><span>Wheelchair</span></span>
         <span class="fact-value"><b>Not accessible</b></span>
       </div>
-      <div class="fact glass" role="listitem">
+      <div class="fact glass" id="mealsTile" role="listitem">
         <span class="fact-label"><svg class="i"><use href="#i-meals"/></svg><span>Meals</span></span>
         <span class="fact-value"><b>Not provided</b></span>
       </div>
@@ -1007,6 +1088,12 @@ div.fact .fact-value{ justify-content:flex-start }
   <details class="proto" id="proto">
     <summary>Prototype states <small>Review tool only</small><svg class="i"><use href="#i-down"/></svg></summary>
     <form class="proto-panel" id="protoPanel">
+      <fieldset><legend>Booking</legend>
+        <label><input type="radio" name="booked" value="no" checked> Not booked</label>
+        <label><input type="radio" name="booked" value="onboard"> Booked · Onboard (ticket)</label>
+        <label><input type="radio" name="booked" value="precruise"> Booked · Pre-cruise (itinerary)</label>
+        <p>The confirmation view a guest sees when they come back after booking. Guest names and count are placeholders until the booking API provides them. Tickets are only available onboard, so pre-cruise shows View in Itinerary.</p>
+      </fieldset>
       <fieldset><legend>Start times</legend>
         <label><input type="radio" name="times" value="single" checked> One start time</label>
         <label><input type="radio" name="times" value="multi"> Multiple times · first available preselected</label>
@@ -1037,6 +1124,10 @@ div.fact .fact-value{ justify-content:flex-start }
         <label><input type="radio" name="ship" value="both" checked> Arrive + all aboard</label>
         <label><input type="radio" name="ship" value="arrive"> Arrive only</label>
         <p>Filler times (7:00 AM / 5:00 PM) until the API provides them.</p>
+      </fieldset>
+      <fieldset><legend>Meals</legend>
+        <label><input type="radio" name="meals" value="meal"> Meal provided</label><label><input type="radio" name="meals" value="snack"> Snack provided</label><label><input type="radio" name="meals" value="none" checked> Not provided</label>
+        <p>Meal and Snack open the Meals sheet. Not provided is a static tile.</p>
       </fieldset>
       <button type="button" class="proto-reset" id="protoReset">Reset all states</button>
     </form>
@@ -1088,6 +1179,14 @@ div.fact .fact-value{ justify-content:flex-start }
   </div>
 </template>
 
+<template id="t-meals" data-label="Meals">
+  <h2></h2>
+  <div class="levels">
+    <div class="level" data-meal="meal"><b>Meal</b> <small>· This excursion</small><p>This tour includes a meal — lunch on daytime tours or dinner on evening tours.</p></div>
+    <div class="level" data-meal="snack"><b>Snack</b> <small>· This excursion</small><p>This tour includes a small snack or tasting of local specialties — not a meal.</p></div>
+  </div>
+</template>
+
 <template id="t-pricing" data-label="Price details">
   <h2>$189.95 per adult</h2>
   <div class="d-rows">
@@ -1122,32 +1221,56 @@ div.fact .fact-value{ justify-content:flex-start }
 <template id="t-faq" data-label="Shore Excursions FAQs" data-full>
   <div class="accordion">
     <div class="acc">
-      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>What are Shore Excursions?</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
-      <div class="collapse"><div><div class="acc-body"><p>Shore excursions are available through our partnerships with local suppliers and guides, in the majority of ports we visit. They cover an amazing array of places, landmarks, activities and experiences — from wildlife encounters in the Outback and salsa lessons in Havana to wine-tastings on a French estate and zip-lining in the Costa Rican rainforest. We offer something for every interest, taste and capability level.</p></div></div></div>
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>How to Book &amp; Access Tour Tickets</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Book onboard at Shore Excursions, through the Navigator app, from your stateroom TV or at Guest Services after hours.</p><p>Once your cruise begins, your Digital Tour Tickets will be available in the <strong>Wallet</strong> section of the Navigator app. On the day of your tour, your ticket will also appear on the app homepage. Please check your ticket for the latest meeting location and departure time, as these may change.</p></div></div></div>
     </div>
     <div class="acc">
-      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>What are the benefits of booking shore excursions?</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
-      <div class="collapse"><div><div class="acc-body"><ul class="bullets"><li>Guaranteed best price — find a better price on any tour we offer and we’ll refund you 100 percent of the price difference in the form of an onboard credit. More information available at Best Price Guarantee</li><li>Earlier departure off the ship</li><li>Guaranteed return to the ship</li><li>Licensed, insured and professional local operators &amp; Guides</li><li>Full refund if the port is missed</li><li>Flexibility to cancel up to 24 hours prior</li><li>Expert advice offered pre-cruise by our dedicated call center and onboard by our shore excursion staff</li></ul></div></div></div>
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Waitlist Policy</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Yes, some shore excursions may sell out. If your preferred tour is full, you may be able to join a waitlist by visiting the Shore Excursions desk onboard. If space becomes available, we’ll notify you in your stateroom.</p></div></div></div>
     </div>
     <div class="acc">
-      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>How do I book shore excursions?</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
-      <div class="collapse"><div><div class="acc-body"><p>We recommend you book early for the best selection, as our excursions and tours have limited capacity and fill up quickly. If tour details are not yet finalized, please check again closer to your departure date. Shore excursions may be booked and prepaid online up to three days before sailing. Your Digital Tour Tickets will be available under My Account in Navigator. Please download the Navigator app prior to boarding. You will also be able to request tours on the ship at the shore excursion Office.</p><p>Many tours have limited availability, and booking tours in advance reduces the chance of disappointment. All tour bookings are processed on a first-come, first-served basis. Prices are subject to change without notice. Tours are booked and paid with a credit card and a confirmation will be sent to your email address. If a tour is sold out, many tours offer a waitlist option. If a tour is waitlisted and space becomes available, an email notification will be sent to you at which time you will have 72 hours to book and confirm the tour. Your credit card will be charged once you have confirmed your tour.</p></div></div></div>
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Booking multiple excursions in one day</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>You can book multiple shore excursions in the same day as long as there are at least 45 minutes between tours. Tour departure times are scheduled around the ship’s time in port, making it easy to enjoy more than one experience during your day ashore.</p></div></div></div>
     </div>
     <div class="acc">
-      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Is there a dedicated resource I can speak with about shore excursions?</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
-      <div class="collapse"><div><div class="acc-body"><p>The shore excursion reservation office is available to assist you Monday-Friday, 7 AM to 4 PST. Guests may call <a href="tel:18884259376">1 (888) 425-9376</a> to speak directly with an agent.</p></div></div></div>
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Accessible Excursions</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Holland America Line partners with Accessible Travel Solutions to offer fully accessible tour programming worldwide. They are dedicated to delivering inclusive travel experiences that meet the needs of guests with disabilities while respecting local host communities.</p><p>For detailed accessibility information or to request specific arrangements—such as lift-equipped transportation for tours not explicitly designated as fully accessible—please visit Shore Excursions.</p><p>Guests with dietary requirements should confirm their needs 48 hours in advance if their shore excursions have a meal or a snack, so that alternative catering can be made.</p></div></div></div>
     </div>
     <div class="acc">
-      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>What is the timing of shore excursions?</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
-      <div class="collapse"><div><div class="acc-body"><p>Shore excursion departure times coincide with the ship’s schedule as well as other tours, enabling you to take multiple tours if desired with worry-free return to the ship. In the very rare event that your tour is late and the ship must leave, we will arrange at our expense to get you to the next port of call. With independently booked tours, you are responsible for rejoining the ship at the next port of call.</p></div></div></div>
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Cancellation Policy</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Most shore excursions can be canceled without penalty up to 48 hours before arrival at the port of call. Later cancellations are subject to a 100% cancellation fee.</p><p>Specialty Excursions: Overland/overnight tour fees vary by itinerary. Private Vehicles and Alaska Land &amp; Sea Journey optional excursions are non-refundable.</p><p>Medical Cancellations: Guests placed in quarantine by the onboard Medical Center are eligible for refunds on most tours. Non-refundable specialty tours may be excluded; documentation can be provided for travel insurance claims.</p><p>Onboard refunds are issued as refundable Onboard Credit. Any remaining refundable credit at the end of your sailing will be processed according to instructions sent to your registered email.</p></div></div></div>
     </div>
     <div class="acc">
-      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Does Holland America Line offer accessible shore excursions?</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
-      <div class="collapse"><div><div class="acc-body"><p>Holland America Line is committed to providing safe, easy, and accessible accommodations for all persons with disabilities, to the extent that is feasible. The tours are graded according to their relative level of activity. The activity icons that appear at the beginning of each tour description provide a general idea of the level of activity to expect. It is important to keep in mind that tour operators are subject to the laws of their own country with respect to accommodating the needs of guests with disabilities. In most foreign countries, the laws are not as stringent as those in the United States. We cannot guarantee that all are able to provide facilities that are accessible to individuals with disabilities and third party shore excursion facilities may not be fully accessible to guests with disabilities. For detailed information on accessibility of shore excursions, we strongly recommend contacting our shore excursions reservations department well in advance of embarkation at <a href="tel:18884259376">1-888-425-9376</a> (or locally at <a href="tel:2066267320">206-626-7320</a>). Once onboard, please visit the shore excursions office.</p></div></div></div>
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>HAVE IT ALL Shore Excursion Credit</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Your Have It All shore excursion credit is automatically applied to eligible tours.</p><p><strong>Important Details:</strong></p><ul class="bullets"><li><strong>Credit Amounts:</strong><ul class="bullets"><li><strong>6–9 day voyages &amp; Alaska Cruisetours:</strong> US$100 credit per person.</li><li><strong>10–20 day voyages:</strong> US$200 credit per person.</li><li><strong>21+ day voyages</strong> (excl. Grand Voyages &amp; World Cruises): US$300 credit per person.</li></ul></li><li><strong>Terms:</strong> Credits are allocated per person, non-transferable between guests, non-refundable, and have no cash value. They cannot be used for direct airport transfers, shuttles, or non-excursion items (such as Behind the Scenes tours).</li><li><strong>Cruisetours:</strong> For Alaska Cruisetour Land Excursions, credits must be redeemed prior to sailing.</li></ul></div></div></div>
     </div>
     <div class="acc">
-      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>What are the cancellation policies for shore excursions?</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
-      <div class="collapse"><div><div class="acc-body"><p>Cancellations for pre-paid tours are allowed up to 3 days prior to cruise embarkation and will be refunded to the credit card used for the purchase. If within 3 days of embarkation, all changes/cancellations must be done onboard the ship and refunds will be applied to your onboard account. If the credit is not fully utilized during the cruise, the balance will be paid to that passenger by the ship’s Purser at the end of the voyage. If cancellation occurs onboard after the cancellation deadline for specific shore excursions, a 100% cancellation fee will apply. The ship’s shore excursions office will be able to advise you of the cancellation deadline applicable to each tour. Optional shore excursions during the land portion of a Land &amp; Sea Journey are non-refundable within 3 days of your Land &amp; Sea Journey departure date. Group shore excursions cancelled within three days prior to embarkation (sail) date are nonrefundable. Custom tours may have different cancellation deadlines which will be stated in the proposal. In the rare instance that tours are cancelled by Holland America Line or the tour operator, the full amount will be refunded within four to six weeks after the voyage ends.</p></div></div></div>
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Weather</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Tours will operate in most weather conditions unless deemed unsafe by the local tour operators that day. If a tour is cancelled, a credit will be issued to your shipboard account for the amount paid for the tour. It is good to note that Holland America reserves the right to cancel a tour at any time up to and including its departure time due to weather.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>What to Wear</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Many historical sites will require you to walk long distances, moderately paced, over cobblestone roads and uneven surfaces. Wear comfortable walking shoes and be aware of your footing.</p><p>Dressing in layers is recommended for all our tours. When you visit places of worship we recommend dressing conservatively; shoulders, midriffs, and knees should be covered.</p><p>Bring an umbrella or raincoat, a hat, a bottle of water and sunscreen or insect repellent as necessary. Remember to hydrate consistently when you are outside of the ship and sanitize your hands before you touch food.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Beach Towels</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>If you are planning on going to the beach or any water activity, please bring a towel with you. Towels are available in your stateroom. We kindly ask that you please return towels to the ship at the end of the day and your stateroom steward will replace them with fresh towels.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Age Restrictions</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><ul class="bullets"><li><strong>Minors:</strong> Guests under 18 years of age must be accompanied by a parent or responsible adult aged 21 or older.</li><li><strong>Child Rates:</strong> Where applicable, child pricing applies to children aged 12 and under. Guests aged 13 and older are charged full adult fares.</li><li><strong>Infants:</strong> Children aged 2 and under may accompany parents free of charge on select motorcoach or taxi van tours, provided they sit on a lap. Free admission generally does not apply to tours involving flights, watercraft, or specialized vehicles.</li></ul></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Fishing</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>It’s about fishing, not catching; we can never guarantee a catch. If you do manage to catch the big one, our Savor the Catch program in Alaska allows you to bring your catch onboard (with participating operators). Licenses may be required to purchase in advance. Please read your tour description notes carefully for full details.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Liability Waiver Release</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>Many active tours will require guests to sign a ‘waiver release’, administered by the local tour operator on the pier on the day the tour operates.</p></div></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false"><span class="titles"><strong>What do I need to take ashore</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
+      <div class="collapse"><div><div class="acc-body"><p>All guests are required to have their Ships Guest ID card to present to the Security Officer at the gangway when leaving and reboarding the vessel. A government issued photo ID, like a driver’s license or passport. Some tours require a passport so please read your Digital Tour ticket and tour description notes carefully for what to bring.</p></div></div></div>
     </div>
   </div>
 </template>
@@ -1170,6 +1293,8 @@ div.fact .fact-value{ justify-content:flex-start }
 
   /* ── State ─────────────────────────────── */
   const state = { avail: EX.avail, credits: '2', creditValue: '100', ship: 'both', times: 'single', slot: null, badge: EX.badge };
+  state.booked = 'no';
+  state.meals = 'none';
 
   // Multiple start times on the day (filler from build.py until the API provides them)
   const TIMES = EX.times;
@@ -1189,7 +1314,7 @@ div.fact .fact-value{ justify-content:flex-start }
     limited:   { pill: '<b>Limited Capacity</b>', cta: 'Reserve' },
     // Live seat count when the excursion system provides one (e.g. "1 Spot Left")
     spots:     { pill: `<b>${EX.spots} ${EX.spots === 1 ? 'Spot' : 'Spots'} Left</b>`, cta: 'Reserve' },
-    soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: 'Join waitlist' },
+    soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: null },
   };
   // One headline for any number of credits; the per-guest amounts ($100 / $200 / $300) come from the credits system (confirm with product)
   const creditHTML = c => c === '0' ? '' : 'Your party has shore excursion credit(s) available';
@@ -1203,7 +1328,7 @@ div.fact .fact-value{ justify-content:flex-start }
     ul.innerHTML = CREDIT_GUESTS.slice(0, n).map(g => `<li><span>${g}</span><b>$${state.creditValue} credit</b></li>`).join('');
   });
 
-  // Bar date line: when "date · time · 3 times" doesn't fit beside the button (e.g. Join waitlist), drop the date (the hero still shows it)
+  // Bar date line: when "date · time · 3 times" doesn't fit beside the button (e.g. a long button label), drop the date (the hero still shows it)
   function fitBarLine() {
     const l2 = $('.bar-info .bar-line2'), d = $('#barLine2'), st = startTime();
     if (!st) return;
@@ -1212,7 +1337,100 @@ div.fact .fact-value{ justify-content:flex-start }
   }
   addEventListener('resize', () => fitBarLine());
 
-  function apply() {
+  /* ── Meals tile (prototype state) ─────────── */
+  // Meal / Snack open the Meals sheet; HAL "Not provided" is a static tile, SBN with no meals has no tile
+  const MEAL_LABEL = { meal: 'Meal provided', snack: 'Snack provided', none: 'Not provided' };
+  const MEAL_NONE = 'static';
+  const factsEl = $('.facts');
+  let mealsTile = $('#mealsTile');
+  function applyMeals() {
+    const level = state.meals;
+    const provided = level !== 'none';
+    const el = document.createElement(provided ? 'button' : 'div');
+    el.id = 'mealsTile';
+    el.className = 'fact glass';
+    el.setAttribute('role', 'listitem');
+    el.innerHTML = '<span class="fact-label"><svg class="i"><use href="#i-meals"/></svg><span>Meals</span></span>'
+      + '<span class="fact-value"><b>' + MEAL_LABEL[level] + '</b>'
+      + (provided ? '<svg class="i"><use href="#i-right"/></svg>' : '') + '</span>';
+    if (provided) {
+      el.dataset.drawer = 'meals';
+      el.setAttribute('aria-haspopup', 'dialog');
+      el.addEventListener('click', () => openDrawer('meals', el));
+    }
+    if (mealsTile) mealsTile.remove();
+    mealsTile = el;
+    if (provided || MEAL_NONE === 'static') factsEl.appendChild(el);
+    // Sheet: heading = tile value, this excursion's level highlighted
+    const t = $('#t-meals').content;
+    t.querySelector('h2').textContent = MEAL_LABEL[level];
+    t.querySelectorAll('[data-meal]').forEach(d => {
+      d.classList.toggle('current', d.dataset.meal === level);
+      d.querySelector('small').hidden = d.dataset.meal !== level;
+    });
+  }
+
+
+  /* ── Booked state (prototype) ─────────── */
+  // Confirmation view for a guest who comes back after booking. Guests are placeholders until the booking API provides them.
+  const BK_GUESTS = ['Robert Cruiser', 'Rhonda Cruiser', 'Ronny Cruiser', 'Roger Cruiser'];
+  const bkDate = ((($('.mband .mfacts') || {}).textContent || '').match(/([A-Z][a-z]{2}), ([A-Z][a-z]{2} \d{1,2})/) || []).slice(1).join(', ');
+  const bkPort = document.createElement('p');
+  bkPort.className = 'bk-port';
+  bkPort.textContent = $('.mband .lbl').textContent;
+  $('#heroCard .hero-title').after(bkPort);
+  const bkCard = document.createElement('section');
+  bkCard.className = 'bk-card';
+  bkCard.id = 'bkCard';
+  bkCard.setAttribute('aria-label', 'Your booking');
+  bkCard.innerHTML = `<span class="bk-notch l" aria-hidden="true"></span><span class="bk-notch r" aria-hidden="true"></span>
+    <div class="bk-top"><div class="bk-head"><span class="bk-eyebrow">Your booking</span><span class="bk-chip"><i aria-hidden="true"></i>Confirmed</span></div>
+    <p class="bk-title">Your booking is confirmed</p></div>
+    <div class="bk-rule" aria-hidden="true"></div>
+    <div class="bk-bottom"><dl class="bk-cols"><div><dt>Date</dt><dd>${bkDate || EX.dateShort}</dd></div><div><dt>Time</dt><dd id="bkTime"></dd></div><div><dt>Guests</dt><dd>${BK_GUESTS.length}</dd></div></dl>
+    <p class="bk-names">${BK_GUESTS.slice(0, -1).join(', ')}, and ${BK_GUESTS[BK_GUESTS.length - 1]}</p></div>`;
+  $('#heroCard > .on-photo').after(bkCard);
+  const bkFacts = document.createElement('section');
+  bkFacts.className = 'bk-facts';
+  bkFacts.setAttribute('aria-label', 'Key facts');
+  $('main').prepend(bkFacts);
+  const bkFactsEl = $('.facts'), bkFactsHome = bkFactsEl.parentNode;
+  const bkBar = document.createElement('div');
+  bkBar.className = 'bk-bar';
+  bkBar.innerHTML = `<div class="bar bk-bar-in"><button class="btn-primary" id="bkCta"></button><a class="bk-link" id="bkLink" href="#" data-handoff="View in Itinerary">View in Itinerary</a></div>`;
+  $('#barZone').after(bkBar);
+  const bkGo = $('.mband .mrow .go'), bkGoHTML = bkGo.innerHTML, bkRowLabel = $('.mband .mrow').getAttribute('aria-label');
+  $('.mband .mrow').addEventListener('click', e => {
+    if (state.booked === 'no') return;
+    e.preventDefault();
+    showToast('Book again → booking flow');
+  });
+  function bkSetNotch() {
+    const r = $('.bk-rule', bkCard);
+    if (r.offsetParent) bkCard.style.setProperty('--ny', (r.offsetTop + 0.5) + 'px');
+  }
+  addEventListener("resize", bkSetNotch);
+  function applyBooked() {
+    const on = state.booked !== 'no';
+    document.body.classList.toggle('booked', on);
+    $('#bkTime').textContent = startTime() || firstAvailable().time;
+    if (on && bkFactsEl.parentNode !== bkFacts) bkFacts.append(bkFactsEl);
+    if (!on && bkFactsEl.parentNode !== bkFactsHome) bkFactsHome.append(bkFactsEl);
+    bkGo.innerHTML = on ? bkGoHTML.replace('View all pricing', 'Book again') : bkGoHTML;
+    $('.mband .mrow').setAttribute('aria-label', on ? bkRowLabel.replace('View all pricing', 'Book again') : bkRowLabel);
+    if (on) $('#creditCard').hidden = true;
+    const cta = $('#bkCta'), onboard = state.booked === 'onboard';
+    cta.textContent = onboard ? 'View Ticket' : 'View Itinerary';
+    cta.dataset.handoff = cta.textContent;
+    // Two actions, each half the bar: onboard = View Itinerary | View Ticket; pre-cruise = Book again | View Itinerary
+    const bkLink = $('#bkLink');
+    bkLink.textContent = bkLink.dataset.handoff = onboard ? 'View Itinerary' : 'Book again';
+    if (on) requestAnimationFrame(bkSetNotch);
+  }
+
+  function apply() { applyBase(); applyBooked(); }
+  function applyBase() {
+    applyMeals();
     const a = AVAIL[effAvail()];
     $$('[data-badge]').forEach(b => b.hidden = b.dataset.badge !== state.badge);
     $('#xpBadges').hidden = state.badge === 'none';
@@ -1220,7 +1438,8 @@ div.fact .fact-value{ justify-content:flex-start }
     pill.classList.toggle('show', !!a.pill);
     pill.classList.toggle('muted', !!a.muted);
     $('#statusText').innerHTML = a.pill || '';
-    $('#cta').textContent = needsTime() ? 'Select time' : a.cta;
+    $('#cta').textContent = needsTime() ? 'Select time' : (a.cta || '');
+    $('#cta').hidden = !needsTime() && !a.cta;   // Sold Out: no booking, so no button
 
     // Hero start time: one time, or a picker until a time is chosen
     const st = startTime();
@@ -1367,7 +1586,8 @@ div.fact .fact-value{ justify-content:flex-start }
     $('[data-slot="credit-title"]', body).innerHTML = creditHTML(state.credits);
     fillCreditGuests(body);
     const cta = $('[data-slot="cta"]', body);
-    cta.textContent = needsTime() ? 'Select time' : AVAIL[effAvail()].cta;
+    cta.textContent = needsTime() ? 'Select time' : (AVAIL[effAvail()].cta || '');
+    cta.hidden = !needsTime() && !AVAIL[effAvail()].cta;
     cta.addEventListener('click', () => needsTime() ? openDrawer('times', $('#cta')) : (closeDrawer(), primaryAction()));
   }
   // Start-time rows in the Duration and Price details drawers
@@ -1470,6 +1690,8 @@ div.fact .fact-value{ justify-content:flex-start }
   /* ── Prototype state switcher ─────────── */
   // Rule: picking a state scrolls to the element it changed and flashes it, so the reviewer sees the result
   const CHANGED = {
+    booked:  () => state.booked === 'no' ? $('#heroCard') : $('#bkCard'),
+    meals:   () => mealsTile.isConnected ? mealsTile : $('.facts'),
     badge:   () => $('#heroCard'),
     avail:   () => $('#cardWrap'),
     times:   () => multi() ? $('#mStart') : $('#heroCard'),
@@ -1488,6 +1710,7 @@ div.fact .fact-value{ justify-content:flex-start }
     // Ship times live in the Duration drawer, so open it once the tile is in view
     if (name === 'ship') setTimeout(() => openDrawer('duration', el), 500);
   }
+  hero.addEventListener('scroll', () => { if (hero.scrollTop) hero.scrollTop = 0; });
   const DEFAULTS = { ...state };
   function toTop() { window.scrollTo({ top: 0, behavior: 'instant' }); }
 
