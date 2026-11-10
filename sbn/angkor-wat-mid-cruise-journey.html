@@ -481,6 +481,7 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .level.current{ border:2px solid var(--blue); background:var(--blue-02); padding:11px 15px }
 .d-sub{ margin:24px 0 8px; font-size:12px; line-height:var(--lh-body); font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-text) }   /* Local/Eyebrow */
 .sheet-cta{ margin-top:24px; width:100% }
+.tk-copy{ margin:0; font-size:16px; line-height:1.5 }
 
 /* ───────────── Toast & state switcher ───────────── */
 .toast{
@@ -1080,6 +1081,18 @@ body.booked .bk-card{
 .bk-cols dd{ margin:4px 0 0; white-space:nowrap; font-size:16px; font-weight:700; line-height:var(--lh-body); color:#fff }
 .bk-names{ margin:16px 0 0; font-size:14px; line-height:var(--lh-body); color:var(--on-glass) }
 
+/* Booked: availability sits between the rule and the Book again price (rule → pill → price), same live labels as the hero status pill.
+   Available shows nothing; Limited / Spots Left show the pill; Sold Out shows it muted and Book again goes back to View all pricing. */
+.bk-avail{ display:none }
+body.booked .bk-avail:not([hidden]){ display:flex; width:fit-content; align-items:center; gap:8px; margin:0; padding:4px 12px; border-radius:2px; font-weight:600; background:rgba(var(--ds-blue-rgb),.86);
+  font-size:14px; line-height:var(--lh-body); color:#fff; border:.75px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(14px) saturate(140%); backdrop-filter:blur(14px) saturate(140%) }
+body.booked .bk-avail b{ font-weight:700 }
+body.booked .mband.bk-has-avail{ border-top:1px solid rgba(255,255,255,.22); padding-top:14px }
+body.booked .mband.bk-has-avail .mrow{ border-top:0 }
+body.booked .bk-avail .dot{ flex:none; width:8px; height:8px; border-radius:50%; background:var(--ds-gold) }
+body.booked .bk-avail.muted .dot{ background:rgba(255,255,255,.6) }
+
 /* Key facts below the fold, on white */
 body.booked .bk-facts{ display:block; padding-top:32px }
 body.booked .bk-facts .fact.glass{
@@ -1105,6 +1118,63 @@ body.booked .bk-bar{ display:block; position:fixed; z-index:30; left:12px; right
           font-size:14px; font-weight:600; line-height:var(--lh-body); color:var(--ds-hal-blue-hover, var(--blue)); text-decoration:none }
 .bk-link:hover{ text-decoration:underline; text-underline-offset:3px }
 body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)) }
+
+/* ───────────── Prototype states (review tool) · compact dock ───────────── */
+.proto.ps{ border:0; background:none; padding:0; font:13px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif; color:#1b1f24 }
+.proto.ps .ps-fab{
+  position:fixed; z-index:70; right:0; top:50%; transform:translateY(-50%);
+  writing-mode:vertical-rl; rotate:180deg; display:flex; align-items:center; gap:6px;
+  padding:12px 7px; border-radius:0 10px 10px 0; background:#1b1f24; color:#fff;
+  font:600 11px/1 system-ui,-apple-system,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+  cursor:pointer; list-style:none; box-shadow:0 4px 14px rgba(0,0,0,.25); user-select:none;
+}
+.proto.ps .ps-fab::-webkit-details-marker{ display:none }
+.proto.ps .ps-fab::before{ content:""; width:6px; height:6px; border-radius:50%; background:#f5a623 }
+.proto.ps .ps-fab:focus-visible{ outline:2px solid #f5a623; outline-offset:2px }
+.proto.ps[open] .ps-fab{ background:#3a4048 }
+.proto.ps .ps-fab .ps-ping{ display:none; text-transform:none; letter-spacing:0; font-weight:500 }
+.proto.ps .ps-fab.pinged .ps-ping{ display:inline }
+.proto.ps .ps-fab.pinged .ps-word{ display:none }
+.proto.ps .ps-sheet{
+  position:fixed; z-index:71; right:40px; top:50%; transform:translateY(-50%);
+  width:min(340px, calc(100vw - 56px)); max-height:min(560px, calc(100vh - 32px));
+  display:flex; flex-direction:column; background:#fff; border-radius:14px;
+  box-shadow:0 12px 40px rgba(0,0,0,.28), 0 0 0 1px rgba(0,0,0,.06); overflow:hidden;
+}
+.proto.ps .ps-head{ display:flex; align-items:center; gap:8px; padding:12px 12px 10px 16px; border-bottom:1px solid #eceef1 }
+.proto.ps .ps-head strong{ font-size:13px; margin-right:auto }
+.proto.ps .ps-head button{ border:0; background:none; font:inherit; color:#57606a; cursor:pointer; padding:4px 6px; border-radius:6px }
+.proto.ps .ps-head button:hover{ background:#f1f3f5; color:#1b1f24 }
+.proto.ps .ps-x{ font-size:18px !important; line-height:1 }
+.proto.ps .ps-tabs{ display:flex; gap:4px; padding:8px 12px 0 }
+.proto.ps .ps-tabs button{ flex:1; border:0; background:none; font:600 12px/1 system-ui,sans-serif; color:#57606a; padding:8px; border-radius:8px; cursor:pointer }
+.proto.ps .ps-tabs button[aria-selected="true"]{ background:#f1f3f5; color:#1b1f24 }
+.proto.ps .ps-tabs b{ display:inline-block; min-width:18px; padding:2px 5px; margin-left:4px; border-radius:9px; background:#f5a623; color:#1b1f24; font-size:11px }
+.proto.ps .ps-body{ display:block; overflow:auto; padding:4px 16px 14px; overscroll-behavior:contain }
+.proto.ps [hidden]{ display:none !important }
+.proto.ps .ps-row{ padding:10px 0; border-bottom:1px solid #f1f3f5 }
+.proto.ps .ps-row:last-child{ border-bottom:0 }
+.proto.ps .ps-k{ display:flex; align-items:center; gap:6px; margin-bottom:6px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#57606a }
+.proto.ps .ps-i{ width:16px; height:16px; padding:0; border:1px solid #c4cad1; border-radius:50%; background:#fff; color:#57606a; font:italic 700 10px/14px Georgia,serif; text-transform:none; cursor:pointer }
+.proto.ps .ps-i[aria-expanded="true"]{ background:#1b1f24; border-color:#1b1f24; color:#fff }
+.proto.ps .ps-seg{ display:flex; flex-wrap:wrap; gap:4px }
+.proto.ps .ps-seg label{ display:block; padding:0; gap:0; position:relative; cursor:pointer }
+.proto.ps .ps-seg input{ position:absolute; opacity:0; inset:0; margin:0; pointer-events:none }
+.proto.ps .ps-seg span{ display:block; padding:5px 10px; border:1px solid #d0d7de; border-radius:999px; background:#fff; white-space:nowrap; transition:background .15s, color .15s, border-color .15s }
+.proto.ps .ps-seg label:hover span{ border-color:#8c959f }
+.proto.ps .ps-seg input:checked + span{ background:#1b1f24; border-color:#1b1f24; color:#fff }
+.proto.ps .ps-seg input:focus-visible + span{ outline:2px solid #f5a623; outline-offset:2px }
+.proto.ps .ps-note{ margin:6px 0 0; font-size:12px; color:#57606a }
+.proto.ps .ps-gaps{ margin:0; padding:10px 16px 14px 34px; overflow:auto; font-size:12.5px; color:#323940 }
+.proto.ps .ps-gaps li{ padding:5px 0; border-bottom:1px solid #f1f3f5 }
+.proto.ps .ps-gaps li:last-child{ border-bottom:0 }
+@media (max-width:699px){
+  .proto.ps .ps-sheet{ top:auto; bottom:calc(8px + env(safe-area-inset-bottom)); right:8px; left:8px; width:auto; transform:none; max-height:72vh }
+}
+@media (prefers-reduced-motion:no-preference){
+  .proto.ps[open] .ps-sheet{ animation:psIn .18s ease-out }
+  @keyframes psIn{ from{ opacity:0; translate:8px 0 } }
+}
 </style>
 </head>
 <body>
@@ -1176,6 +1246,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
         <!-- Phone only: port label over date and time, then the price row as one link (direction 04) -->
         <div class="mband on-photo">
           <p class="mfacts"><span class="lbl">Sihanoukville, Cambodia</span>Day 6 · Sat, Feb 6, 2027 · <span id="mStart">10:00 AM</span></p>
+          <p class="bk-avail" id="bkAvail" role="status" hidden><span class="dot"></span><span id="bkAvailText"></span></p>
           <a class="mrow" href="#price" aria-label="$3,010.00 per adult. View all pricing"><span class="amt">$3,010.00</span><span class="u">per adult</span><span class="go">View all pricing<svg class="i" aria-hidden="true"><use href="#i-right"/></svg></span></a>
         </div>
       </article>
@@ -1287,8 +1358,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     <article class="coll coll-classic" hidden data-callout="classic">
       <h3 class="coll-title"><span class="diamond" aria-hidden="true"></span>The Classic Collection</h3>
       <p class="body">Thoughtfully designed to showcase the defining monuments and historic icons of every destination, our Landmark Collection offers a seamless and comprehensive introduction to the world’s most celebrated sites. Guided by premier local experts with full transportation comfort, these journeys capture the essential spirit and history of each port call with Seabourn’s signature warmth.</p>
-      <p class="coll-facts"><span>Group size:<b>Lorem ipsum</b></span><span>Style:<b>Lorem &amp; ipsum</b></span></p>
-      <p class="coll-lorem">Group size and style are placeholders — product to supply.</p>
+      <p class="coll-facts"><span>Group size:<b>##</b></span><span>Style:<b>Style description goes here</b></span></p>
     </article>
     </div>
     <button class="text-link compare-link" data-drawer="collections" aria-haspopup="dialog">How our collections differ<svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
@@ -1360,40 +1430,40 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
 </main>
 
 <footer class="wrap proto-foot">
-  <details class="proto" id="proto">
-    <summary>Prototype states <small>Review tool only</small><svg class="i"><use href="#i-down"/></svg></summary>
-    <form class="proto-panel" id="protoPanel">
-      <fieldset><legend>Booking</legend>
-        <label><input type="radio" name="booked" value="no" checked> Not booked</label>
-        <label><input type="radio" name="booked" value="onboard"> Booked · Onboard (ticket)</label>
-        <label><input type="radio" name="booked" value="precruise"> Booked · Pre-cruise (itinerary)</label>
-        <p>The confirmation view a guest sees when they come back after booking. Guest names and count are placeholders until the booking API provides them. Tickets are only available onboard, so pre-cruise shows View in Itinerary.</p>
-      </fieldset>
-      <fieldset><legend>Collection tag</legend>
-        <label><input type="radio" name="badge" value="none"> None</label>
-        <label><input type="radio" name="badge" value="reserve" checked> The Reserve Collection</label><label><input type="radio" name="badge" value="curated"> The Curated Collection</label><label><input type="radio" name="badge" value="classic"> The Classic Collection</label>
-        <p>The ⓘ next to the tag, and “How our collections differ” in the Collection section, open all three.</p>
-      </fieldset>
-      <fieldset><legend>Availability</legend>
-        <label><input type="radio" name="avail" value="available" checked> Available</label>
-        <label><input type="radio" name="avail" value="limited"> Limited Capacity</label>
-        <label><input type="radio" name="avail" value="soldout"> Sold Out</label>
-        <p>Sold Out: no booking button; the page stays browsable.</p>
-      </fieldset>
-      <fieldset><legend>Start times</legend>
-        <label><input type="radio" name="times" value="single" checked> One start time</label>
-        <label><input type="radio" name="times" value="multi"> Multiple times · first available preselected</label>
-        <p>No SBN page has multiple departures yet; the extra times are filler (2-hour steps) until the API provides them. Each time has its own availability.</p>
-      </fieldset>
-      <fieldset><legend>Meals</legend>
-        <label><input type="radio" name="meals" value="meal" checked> Meals Included</label><label><input type="radio" name="meals" value="snack"> Snack Included</label><label><input type="radio" name="meals" value="none"> No meals (no tile)</label>
-        <p>“Snack Included” is FPO: no SBN page has a snack yet. With no meals the tile is removed, as on Gijang.</p>
-      </fieldset>
-      <fieldset style="grid-column:1/-1"><legend>Template gaps (no SBN source copy)</legend>
-        <ul class="proto-gaps"><li>Wheelchair tile shows "Not accessible" (the HAL template’s value when there’s no data). The live SBN page doesn’t state access.</li><li>Two-guest notice link: "View single-person booking" is FPO copy, and its target isn’t known.</li><li>Meals tile reads "Meals Included" (your wording). The live page says "Includes: Meal".</li><li>Cancellation row shows this journey’s 60-day rule, taken from its Notes. The FAQ drawer still has the generic SBN Cancellation Policy (no penalty up to 48 hours before arrival at the port), which contradicts it for this journey.</li><li>Live copy typos kept: "Your next visit the magnificent temple" and "Ta Phrom".</li><li>Itinerary: meals aren’t called out per day, because the API can’t supply them (user). Meals appear only in the day text.</li><li>Ship times: none on the live page, and the journey reboards in Ho Chi Minh City, not Sihanoukville.</li><li>Excursion credits: no SBN data. The credits card is removed.</li><li>Ratings (4 Ratings, 4.5 stars on the live page) are hidden.</li><li>Ship times: none on the live pages.</li><li>ⓘ tooltips (Sold Out, Strenuous): never captured.</li><li>Classic Collection: group size and style are lorem ipsum. Its new body copy calls it "our Landmark Collection", so the name needs confirming.</li></ul>
-      </fieldset>
-      <button type="button" class="proto-reset" id="protoReset">Reset all states</button>
-    </form>
+  <details class="proto ps" id="proto">
+    <summary class="ps-fab" aria-label="Prototype states"><span class="ps-word">States</span><span class="ps-ping"></span></summary>
+    <div class="ps-sheet" role="dialog" aria-label="Prototype states">
+      <div class="ps-head"><strong>Prototype states</strong><button type="button" class="proto-reset" id="protoReset">Reset</button><button type="button" class="ps-x" aria-label="Close">×</button></div>
+      <div class="ps-tabs" role="tablist"><button type="button" role="tab" data-tab="states" aria-selected="true">States</button><button type="button" role="tab" data-tab="gaps" aria-selected="false">Gaps<b>12</b></button></div>
+      <form class="proto-panel ps-body" id="protoPanel" data-pane="states">
+        <div class="ps-row" role="radiogroup" aria-label="Booking">
+          <div class="ps-k"><span>Booking</span> <button type="button" class="ps-i" aria-label="About Booking" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="booked" value="no" checked><span>Not booked</span></label><label><input type="radio" name="booked" value="onboard"><span>Onboard</span></label><label><input type="radio" name="booked" value="precruise"><span>Pre-cruise</span></label></div>
+          <p class="ps-note" hidden>Post-booking view. Guest names are placeholders; pre-cruise has no ticket yet.</p>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Collection">
+          <div class="ps-k"><span>Collection</span> <button type="button" class="ps-i" aria-label="About Collection" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="badge" value="none"><span>None</span></label><label><input type="radio" name="badge" value="reserve" checked><span>Reserve</span></label><label><input type="radio" name="badge" value="curated"><span>Curated</span></label><label><input type="radio" name="badge" value="classic"><span>Classic</span></label></div>
+          <p class="ps-note" hidden>The tag’s ⓘ opens all three.</p>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Availability">
+          <div class="ps-k"><span>Availability</span> <button type="button" class="ps-i" aria-label="About Availability" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="avail" value="available" checked><span>Available</span></label><label><input type="radio" name="avail" value="limited"><span>Limited</span></label><label><input type="radio" name="avail" value="soldout"><span>Sold out</span></label></div>
+          <p class="ps-note" hidden>Sold out hides the booking button.</p>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Start times">
+          <div class="ps-k"><span>Start times</span> <button type="button" class="ps-i" aria-label="About Start times" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="times" value="single" checked><span>One</span></label><label><input type="radio" name="times" value="multi"><span>Multiple</span></label></div>
+          <p class="ps-note" hidden>Filler times; no SBN page has several yet.</p>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Meals">
+          <div class="ps-k"><span>Meals</span> <button type="button" class="ps-i" aria-label="About Meals" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="meals" value="meal" checked><span>Meals</span></label><label><input type="radio" name="meals" value="snack"><span>Snack</span></label><label><input type="radio" name="meals" value="none"><span>None</span></label></div>
+          <p class="ps-note" hidden>Snack is FPO. None removes the tile.</p>
+        </div>
+      </form>
+      <ol class="ps-gaps" data-pane="gaps" hidden><li>Wheelchair “Not accessible” is the template default; live page doesn’t say.</li><li>“View single-person booking” link: FPO copy, target unknown.</li><li>Tile says “Meals Included”; live says “Includes: Meal”.</li><li>Cancellation: this journey’s 60-day rule conflicts with the generic 48-hour FAQ policy.</li><li>Live typos kept: “Your next visit the…”, “Ta Phrom”.</li><li>No per-day meals (API can’t supply them).</li><li>No ship times; reboards in Ho Chi Minh City, not Sihanoukville.</li><li>No credits data: card removed.</li><li>Ratings hidden (live: 4 ratings, 4.5★).</li><li>No ship times on live pages.</li><li>ⓘ tooltips (Sold Out, Strenuous) never captured.</li><li>Classic: group size + style are lorem ipsum; copy says “Landmark Collection”: confirm name.</li></ol>
+    </div>
   </details>
 </footer>
 
@@ -1442,8 +1512,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
       <span class="coll-here" hidden>This excursion</span>
       <h3 class="coll-title"><span class="diamond" aria-hidden="true"></span>The Classic Collection</h3>
       <p class="body">Thoughtfully designed to showcase the defining monuments and historic icons of every destination, our Landmark Collection offers a seamless and comprehensive introduction to the world’s most celebrated sites. Guided by premier local experts with full transportation comfort, these journeys capture the essential spirit and history of each port call with Seabourn’s signature warmth.</p>
-      <p class="coll-facts"><span>Group size:<b>Lorem ipsum</b></span><span>Style:<b>Lorem &amp; ipsum</b></span></p>
-      <p class="coll-lorem">Group size and style are placeholders — product to supply.</p>
+      <p class="coll-facts"><span>Group size:<b>##</b></span><span>Style:<b>Style description goes here</b></span></p>
     </article>
   </div>
 </template>
@@ -1485,6 +1554,12 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
 <template id="t-times" data-label="Start times">
   <h2>Choose a time on Feb 6</h2>
   <div class="levels" role="radiogroup" aria-label="Start time" data-slot="options"></div>
+</template>
+
+<template id="t-ticket" data-label="Shore excursion ticket">
+  <h2>Check back once onboard</h2>
+  <p class="tk-copy">Your shore excursion tickets will be available once onboard. Come back to this page after you board to view your ticket.</p>
+  <button class="btn-primary sheet-cta" data-close>Back to details</button>
 </template>
 
 <template id="t-faq" data-label="Shore Excursions FAQs" data-full>
@@ -1651,7 +1726,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
   $('#barZone').after(bkBar);
   const bkGo = $('.mband .mrow .go'), bkGoHTML = bkGo.innerHTML, bkRowLabel = $('.mband .mrow').getAttribute('aria-label');
   $('.mband .mrow').addEventListener('click', e => {
-    if (state.booked === 'no') return;
+    if (state.booked === 'no' || !AVAIL[effAvail()].cta) return;
     e.preventDefault();
     showToast('Book again → booking flow');
   });
@@ -1666,15 +1741,22 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     $('#bkTime').textContent = startTime() || firstAvailable().time;
     if (on && bkFactsEl.parentNode !== bkFacts) bkFacts.append(bkFactsEl);
     if (!on && bkFactsEl.parentNode !== bkFactsHome) bkFactsHome.append(bkFactsEl);
-    bkGo.innerHTML = on ? bkGoHTML.replace('View all pricing', 'Book again') : bkGoHTML;
-    $('.mband .mrow').setAttribute('aria-label', on ? bkRowLabel.replace('View all pricing', 'Book again') : bkRowLabel);
+    const bkAv = AVAIL[effAvail()], again = on && !!bkAv.cta;   // sold out: no Book again, the row opens pricing
+    bkGo.innerHTML = again ? bkGoHTML.replace('View all pricing', 'Book again') : bkGoHTML;
+    $('.mband .mrow').setAttribute('aria-label', again ? bkRowLabel.replace('View all pricing', 'Book again') : bkRowLabel);
+    $('#bkAvail').hidden = !(on && bkAv.pill);
+    $('.mband').classList.toggle('bk-has-avail', !!(on && bkAv.pill));
+    $('#bkAvail').classList.toggle('muted', !!bkAv.muted);
+    $('#bkAvailText').innerHTML = bkAv.pill || '';
     const bkCredit = $('#creditCard'); if (on && bkCredit) bkCredit.hidden = true;
     const cta = $('#bkCta'), onboard = state.booked === 'onboard';
-    cta.textContent = onboard ? 'View Ticket' : 'View Itinerary';
-    cta.dataset.handoff = cta.textContent;
-    // Two actions, each half the bar: onboard = View Itinerary | View Ticket; pre-cruise = Book again | View Itinerary
+    // Same bar onboard and pre-cruise: View Itinerary | View Ticket.
+    // Onboard the button hands off to the ticket; pre-cruise it opens the "tickets onboard" sheet.
+    cta.textContent = 'View Ticket';
+    if (onboard) { cta.dataset.handoff = 'View Ticket'; delete cta.dataset.open; cta.removeAttribute('aria-haspopup'); }
+    else { delete cta.dataset.handoff; cta.dataset.open = 'ticket'; cta.setAttribute('aria-haspopup', 'dialog'); }
     const bkLink = $('#bkLink');
-    bkLink.textContent = bkLink.dataset.handoff = onboard ? 'View Itinerary' : 'Book again';
+    bkLink.textContent = bkLink.dataset.handoff = 'View Itinerary';
     if (on) requestAnimationFrame(bkSetNotch);
   }
 
@@ -1931,7 +2013,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     booked:  () => state.booked === 'no' ? $('#heroCard') : $('#bkCard'),
     meals:   () => mealsTile.isConnected ? mealsTile : $('.facts'),
     badge: () => state.badge === 'none' ? $('#heroCard') : $('#collection'),
-    avail: () => $('#cardWrap'),
+    avail: () => state.booked !== 'no' ? ($('#bkAvail').hidden ? $('.mband .mrow') : $('#bkAvail')) : $('#cardWrap'),
     times: () => multi() ? $('#mStart') : $('#heroCard'),
   };
   function revealChange(name) {
@@ -1963,6 +2045,34 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
 
   apply();
   onScroll();
+})();
+</script>
+
+<script>
+/* Prototype states dock: tabs, (i) notes, close; on phones it tucks away after a pick so the jump is visible */
+(() => {
+  const dock = document.getElementById('proto'); if (!dock) return;
+  const fab = dock.querySelector('.ps-fab'), ping = fab.querySelector('.ps-ping');
+  const narrow = matchMedia('(max-width:699px)');
+  dock.querySelector('.ps-x').addEventListener('click', () => { dock.open = false; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && dock.open) { dock.open = false; fab.focus(); } });
+  document.addEventListener('pointerdown', e => { if (dock.open && narrow.matches && !dock.contains(e.target)) dock.open = false; });
+  dock.querySelectorAll('.ps-i').forEach(b => b.addEventListener('click', () => {
+    const n = b.closest('.ps-row').querySelector('.ps-note'), on = n.hidden;
+    n.hidden = !on; b.setAttribute('aria-expanded', on);
+  }));
+  dock.querySelectorAll('.ps-tabs button').forEach(t => t.addEventListener('click', () => {
+    dock.querySelectorAll('.ps-tabs button').forEach(o => o.setAttribute('aria-selected', o === t));
+    dock.querySelectorAll('[data-pane]').forEach(p => { p.hidden = p.dataset.pane !== t.dataset.tab; });
+  }));
+  let tm;
+  document.getElementById('protoPanel').addEventListener('change', e => {
+    if (!narrow.matches) return;
+    const row = e.target.closest('.ps-row');
+    ping.textContent = row.querySelector('.ps-k span').textContent + ': ' + e.target.nextElementSibling.textContent;
+    dock.open = false; fab.classList.add('pinged');
+    clearTimeout(tm); tm = setTimeout(() => fab.classList.remove('pinged'), 2400);
+  });
 })();
 </script>
 </body>

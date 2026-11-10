@@ -471,6 +471,7 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .level.current{ border:2px solid var(--hal-blue); background:var(--blue-02); padding:11px 15px }
 .d-sub{ margin:24px 0 8px; font-size:12px; line-height:var(--lh-body); font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--orange-text) }   /* Local/Eyebrow */
 .sheet-cta{ margin-top:24px; width:100% }
+.tk-copy{ margin:0; font-size:16px; line-height:1.5 }
 
 /* ───────────── Toast & state switcher ───────────── */
 .toast{
@@ -882,6 +883,18 @@ body.booked .bk-card{
 .bk-cols dd{ margin:4px 0 0; white-space:nowrap; font-size:16px; font-weight:700; line-height:var(--lh-body); color:#fff }
 .bk-names{ margin:16px 0 0; font-size:14px; line-height:var(--lh-body); color:var(--on-glass) }
 
+/* Booked: availability sits between the rule and the Book again price (rule → pill → price), same live labels as the hero status pill.
+   Available shows nothing; Limited / Spots Left show the pill; Sold Out shows it muted and Book again goes back to View all pricing. */
+.bk-avail{ display:none }
+body.booked .bk-avail:not([hidden]){ display:flex; width:fit-content; align-items:center; gap:8px; margin:0; padding:4px 16px 4px 12px; border-radius:999px; font-weight:600; background:rgba(var(--ds-hal-blue-rgb),.72);
+  font-size:14px; line-height:var(--lh-body); color:#fff; border:.75px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(14px) saturate(140%); backdrop-filter:blur(14px) saturate(140%) }
+body.booked .bk-avail b{ font-weight:700 }
+body.booked .mband.bk-has-avail{ border-top:1px solid rgba(255,255,255,.22); padding-top:14px }
+body.booked .mband.bk-has-avail .mrow{ border-top:0 }
+body.booked .bk-avail .dot{ flex:none; width:8px; height:8px; border-radius:50%; background:var(--orange-dot) }
+body.booked .bk-avail.muted .dot{ background:rgba(255,255,255,.6) }
+
 /* Key facts below the fold, on white */
 body.booked .bk-facts{ display:block; padding-top:32px }
 body.booked .bk-facts .fact.glass{
@@ -907,6 +920,63 @@ body.booked .bk-bar{ display:block; position:fixed; z-index:30; left:12px; right
           font-size:14px; font-weight:600; line-height:var(--lh-body); color:var(--ds-hal-blue-hover, var(--blue)); text-decoration:none }
 .bk-link:hover{ text-decoration:underline; text-underline-offset:3px }
 body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)) }
+
+/* ───────────── Prototype states (review tool) · compact dock ───────────── */
+.proto.ps{ border:0; background:none; padding:0; font:13px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif; color:#1b1f24 }
+.proto.ps .ps-fab{
+  position:fixed; z-index:70; right:0; top:50%; transform:translateY(-50%);
+  writing-mode:vertical-rl; rotate:180deg; display:flex; align-items:center; gap:6px;
+  padding:12px 7px; border-radius:0 10px 10px 0; background:#1b1f24; color:#fff;
+  font:600 11px/1 system-ui,-apple-system,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+  cursor:pointer; list-style:none; box-shadow:0 4px 14px rgba(0,0,0,.25); user-select:none;
+}
+.proto.ps .ps-fab::-webkit-details-marker{ display:none }
+.proto.ps .ps-fab::before{ content:""; width:6px; height:6px; border-radius:50%; background:#f5a623 }
+.proto.ps .ps-fab:focus-visible{ outline:2px solid #f5a623; outline-offset:2px }
+.proto.ps[open] .ps-fab{ background:#3a4048 }
+.proto.ps .ps-fab .ps-ping{ display:none; text-transform:none; letter-spacing:0; font-weight:500 }
+.proto.ps .ps-fab.pinged .ps-ping{ display:inline }
+.proto.ps .ps-fab.pinged .ps-word{ display:none }
+.proto.ps .ps-sheet{
+  position:fixed; z-index:71; right:40px; top:50%; transform:translateY(-50%);
+  width:min(340px, calc(100vw - 56px)); max-height:min(560px, calc(100vh - 32px));
+  display:flex; flex-direction:column; background:#fff; border-radius:14px;
+  box-shadow:0 12px 40px rgba(0,0,0,.28), 0 0 0 1px rgba(0,0,0,.06); overflow:hidden;
+}
+.proto.ps .ps-head{ display:flex; align-items:center; gap:8px; padding:12px 12px 10px 16px; border-bottom:1px solid #eceef1 }
+.proto.ps .ps-head strong{ font-size:13px; margin-right:auto }
+.proto.ps .ps-head button{ border:0; background:none; font:inherit; color:#57606a; cursor:pointer; padding:4px 6px; border-radius:6px }
+.proto.ps .ps-head button:hover{ background:#f1f3f5; color:#1b1f24 }
+.proto.ps .ps-x{ font-size:18px !important; line-height:1 }
+.proto.ps .ps-tabs{ display:flex; gap:4px; padding:8px 12px 0 }
+.proto.ps .ps-tabs button{ flex:1; border:0; background:none; font:600 12px/1 system-ui,sans-serif; color:#57606a; padding:8px; border-radius:8px; cursor:pointer }
+.proto.ps .ps-tabs button[aria-selected="true"]{ background:#f1f3f5; color:#1b1f24 }
+.proto.ps .ps-tabs b{ display:inline-block; min-width:18px; padding:2px 5px; margin-left:4px; border-radius:9px; background:#f5a623; color:#1b1f24; font-size:11px }
+.proto.ps .ps-body{ display:block; overflow:auto; padding:4px 16px 14px; overscroll-behavior:contain }
+.proto.ps [hidden]{ display:none !important }
+.proto.ps .ps-row{ padding:10px 0; border-bottom:1px solid #f1f3f5 }
+.proto.ps .ps-row:last-child{ border-bottom:0 }
+.proto.ps .ps-k{ display:flex; align-items:center; gap:6px; margin-bottom:6px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#57606a }
+.proto.ps .ps-i{ width:16px; height:16px; padding:0; border:1px solid #c4cad1; border-radius:50%; background:#fff; color:#57606a; font:italic 700 10px/14px Georgia,serif; text-transform:none; cursor:pointer }
+.proto.ps .ps-i[aria-expanded="true"]{ background:#1b1f24; border-color:#1b1f24; color:#fff }
+.proto.ps .ps-seg{ display:flex; flex-wrap:wrap; gap:4px }
+.proto.ps .ps-seg label{ display:block; padding:0; gap:0; position:relative; cursor:pointer }
+.proto.ps .ps-seg input{ position:absolute; opacity:0; inset:0; margin:0; pointer-events:none }
+.proto.ps .ps-seg span{ display:block; padding:5px 10px; border:1px solid #d0d7de; border-radius:999px; background:#fff; white-space:nowrap; transition:background .15s, color .15s, border-color .15s }
+.proto.ps .ps-seg label:hover span{ border-color:#8c959f }
+.proto.ps .ps-seg input:checked + span{ background:#1b1f24; border-color:#1b1f24; color:#fff }
+.proto.ps .ps-seg input:focus-visible + span{ outline:2px solid #f5a623; outline-offset:2px }
+.proto.ps .ps-note{ margin:6px 0 0; font-size:12px; color:#57606a }
+.proto.ps .ps-gaps{ margin:0; padding:10px 16px 14px 34px; overflow:auto; font-size:12.5px; color:#323940 }
+.proto.ps .ps-gaps li{ padding:5px 0; border-bottom:1px solid #f1f3f5 }
+.proto.ps .ps-gaps li:last-child{ border-bottom:0 }
+@media (max-width:699px){
+  .proto.ps .ps-sheet{ top:auto; bottom:calc(8px + env(safe-area-inset-bottom)); right:8px; left:8px; width:auto; transform:none; max-height:72vh }
+}
+@media (prefers-reduced-motion:no-preference){
+  .proto.ps[open] .ps-sheet{ animation:psIn .18s ease-out }
+  @keyframes psIn{ from{ opacity:0; translate:8px 0 } }
+}
 </style>
 </head>
 <body>
@@ -977,6 +1047,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
               <!-- Port label over date and time, then the price row as one link (open hero, direction 04) -->
         <div class="mband on-photo">
           <p class="mfacts"><span class="lbl">Copenhagen, Denmark</span>Day 116 · Fri, Apr 30, 2027 · <span id="mStart">10:30 AM</span></p>
+          <p class="bk-avail" id="bkAvail" role="status" hidden><span class="dot"></span><span id="bkAvailText"></span></p>
           <a class="mrow" href="#price" aria-label="$189.95 per adult. View all pricing"><span class="amt">$189.95</span><span class="u">per adult</span><span class="go">View all pricing<svg class="i" aria-hidden="true"><use href="#i-right"/></svg></span></a>
         </div>
       </article>
@@ -1085,52 +1156,50 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
 </main>
 
 <footer class="wrap proto-foot">
-  <details class="proto" id="proto">
-    <summary>Prototype states <small>Review tool only</small><svg class="i"><use href="#i-down"/></svg></summary>
-    <form class="proto-panel" id="protoPanel">
-      <fieldset><legend>Booking</legend>
-        <label><input type="radio" name="booked" value="no" checked> Not booked</label>
-        <label><input type="radio" name="booked" value="onboard"> Booked · Onboard (ticket)</label>
-        <label><input type="radio" name="booked" value="precruise"> Booked · Pre-cruise (itinerary)</label>
-        <p>The confirmation view a guest sees when they come back after booking. Guest names and count are placeholders until the booking API provides them. Tickets are only available onboard, so pre-cruise shows View in Itinerary.</p>
-      </fieldset>
-      <fieldset><legend>Start times</legend>
-        <label><input type="radio" name="times" value="single" checked> One start time</label>
-        <label><input type="radio" name="times" value="multi"> Multiple times · first available preselected</label>
-        <p>Extra times are filler until the API provides them. With multiple times, each time has its own availability. The first available time is preselected; guests change it from the hero time or the Start times section.</p>
-      </fieldset>
-      <fieldset><legend>Experience badge</legend>
-        <label><input type="radio" name="badge" value="none"> None</label>
-        <label><input type="radio" name="badge" value="history" checked> HISTORY Channel Exclusive</label><label><input type="radio" name="badge" value="ats"> Accessible Travel Solutions Exclusive</label><label><input type="radio" name="badge" value="heritage"> Heritage Tour</label>
-      </fieldset>
-      <fieldset><legend>Availability</legend>
-        <label><input type="radio" name="avail" value="available" checked> Available</label>
-        <label><input type="radio" name="avail" value="limited"> Limited Capacity</label>
-        <label><input type="radio" name="avail" value="spots"> 1 Spot Left</label>
-        <label><input type="radio" name="avail" value="soldout"> Sold Out</label>
-      </fieldset>
-      <fieldset><legend>Credits</legend>
-        <label><input type="radio" name="credits" value="2" checked> 2 credits of $100</label>
-        <label><input type="radio" name="credits" value="1"> 1 credit of $100</label>
-        <label><input type="radio" name="credits" value="0"> No credits</label>
-        <p>Confirm with product what credit data can be shown.</p>
-      </fieldset>
-      <fieldset><legend>Credit value</legend>
-        <label><input type="radio" name="creditValue" value="100" checked> $100</label>
-        <label><input type="radio" name="creditValue" value="200"> $200</label>
-        <label><input type="radio" name="creditValue" value="300"> $300</label>
-      </fieldset>
-      <fieldset><legend>Ship times</legend>
-        <label><input type="radio" name="ship" value="both" checked> Arrive + all aboard</label>
-        <label><input type="radio" name="ship" value="arrive"> Arrive only</label>
-        <p>Filler times (7:00 AM / 5:00 PM) until the API provides them.</p>
-      </fieldset>
-      <fieldset><legend>Meals</legend>
-        <label><input type="radio" name="meals" value="meal"> Meal provided</label><label><input type="radio" name="meals" value="snack"> Snack provided</label><label><input type="radio" name="meals" value="none" checked> Not provided</label>
-        <p>Meal and Snack open the Meals sheet. Not provided is a static tile.</p>
-      </fieldset>
-      <button type="button" class="proto-reset" id="protoReset">Reset all states</button>
-    </form>
+  <details class="proto ps" id="proto">
+    <summary class="ps-fab" aria-label="Prototype states"><span class="ps-word">States</span><span class="ps-ping"></span></summary>
+    <div class="ps-sheet" role="dialog" aria-label="Prototype states">
+      <div class="ps-head"><strong>Prototype states</strong><button type="button" class="proto-reset" id="protoReset">Reset</button><button type="button" class="ps-x" aria-label="Close">×</button></div>
+      <form class="proto-panel ps-body" id="protoPanel" data-pane="states">
+        <div class="ps-row" role="radiogroup" aria-label="Booking">
+          <div class="ps-k"><span>Booking</span> <button type="button" class="ps-i" aria-label="About Booking" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="booked" value="no" checked><span>Not booked</span></label><label><input type="radio" name="booked" value="onboard"><span>Onboard</span></label><label><input type="radio" name="booked" value="precruise"><span>Pre-cruise</span></label></div>
+          <p class="ps-note" hidden>Post-booking view. Guest names are placeholders; pre-cruise has no ticket yet.</p>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Start times">
+          <div class="ps-k"><span>Start times</span> <button type="button" class="ps-i" aria-label="About Start times" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="times" value="single" checked><span>One</span></label><label><input type="radio" name="times" value="multi"><span>Multiple</span></label></div>
+          <p class="ps-note" hidden>Extra times are filler; each has its own availability.</p>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Badge">
+          <div class="ps-k"><span>Badge</span></div>
+          <div class="ps-seg"><label><input type="radio" name="badge" value="none"><span>None</span></label><label><input type="radio" name="badge" value="history" checked><span>HISTORY</span></label><label><input type="radio" name="badge" value="ats"><span>Accessible</span></label><label><input type="radio" name="badge" value="heritage"><span>Heritage</span></label></div>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Availability">
+          <div class="ps-k"><span>Availability</span></div>
+          <div class="ps-seg"><label><input type="radio" name="avail" value="available" checked><span>Available</span></label><label><input type="radio" name="avail" value="limited"><span>Limited</span></label><label><input type="radio" name="avail" value="spots"><span>1 left</span></label><label><input type="radio" name="avail" value="soldout"><span>Sold out</span></label></div>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Credits">
+          <div class="ps-k"><span>Credits</span> <button type="button" class="ps-i" aria-label="About Credits" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="credits" value="2" checked><span>2</span></label><label><input type="radio" name="credits" value="1"><span>1</span></label><label><input type="radio" name="credits" value="0"><span>None</span></label></div>
+          <p class="ps-note" hidden>Credit data to confirm with product.</p>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Value">
+          <div class="ps-k"><span>Value</span></div>
+          <div class="ps-seg"><label><input type="radio" name="creditValue" value="100" checked><span>$100</span></label><label><input type="radio" name="creditValue" value="200"><span>$200</span></label><label><input type="radio" name="creditValue" value="300"><span>$300</span></label></div>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Ship times">
+          <div class="ps-k"><span>Ship times</span> <button type="button" class="ps-i" aria-label="About Ship times" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="ship" value="both" checked><span>Arrive + all aboard</span></label><label><input type="radio" name="ship" value="arrive"><span>Arrive only</span></label></div>
+          <p class="ps-note" hidden>Filler times (7:00 AM / 5:00 PM).</p>
+        </div>
+        <div class="ps-row" role="radiogroup" aria-label="Meals">
+          <div class="ps-k"><span>Meals</span> <button type="button" class="ps-i" aria-label="About Meals" aria-expanded="false">i</button></div>
+          <div class="ps-seg"><label><input type="radio" name="meals" value="meal"><span>Meal</span></label><label><input type="radio" name="meals" value="snack"><span>Snack</span></label><label><input type="radio" name="meals" value="none" checked><span>None</span></label></div>
+          <p class="ps-note" hidden>Meal and Snack open a sheet; None is a static tile.</p>
+        </div>
+      </form>
+    </div>
   </details>
 </footer>
 
@@ -1216,6 +1285,12 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
 <template id="t-times" data-label="Start times">
   <h2>Choose a time on Apr 30</h2>
   <div class="levels" role="radiogroup" aria-label="Start time" data-slot="options"></div>
+</template>
+
+<template id="t-ticket" data-label="Shore excursion ticket">
+  <h2>Check back once onboard</h2>
+  <p class="tk-copy">Your shore excursion tickets will be available once onboard. Come back to this page after you board to view your ticket.</p>
+  <button class="btn-primary sheet-cta" data-close>Back to details</button>
 </template>
 
 <template id="t-faq" data-label="Shore Excursions FAQs" data-full>
@@ -1401,7 +1476,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
   $('#barZone').after(bkBar);
   const bkGo = $('.mband .mrow .go'), bkGoHTML = bkGo.innerHTML, bkRowLabel = $('.mband .mrow').getAttribute('aria-label');
   $('.mband .mrow').addEventListener('click', e => {
-    if (state.booked === 'no') return;
+    if (state.booked === 'no' || !AVAIL[effAvail()].cta) return;
     e.preventDefault();
     showToast('Book again → booking flow');
   });
@@ -1416,15 +1491,22 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     $('#bkTime').textContent = startTime() || firstAvailable().time;
     if (on && bkFactsEl.parentNode !== bkFacts) bkFacts.append(bkFactsEl);
     if (!on && bkFactsEl.parentNode !== bkFactsHome) bkFactsHome.append(bkFactsEl);
-    bkGo.innerHTML = on ? bkGoHTML.replace('View all pricing', 'Book again') : bkGoHTML;
-    $('.mband .mrow').setAttribute('aria-label', on ? bkRowLabel.replace('View all pricing', 'Book again') : bkRowLabel);
+    const bkAv = AVAIL[effAvail()], again = on && !!bkAv.cta;   // sold out: no Book again, the row opens pricing
+    bkGo.innerHTML = again ? bkGoHTML.replace('View all pricing', 'Book again') : bkGoHTML;
+    $('.mband .mrow').setAttribute('aria-label', again ? bkRowLabel.replace('View all pricing', 'Book again') : bkRowLabel);
+    $('#bkAvail').hidden = !(on && bkAv.pill);
+    $('.mband').classList.toggle('bk-has-avail', !!(on && bkAv.pill));
+    $('#bkAvail').classList.toggle('muted', !!bkAv.muted);
+    $('#bkAvailText').innerHTML = bkAv.pill || '';
     if (on) $('#creditCard').hidden = true;
     const cta = $('#bkCta'), onboard = state.booked === 'onboard';
-    cta.textContent = onboard ? 'View Ticket' : 'View Itinerary';
-    cta.dataset.handoff = cta.textContent;
-    // Two actions, each half the bar: onboard = View Itinerary | View Ticket; pre-cruise = Book again | View Itinerary
+    // Same bar onboard and pre-cruise: View Itinerary | View Ticket.
+    // Onboard the button hands off to the ticket; pre-cruise it opens the "tickets onboard" sheet.
+    cta.textContent = 'View Ticket';
+    if (onboard) { cta.dataset.handoff = 'View Ticket'; delete cta.dataset.open; cta.removeAttribute('aria-haspopup'); }
+    else { delete cta.dataset.handoff; cta.dataset.open = 'ticket'; cta.setAttribute('aria-haspopup', 'dialog'); }
     const bkLink = $('#bkLink');
-    bkLink.textContent = bkLink.dataset.handoff = onboard ? 'View Itinerary' : 'Book again';
+    bkLink.textContent = bkLink.dataset.handoff = 'View Itinerary';
     if (on) requestAnimationFrame(bkSetNotch);
   }
 
@@ -1693,7 +1775,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     booked:  () => state.booked === 'no' ? $('#heroCard') : $('#bkCard'),
     meals:   () => mealsTile.isConnected ? mealsTile : $('.facts'),
     badge:   () => $('#heroCard'),
-    avail:   () => $('#cardWrap'),
+    avail: () => state.booked !== 'no' ? ($('#bkAvail').hidden ? $('.mband .mrow') : $('#bkAvail')) : $('#cardWrap'),
     times:   () => multi() ? $('#mStart') : $('#heroCard'),
     credits: () => $('#creditCard').hidden ? $('#price') : $('#creditCard'),
     creditValue: () => $('#creditCard').hidden ? $('#price') : $('#creditCard'),
@@ -1734,6 +1816,34 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
 
   apply();
   onScroll();
+})();
+</script>
+
+<script>
+/* Prototype states dock: tabs, (i) notes, close; on phones it tucks away after a pick so the jump is visible */
+(() => {
+  const dock = document.getElementById('proto'); if (!dock) return;
+  const fab = dock.querySelector('.ps-fab'), ping = fab.querySelector('.ps-ping');
+  const narrow = matchMedia('(max-width:699px)');
+  dock.querySelector('.ps-x').addEventListener('click', () => { dock.open = false; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && dock.open) { dock.open = false; fab.focus(); } });
+  document.addEventListener('pointerdown', e => { if (dock.open && narrow.matches && !dock.contains(e.target)) dock.open = false; });
+  dock.querySelectorAll('.ps-i').forEach(b => b.addEventListener('click', () => {
+    const n = b.closest('.ps-row').querySelector('.ps-note'), on = n.hidden;
+    n.hidden = !on; b.setAttribute('aria-expanded', on);
+  }));
+  dock.querySelectorAll('.ps-tabs button').forEach(t => t.addEventListener('click', () => {
+    dock.querySelectorAll('.ps-tabs button').forEach(o => o.setAttribute('aria-selected', o === t));
+    dock.querySelectorAll('[data-pane]').forEach(p => { p.hidden = p.dataset.pane !== t.dataset.tab; });
+  }));
+  let tm;
+  document.getElementById('protoPanel').addEventListener('change', e => {
+    if (!narrow.matches) return;
+    const row = e.target.closest('.ps-row');
+    ping.textContent = row.querySelector('.ps-k span').textContent + ': ' + e.target.nextElementSibling.textContent;
+    dock.open = false; fab.classList.add('pinged');
+    clearTimeout(tm); tm = setTimeout(() => fab.classList.remove('pinged'), 2400);
+  });
 })();
 </script>
 </body>
