@@ -412,8 +412,8 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .bar-line2{ font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B4-regular */
 /* SBN DS Button · Type=primary, Size=large (label Body/B1-semibold, as in Figma).
    Hover SBN Blue Hover, pressed SBN Blue Pressed, disabled Neutral 10 / Neutral 30 */
-.btn-primary[hidden]{ display:none !important }   /* Sold Out onboard: no button */
-/* Sold out · pre-cruise: Join Waitlist, never wider than half the bar. Onboard: a desk line under the date */
+.btn-primary[hidden]{ display:none !important }
+/* Sold out (pre-cruise + onboard): Join Waitlist, never wider than half the bar; it opens the waitlist sheet */
 .bar #cta{ max-width:50% }
 .bar #cta.wait{ overflow:hidden; text-overflow:ellipsis }
 @media (max-width:767px){ .bar #cta.wait{ padding:0 20px; min-width:0 } }
@@ -488,6 +488,7 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .d-sub{ margin:24px 0 8px; font-size:12px; line-height:var(--lh-body); font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-text) }   /* Local/Eyebrow */
 .sheet-cta{ margin-top:24px; width:100% }
 .tk-copy{ margin:0; font-size:16px; line-height:1.5 }
+.wl-link{ display:inline-block; margin-top:16px; font-size:16px; font-weight:600; color:var(--hal-blue, var(--blue)); text-decoration:underline; text-underline-offset:3px }
 
 /* ───────────── Toast & state switcher ───────────── */
 .toast{
@@ -1174,6 +1175,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
   .proto.ps[open] .ps-sheet{ animation:psIn .18s ease-out }
   @keyframes psIn{ from{ opacity:0; translate:8px 0 } }
 }
+/* ext-arrow */ .wl-link::after{content:"";display:inline-block;width:.62em;height:.62em;margin-left:.35em;vertical-align:.02em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M3.5 1.5h7v7M10.5 1.5l-9 9'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M3.5 1.5h7v7M10.5 1.5l-9 9'/%3E%3C/svg%3E") center/contain no-repeat}
 </style>
 </head>
 <body>
@@ -1396,7 +1398,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
         <div class="ps-row" role="radiogroup" aria-label="Guest">
           <div class="ps-k"><span>Guest</span> <button type="button" class="ps-i" aria-label="About Guest" aria-expanded="false">i</button></div>
           <div class="ps-seg"><label><input type="radio" name="ctx" value="precruise" checked><span>Pre-cruise</span></label><label><input type="radio" name="ctx" value="onboard"><span>Onboard</span></label></div>
-          <p class="ps-note" hidden>Sold out: pre-cruise shows Join Waitlist (checks waitlist availability on our website); onboard points to the Shore Excursions Desk.</p>
+          <p class="ps-note" hidden>Sold out: Join Waitlist opens a sheet. Pre-cruise links to our website; onboard points to the Shore Excursions Desk (Deck ## placeholder).</p>
         </div>
         <div class="ps-row" role="radiogroup" aria-label="Start times">
           <div class="ps-k"><span>Start times</span> <button type="button" class="ps-i" aria-label="About Start times" aria-expanded="false">i</button></div>
@@ -1500,6 +1502,19 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
   <div class="levels" role="radiogroup" aria-label="Start time" data-slot="options"></div>
 </template>
 
+<template id="t-waitlist-desk" data-label="Join Waitlist">
+  <h2>This excursion is sold out</h2>
+  <p class="tk-copy">Visit the Shore Excursions Desk on Deck ## to check waitlist availability.</p>
+  <button class="btn-primary sheet-cta" data-close>Back to details</button>
+</template>
+
+<template id="t-waitlist-web" data-label="Join Waitlist">
+  <h2>This excursion is sold out</h2>
+  <p class="tk-copy">Check waitlist availability and complete your booking on our website.</p>
+  <a class="wl-link" href="#" data-wl-web>Check waitlist availability on website</a>
+  <button class="btn-primary sheet-cta" data-close>Back to details</button>
+</template>
+
 <template id="t-ticket" data-label="Shore excursion ticket">
   <h2>Check back once onboard</h2>
   <p class="tk-copy">Your shore excursion tickets will be available once onboard. Come back to this page after you board to view your ticket.</p>
@@ -1582,27 +1597,23 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: null },
   };
 
-  // Sold out (approved 2026-11-10): still no booking, but guests are pointed to a waitlist.
-  // Pre-cruise the bar button hands off to the waitlist on our website (button ≤ half the bar);
-  // onboard there's no button and the bar says to visit the Shore Excursions Desk.
+  // Sold out (user, 2026-11-11): still no booking. Both contexts show "Join Waitlist" (≤ half the bar),
+  // which opens a sheet. Pre-cruise points to our website; onboard points to the Shore Excursions Desk.
   state.ctx = 'precruise';
   const WAIT_LABEL = 'Join Waitlist';
   const soldNow = () => !(typeof needsTime === 'function' && needsTime()) && (typeof effAvail === 'function' ? effAvail() : state.avail) === 'soldout';
-  const waitAction = () => showToast(state.ctx === 'onboard' ? 'Visit the Shore Excursions Desk to join the waitlist' : 'Hand-off: Check waitlist availability on our website');
+  const waitAction = () => openDrawer(state.ctx === 'onboard' ? 'waitlist-desk' : 'waitlist-web', $('#cta'));
   function soldWait() {
-    const sold = soldNow(), pre = state.ctx !== 'onboard', cta = $('#cta');
-    cta.classList.toggle('wait', sold && pre);
-    if (sold && pre) { cta.hidden = false; cta.textContent = WAIT_LABEL; }
-    let w = $('#barWait');
-    if (!w) {
-      const l2 = $('.bar .bar-line2');
-      w = document.createElement(l2.tagName === 'P' ? 'p' : 'span');
-      w.className = 'bar-wait'; w.id = 'barWait';
-      w.textContent = 'Join the waitlist at the Shore Excursions Desk';
-      l2.after(w);
-    }
-    w.hidden = !(sold && !pre);
+    const sold = soldNow(), cta = $('#cta');
+    cta.classList.toggle('wait', sold);
+    if (sold) { cta.hidden = false; cta.textContent = WAIT_LABEL; cta.setAttribute('aria-haspopup', 'dialog'); }
+    $('#barWait')?.remove();
   }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('[data-wl-web]')) return;
+    e.preventDefault();
+    showToast('Hand-off: Check waitlist availability on our website');
+  });
 
   // Start times: one departure on today's SBN pages. "Multiple times" uses filler times (2-hour steps) until the API provides them
   const addHours = (t, h) => {
@@ -1867,7 +1878,7 @@ body.booked .proto-foot{ padding-bottom:calc(132px + env(safe-area-inset-bottom)
     const cta = $('[data-slot="cta"]', body);
     cta.textContent = AVAIL[effAvail()].cta || '';
     cta.hidden = !AVAIL[effAvail()].cta;
-    if (soldNow() && state.ctx !== 'onboard') { cta.hidden = false; cta.textContent = WAIT_LABEL; }
+    if (soldNow()) { cta.hidden = false; cta.textContent = WAIT_LABEL; }
     $$('[data-slot="start"]', body).forEach(el => el.textContent = startTime());
     cta.addEventListener('click', () => { closeDrawer(); primaryAction(); });
   }

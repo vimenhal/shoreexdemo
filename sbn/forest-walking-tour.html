@@ -412,8 +412,8 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .bar-line2{ font-size:12px; line-height:var(--lh-body); color:var(--n70); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }   /* Body/B4-regular */
 /* SBN DS Button · Type=primary, Size=large (label Body/B1-semibold, as in Figma).
    Hover SBN Blue Hover, pressed SBN Blue Pressed, disabled Neutral 10 / Neutral 30 */
-.btn-primary[hidden]{ display:none !important }   /* Sold Out onboard: no button */
-/* Sold out · pre-cruise: Join Waitlist, never wider than half the bar. Onboard: a desk line under the date */
+.btn-primary[hidden]{ display:none !important }
+/* Sold out (pre-cruise + onboard): Join Waitlist, never wider than half the bar; it opens the waitlist sheet */
 .bar #cta{ max-width:50% }
 .bar #cta.wait{ overflow:hidden; text-overflow:ellipsis }
 @media (max-width:767px){ .bar #cta.wait{ padding:0 20px; min-width:0 } }
@@ -488,6 +488,7 @@ section.block{ position:relative; padding:40px 0 8px; scroll-margin-top:calc(var
 .d-sub{ margin:24px 0 8px; font-size:12px; line-height:var(--lh-body); font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-text) }   /* Local/Eyebrow */
 .sheet-cta{ margin-top:24px; width:100% }
 .tk-copy{ margin:0; font-size:16px; line-height:1.5 }
+.wl-link{ display:inline-block; margin-top:16px; font-size:16px; font-weight:600; color:var(--hal-blue, var(--blue)); text-decoration:underline; text-underline-offset:3px }
 
 /* ───────────── Toast & state switcher ───────────── */
 .toast{
@@ -1189,6 +1190,7 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
 .included-note b{ display:block; margin-bottom:2px; font-size:16px }
 @media (max-width:767px){ .bar #cta{ max-width:60%; padding:0 20px; min-width:0; overflow:hidden; text-overflow:ellipsis } }
 @media (max-width:349px){ .bar #cta{ padding:0 14px; font-size:14px } }
+/* ext-arrow */ .wl-link::after{content:"";display:inline-block;width:.62em;height:.62em;margin-left:.35em;vertical-align:.02em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M3.5 1.5h7v7M10.5 1.5l-9 9'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M3.5 1.5h7v7M10.5 1.5l-9 9'/%3E%3C/svg%3E") center/contain no-repeat}
 </style>
 </head>
 <body data-included="expedition">
@@ -1390,12 +1392,12 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
 <div class="bar-zone" id="barZone">
   <div class="bar">
     <div class="bar-info">
-      <button class="bar-price" id="barPrice" data-drawer="pricing" aria-haspopup="dialog" aria-expanded="false" aria-label="Included. Show details">
-        <span class="bar-line1"><b>Included</b><svg class="i"><use href="#i-up"/></svg></span>
-      </button>
+      <div class="bar-price" id="barPrice">
+        <span class="bar-line1"><b>Included</b></span>
+      </div>
       <p class="bar-line2"><span id="barLine2">May 20</span><span class="bar-times" id="barTimesWrap" hidden> · <a href="#times" id="barTimes">3 times</a></span></p>
     </div>
-    <button class="btn-primary" id="cta">Add to itinerary</button>
+    <button class="btn-primary" id="cta" aria-haspopup="dialog">Excursion Times</button>
   </div>
 </div>
 
@@ -1453,20 +1455,28 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
   </div>
 </template>
 
-<template id="t-pricing" data-label="Details">
-  <h2>Included · No sign-up required</h2>
-  <div class="d-rows">
-    <div class="d-row"><div class="top"><b>Date</b><span>Thu, May 20, 2027</span></div></div>
-    <div class="d-row"><div class="top"><b>Start time</b><span data-slot="start">Assigned onboard</span></div></div>
-    <div class="d-row"><div class="top"><b>Duration</b><span>3.25 hours</span></div></div>
-    <div class="d-row"><div class="top"><b>Port</b><span>Anchorage, Alaska</span></div></div>
-  </div>
-  <button class="btn-primary sheet-cta" data-slot="cta">Reserve</button>
+<template id="t-assigned" data-label="Included expedition">
+  <h2>Excursion Times Assigned Onboard</h2>
+  <p class="tk-copy">You'll receive your expedition group assignment on Day 1. Your included excursion times will be based on your assigned group and may vary.</p>
+  <button class="btn-primary sheet-cta" data-close>Back to details</button>
 </template>
 
 <template id="t-times" data-label="Start times">
   <h2>Choose a time on May 20</h2>
   <div class="levels" role="radiogroup" aria-label="Start time" data-slot="options"></div>
+</template>
+
+<template id="t-waitlist-desk" data-label="Join Waitlist">
+  <h2>This excursion is sold out</h2>
+  <p class="tk-copy">Visit the Shore Excursions Desk on Deck ## to check waitlist availability.</p>
+  <button class="btn-primary sheet-cta" data-close>Back to details</button>
+</template>
+
+<template id="t-waitlist-web" data-label="Join Waitlist">
+  <h2>This excursion is sold out</h2>
+  <p class="tk-copy">Check waitlist availability and complete your booking on our website.</p>
+  <a class="wl-link" href="#" data-wl-web>Check waitlist availability on website</a>
+  <button class="btn-primary sheet-cta" data-close>Back to details</button>
 </template>
 
 <template id="t-ticket" data-label="Shore excursion ticket">
@@ -1546,32 +1556,28 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
   state.meals = 'none';
   // Availability is a fixed label from the excursion system. Sold Out → no booking: the bar shows Sold Out with no button, and the page stays browsable
   const AVAIL = {
-    available: { pill: null, cta: 'Add to itinerary' },
+    available: { pill: null, cta: 'Excursion Times' },
     limited:   { pill: '<b>Limited Capacity</b>', cta: 'Reserve' },
     soldout:   { pill: '<b>Sold Out</b>', muted: true, cta: null },
   };
 
-  // Sold out (approved 2026-11-10): still no booking, but guests are pointed to a waitlist.
-  // Pre-cruise the bar button hands off to the waitlist on our website (button ≤ half the bar);
-  // onboard there's no button and the bar says to visit the Shore Excursions Desk.
+  // Sold out (user, 2026-11-11): still no booking. Both contexts show "Join Waitlist" (≤ half the bar),
+  // which opens a sheet. Pre-cruise points to our website; onboard points to the Shore Excursions Desk.
   state.ctx = 'precruise';
   const WAIT_LABEL = 'Join Waitlist';
   const soldNow = () => !(typeof needsTime === 'function' && needsTime()) && (typeof effAvail === 'function' ? effAvail() : state.avail) === 'soldout';
-  const waitAction = () => showToast(state.ctx === 'onboard' ? 'Visit the Shore Excursions Desk to join the waitlist' : 'Hand-off: Check waitlist availability on our website');
+  const waitAction = () => openDrawer(state.ctx === 'onboard' ? 'waitlist-desk' : 'waitlist-web', $('#cta'));
   function soldWait() {
-    const sold = soldNow(), pre = state.ctx !== 'onboard', cta = $('#cta');
-    cta.classList.toggle('wait', sold && pre);
-    if (sold && pre) { cta.hidden = false; cta.textContent = WAIT_LABEL; }
-    let w = $('#barWait');
-    if (!w) {
-      const l2 = $('.bar .bar-line2');
-      w = document.createElement(l2.tagName === 'P' ? 'p' : 'span');
-      w.className = 'bar-wait'; w.id = 'barWait';
-      w.textContent = 'Join the waitlist at the Shore Excursions Desk';
-      l2.after(w);
-    }
-    w.hidden = !(sold && !pre);
+    const sold = soldNow(), cta = $('#cta');
+    cta.classList.toggle('wait', sold);
+    if (sold) { cta.hidden = false; cta.textContent = WAIT_LABEL; cta.setAttribute('aria-haspopup', 'dialog'); }
+    $('#barWait')?.remove();
   }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('[data-wl-web]')) return;
+    e.preventDefault();
+    showToast('Hand-off: Check waitlist availability on our website');
+  });
 
   // Start times: one departure on today's SBN pages. "Multiple times" uses filler times (2-hour steps) until the API provides them
   const addHours = (t, h) => {
@@ -1727,7 +1733,7 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
     $('#timeChips').innerHTML = TIMES.map(t => `<button class="chip${t.status === 'soldout' ? ' soldout' : ''}" role="radio" aria-checked="${t.id === state.slot}" data-time="${t.id}">
       <span class="t">${t.time}</span><span class="s${t.status === 'limited' ? ' warn' : ''}">${STATUS_TEXT[t.status]}</span></button>`).join('');
     bl1.innerHTML = barSold ? '<b>Sold Out</b>' : bl1.dataset.price;
-    $('#barPrice').setAttribute('aria-label', barSold ? 'Sold Out. Show details' : 'Included. Show details');
+    // Included Expedition: the bar's "Included" is static (no Details drawer)
   }
 
   /* ── Toast / hand-offs ─────────────────── */
@@ -1745,8 +1751,8 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
     e.preventDefault();
     showToast(`Hand-off: ${h.dataset.handoff}`);
   });
-  // Included Expedition: nothing to book or pay; the CTA adds it to the guest's itinerary (user, 2026-11-10)
-  const primaryAction = () => showToast('Hand-off: Add to itinerary');
+  // Included Expedition: nothing to book or pay. "Excursion Times" opens the "times assigned onboard" sheet (user, 2026-11-11)
+  const primaryAction = () => openDrawer('assigned', $('#cta'));
   $('#cta').addEventListener('click', primaryAction);
 
   // Tiles that point at a section (Duration, Includes, Hotel → Itinerary)
@@ -1830,7 +1836,7 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
     const cta = $('[data-slot="cta"]', body);
     cta.textContent = AVAIL[effAvail()].cta || '';
     cta.hidden = !AVAIL[effAvail()].cta;
-    if (soldNow() && state.ctx !== 'onboard') { cta.hidden = false; cta.textContent = WAIT_LABEL; }
+    if (soldNow()) { cta.hidden = false; cta.textContent = WAIT_LABEL; }
     $$('[data-slot="start"]', body).forEach(el => el.textContent = startTime() || 'Assigned onboard');
     cta.addEventListener('click', () => { closeDrawer(); primaryAction(); });
   }

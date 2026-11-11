@@ -115,6 +115,13 @@ svg.star{color:var(--gold);fill:var(--gold);stroke:none;width:12px;height:12px;m
 /* ── Notices ────────────────────────────────────────────── */
 .notice{background:var(--dark-beige);border-radius:var(--r);padding:12px;font-size:13px;line-height:1.5}
 .notice a{color:var(--blue);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.notice .n-h{margin:0 0 4px;font-weight:700;font-size:14px}
+.notice p{margin:0}
+.notice .n-link{display:inline-block;margin-top:8px}
+/* Spots banner: slides in at the top of the step the moment the party goes over the spots left */
+.notice.enter{animation:noticeIn .4s cubic-bezier(.2,.7,.2,1) both;overflow:hidden}
+@keyframes noticeIn{from{opacity:0;max-height:0;padding-top:0;padding-bottom:0;margin-bottom:-16px;transform:translateY(-8px)}to{opacity:1;max-height:240px;margin-bottom:0;transform:none}}
+@media (prefers-reduced-motion:reduce){.notice.enter{animation:none}}
 .notice.plain{background:var(--blue-5);border:2px solid var(--blue-20);padding:14px;font-size:13px;line-height:1.6}
 
 /* ── Guests ─────────────────────────────────────────────── */
@@ -361,6 +368,7 @@ svg.star{color:var(--orange);fill:var(--orange)}
 .cvv-row .q{position:static;transform:none}
 .btn-navy,.btn-ghost{border-radius:999px}
 @media (min-width:1024px){ .actionbar{border-radius:0 0 var(--r) var(--r)} body.is-conf .actionbar{border-radius:0} .sum-card{border-radius:var(--r) var(--r) 0 0} }
+/* ext-arrow */ .notice .n-link::after{content:"";display:inline-block;width:.62em;height:.62em;margin-left:.35em;vertical-align:.02em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M3.5 1.5h7v7M10.5 1.5l-9 9'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M3.5 1.5h7v7M10.5 1.5l-9 9'/%3E%3C/svg%3E") center/contain no-repeat}
 </style>
 </head>
 <body>
@@ -493,7 +501,7 @@ const $ = s => document.querySelector(s);
 const money = n => '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 const ico = (id, cls='i', st='') => `<svg class="${cls}" ${st?`style="${st}"`:''}><use href="#i-${id}"/></svg>`;
 const esc = s => s.replace(/&/g,'&amp;');
-const cap = () => S.spots === 'open' ? 8 : EX.spotsLeft;
+const cap = () => S.spots === 'open' ? Infinity : EX.spotsLeft;
 const isVeh = () => S.pricing === 'vehicle';
 const veh = () => EX.vehicles.find(v => v.id === S.vehicle);
 const visGuests = () => GUESTS.filter(g => g.room!=='added' || S.added);
@@ -511,11 +519,15 @@ function titleBlock(){
 function creditNote(){
   return S.credits ? `<div class="credit-note">${ico('star','i star')}<div><b>Shore excursion credit(s) available.</b><br>Discounts will be applied at checkout.</div></div>` : '';
 }
+/* Not enough spots (user, 2026-11-11): pre-cruise → our website; onboard → Shore Excursions Desk.
+   Sits at the top of the step (where the weight-limit notice goes) and animates in when the party
+   goes over the spots left. */
 function waitBanner(){
-  const head = `This excursion has <b>${EX.spotsLeft} spot${EX.spotsLeft===1?'':'s'}</b> available and can’t fit all selected guests.`;
-  return S.ctx === 'pre'
-    ? `<div class="notice" id="waitBanner">${head}<br><a href="#" data-act="noop">Check waitlist availability on our website</a></div>`
-    : `<div class="notice" id="waitBanner">${head} To join the waitlist, visit the Shore Excursions Desk.</div>`;
+  const n = EX.spotsLeft, only = `Only ${n} spot${n===1?' remains':'s remain'}.`;
+  const body = S.ctx !== 'pre'
+    ? `<p>${only} Reduce your party size to continue booking, or visit the Shore Excursions Desk on Deck ## to check waitlist availability.</p>`
+    : `<p>${only} Reduce your party size to continue booking in the app, or check waitlist availability and complete your booking on our website.</p><a class="n-link" href="#" data-act="waitWeb">Check waitlist availability on website</a>`;
+  return `<div class="notice" id="waitBanner" role="status"><p class="n-h">Not enough spots for your selected guests</p>${body}</div>`;
 }
 
 function vStep1(){
@@ -540,6 +552,7 @@ function vStep1(){
       <div class="row"><span class="k">Price</span><span class="v">${money(EX.price)} / adult</span></div>
       <div class="row total"><span class="k">Total cost</span><span class="serif-amt" id="s1Total">${money(S.party*EX.price)}</span></div>`;
   return `<div class="stack">
+    ${over ? waitBanner() : ''}
     ${titleBlock()}
     ${badge}
     <div class="card" id="selCard">
@@ -548,13 +561,12 @@ function vStep1(){
         <div class="row"><span class="k">Date</span><span class="v">${EX.dateLong}</span></div>
         ${timeRow}
         <div class="row" id="partyRow"><span class="k">Party size</span>
-          <span class="stepper"><button data-act="minus" aria-label="Fewer guests" ${S.party<=1?'disabled':''}>${ico('minus','i','width:18px;height:18px')}</button><output aria-live="polite">${S.party}</output><button data-act="plus" aria-label="More guests" ${S.party>=cap()?'disabled':''}>${ico('plus','i','width:18px;height:18px')}</button></span>
+          <span class="stepper"><button data-act="minus" aria-label="Fewer guests" ${S.party<=1?'disabled':''}>${ico('minus','i','width:18px;height:18px')}</button><output aria-live="polite">${S.party}</output><button data-act="plus" aria-label="More guests">${ico('plus','i','width:18px;height:18px')}</button></span>
         </div>
         ${vehRows}
       </div>
       ${creditNote()}
     </div>
-    ${over ? waitBanner() : ''}
     ${S.access ? `<div class="notice plain" id="accNotice">${ACCESS_COPY}</div>` : ''}
   </div>`;
 }
@@ -566,7 +578,8 @@ function guestRow(g, mode){
     return `<div class="g ${dis?'dis':''}"><label class="g-line"><input type="radio" name="owner" value="${g.id}" data-act="owner" ${S.ownerId===g.id?'checked':''} ${dis?'disabled':''}><span class="radio"></span>${g.name}</label></div>`
       + (dis ? `<div class="minor-note">Minors can’t be selected as the lead guest.</div>` : '');
   }
-  const atCap = S.sel.length >= cap() && !checked && S.spots !== 'tried';
+  // Never blocked (user, 2026-11-11): going over the spots left brings in the top banner and disables Continue
+  const atCap = false;
   const sub = [];
   if (checked && g.credit && S.credits && !(g.second && EX.creditCount < 2)) sub.push(`<div class="credit-chip">${ico('star','i star')}$${EX.credit} credit applied</div>`);
   if (checked && S.weight){
@@ -588,6 +601,7 @@ function vStep2(){
         <div id="linkedList" ${S.linkedOpen?'':'hidden'}>${linked.map(g=>guestRow(g, owner?'owner':'')).join('')}</div>
       </div>` : '';
   return `<div class="stack">
+    ${over && !owner ? waitBanner() : ''}
     ${S.weight && !owner ? `<div class="notice" id="weightBanner"><b>Weight limit.</b> This excursion has a weight limit of ${W_MIN} to ${W_MAX} pounds.</div>` : ''}
     <div class="card" id="partyCard"><div class="card-b">
       <div class="card-h"><p class="eyebrow">${owner?'Guest owner':'Your party'}</p><span class="meta">${owner?'Choose 1':`${S.sel.length} guest${S.sel.length===1?'':'s'}`}</span></div>
@@ -605,7 +619,6 @@ function vStep2(){
         <p class="proto-hint">Prototype: stateroom ${ADDED.room}, last name ${ADDED.last} finds a booking; anything else shows the error.</p>
       </div>` : ''}
     </div>`}
-    ${over && !owner ? waitBanner() : ''}
   </div>`;
 }
 
@@ -773,8 +786,13 @@ function render(){
     el.toggleAttribute('aria-current', n===S.step);
   });
   $('#main').innerHTML = (S.sub==='pay' ? vPay : [null, vStep1, vStep2, vStep3, vStep4][S.step])();
+  // Animate the spots banner only when it newly appears on the same view (not on every re-render)
+  const view = `${S.step}|${S.sub}`, wb = $('#waitBanner');
+  if (wb && !(bannerWas && bannerView===view)){ wb.classList.add('enter'); if (wb.getBoundingClientRect().top < 60) wb.scrollIntoView({behavior:'smooth', block:'center'}); }
+  bannerWas = !!wb; bannerView = view;
   renderBar();
 }
+let bannerWas = false, bannerView = '';
 
 function go(step, sub=null){
   if (step===2 && S.step===1){
@@ -806,7 +824,8 @@ document.addEventListener('click', e=>{
   const t = e.target.closest('[data-act]'); if (!t) return;
   const a = t.dataset.act;
   if (a==='noop'){ e.preventDefault(); toast('Not linked in this prototype'); return; }
-  if (a==='plus'){ S.party = Math.min(cap(), S.party+1); render(); }
+  if (a==='plus'){ S.party += 1; render(); }   // never capped: going over the spots left brings in the banner
+  if (a==='waitWeb'){ e.preventDefault(); toast('Hand-off: Check waitlist availability on our website'); return; }
   if (a==='minus'){ S.party = Math.max(1, S.party-1); if (S.spots==='tried' && S.party<=cap()) S.spots='limited'; render(); }
   if (a==='time'){ S.time = +t.dataset.i; render(); }
   if (a==='accInfo'){ flash('#accNotice'); }
