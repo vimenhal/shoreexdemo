@@ -483,14 +483,14 @@ function titleBlock(){
 function creditNote(){
   return S.credits ? `<div class="credit-note">${ico('star','i star')}<div><b>Shore excursion credit(s) available.</b><br>Discounts will be applied at checkout.</div></div>` : '';
 }
-/* Not enough spots (user, 2026-11-11): pre-cruise → our website; onboard → Shore Excursions Desk.
+/* Not enough spots (user, 2026-11-11): pre-cruise → our website; onboard → Destination Services Desk.
    Sits at the top of the step (where the weight-limit notice goes) and animates in when the party
    goes over the spots left. */
 function waitBanner(){
   const n = EX.spotsLeft, only = `Only ${n} spot${n===1?' remains':'s remain'}.`;
   const body = S.ctx === 'pre'
     ? `<p>${only} Reduce your party size to continue booking in the app, or check waitlist availability and complete your booking on our website.</p><a class="n-link" href="#" data-act="waitWeb">Check waitlist availability on website</a>`
-    : `<p>${only} Reduce your party size to continue booking, or visit the Shore Excursions Desk on Deck ## to check waitlist availability.</p>`;
+    : `<p>${only} Reduce your party size to continue booking, or visit the Destination Services Desk on Deck ## to check waitlist availability.</p>`;
   return `<div class="notice" id="waitBanner" role="status"><p class="n-h">Not enough spots for your selected guests</p>${body}</div>`;
 }
 

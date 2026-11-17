@@ -1394,7 +1394,7 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
         <div class="ps-row" role="radiogroup" aria-label="Guest">
           <div class="ps-k"><span>Guest</span> <button type="button" class="ps-i" aria-label="About Guest" aria-expanded="false">i</button></div>
           <div class="ps-seg"><label><input type="radio" name="ctx" value="precruise" checked><span>Pre-cruise</span></label><label><input type="radio" name="ctx" value="onboard"><span>Onboard</span></label></div>
-          <p class="ps-note" hidden>Sold out: Join Waitlist opens a sheet. Pre-cruise links to our website; onboard points to the Shore Excursions Desk (Deck ## placeholder).</p>
+          <p class="ps-note" hidden>Sold out: Join Waitlist opens a sheet. Pre-cruise links to our website; onboard points to the Destination Services Desk (Deck ## placeholder).</p>
         </div>
         <div class="ps-row" role="radiogroup" aria-label="Start times">
           <div class="ps-k"><span>Start times</span> <button type="button" class="ps-i" aria-label="About Start times" aria-expanded="false">i</button></div>
@@ -1496,7 +1496,7 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
 
 <template id="t-waitlist-desk" data-label="Join Waitlist">
   <h2>This excursion is sold out</h2>
-  <p class="tk-copy">Visit the Shore Excursions Desk on Deck ## to check waitlist availability.</p>
+  <p class="tk-copy">Visit the Destination Services Desk on Deck ## to check waitlist availability.</p>
   <button class="btn-primary sheet-cta" data-close>Back to details</button>
 </template>
 
@@ -1521,7 +1521,7 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
     </div>
     <div class="acc">
       <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Waitlist Policy</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
-      <div class="collapse"><div><div class="acc-body"><p>Yes, some shore excursions may sell out. If your preferred tour is full, you may be able to join a waitlist by visiting the Shore Excursions desk onboard. If space becomes available, we’ll notify you in your stateroom.</p></div></div></div>
+      <div class="collapse"><div><div class="acc-body"><p>Yes, some shore excursions may sell out. If your preferred tour is full, you may be able to join a waitlist by visiting the Destination Services desk onboard. If space becomes available, we’ll notify you in your stateroom.</p></div></div></div>
     </div>
     <div class="acc">
       <button class="acc-head" aria-expanded="false"><span class="titles"><strong>Booking multiple excursions in one day</strong></span><svg class="i chev"><use href="#i-down"/></svg></button>
@@ -1590,7 +1590,7 @@ button.notice-link{ background:none; border:0; padding:0; font:inherit; font-wei
   };
 
   // Sold out (user, 2026-11-11): still no booking. Both contexts show "Join Waitlist" (≤ half the bar),
-  // which opens a sheet. Pre-cruise points to our website; onboard points to the Shore Excursions Desk.
+  // which opens a sheet. Pre-cruise points to our website; onboard points to the Destination Services Desk.
   state.ctx = 'precruise';
   const WAIT_LABEL = 'Join Waitlist';
   const soldNow = () => !(typeof needsTime === 'function' && needsTime()) && (typeof effAvail === 'function' ? effAvail() : state.avail) === 'soldout';
